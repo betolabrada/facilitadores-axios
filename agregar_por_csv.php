@@ -2,7 +2,11 @@
 
     include 'config/Conn.php';
     
-    $grupoId = $_GET['id'];
+    if (!isset($_GET['id'])) {
+        $grupoId = 1;
+    } else {
+        $grupoId = $_GET['id'];
+    }
     
     if (isset($_POST['importar'])) {
         $filename = $_FILES['archivo']['tmp_name'];

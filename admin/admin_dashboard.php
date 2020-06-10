@@ -91,18 +91,5 @@ include 'navbar_admin.php';
       <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_asesorias.php'">VER TODAS</button><br>
     </div>
   </div>
-
-  <!-- <script>
-    $(document).ready(function() {
-      $(document.body).on("click", "td[data-alumno]", function() {
-        window.location.href = this.dataset.href + "?idAlumno=" + this.dataset.id;
-      });
-      $(document.body).on("click", "td[data-asesor]", function() {
-        window.location.href = this.dataset.href + "?idUsuario=" + this.dataset.id;
-      });
-    });
-  </script> -->
-
   </body>
-
   </html>
