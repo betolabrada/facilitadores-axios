@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html ng-app='myApp'>
+    <head>
+        <title>CSV reader</title>
+        <meta charset='UTF-8'>
+        <meta name="viewport" content="width=device-width, initial-scale=10">
+        
+        <script type="text/javascript" src="bs/jquery-3.4.1.js"></script>
+        <script type="text/javascript" src="bs/angular.min.js"></script>
+        <script type="text/javascript" src="bs/xlsx.full.min.js"></script>
+        <script type="text/javascript" src="bs/customjs.js"></script>
+        
+        <style type="text/css">
+            table, th, td{
+                border : 1px solid black;
+            }
+        </style>
+
+    </head>
+
+    <body ng-controller='MyController'>
+        
+        <div>
+
+            <form enctype="multipart/form-data">
+                <input type="file" id="file">
+                Id de grupo:<input type="text" id="idGrupo">
+                <button type="submit" value='submit' ng-click='uploadCSV()'> Subir CSV </button>
+            </form>
+
+        </div>
+        <div>
+            <table id="myTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>LASTNAME</th>
+                        <th>NAME</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>

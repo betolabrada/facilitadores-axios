@@ -1,0 +1,2 @@
+[10-Dec-2019 14:36:36 UTC] PHP Recoverable fatal error:  Object of class mysqli_result could not be converted to string in /home3/facilit1/public_html/sauce/grupos.php on line 18
+[10-Dec-2019 14:41:37 UTC] PHP Recoverable fatal error:  Object of class mysqli_result could not be converted to string in /home3/facilit1/public_html/sauce/grupos.php on line 21
