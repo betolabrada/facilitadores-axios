@@ -63,28 +63,33 @@
         <button name="search" value="1" type="submit" class="btn btn-success flex-grow-1">Buscar Alumnos</button>
       </div>
     </div><!--row-->
-    <?php if ($busqueda && !isset($badRequest)):?>
-    <div class="row d-block mt-3">
-      <?php if ($datos->num_rows == 0):?>
+  </form>
+  <?php if ($busqueda && !isset($badRequest)):?>
+  <div class="row mt-3">
+    <?php if ($datos->num_rows == 0):?>
+    <div class="col-sm-6 justify-content-center">
       <h3>No hay datos para enseñar</h3>
       <h3>Escuela:</h3>
       <p><?=getNombreEscuela($pEscuela)?></p>
       <h3>Grupo:</h3>
       <p><?=$pGrado . $pGrupo . " ". $pTurno ?></p>
       <h3>Grupo no existe</h3>
-      <?php elseif ($dato = $datos->fetch_assoc()):?>
-      <h3><?=$dato['grupo']?></>
-      <h3><?=$dato['nombreEscuela']?></h3>
-      <h3><?=$dato['tipo']?></h3>
-      <?php else:?>
-      <h3>Error</h3>
-      <?php endif; ?>
-    </div><!--row-->
-    <?php endif;?>
-  </form>
+    </div>
+    <?php elseif ($dato = $datos->fetch_assoc()):?>
+    <div class="col-sm-6 justify-content-center">
+      <h4><?=$dato['grupo']?> <?=$dato['nombreEscuela']?> <?=$dato['tipo']?></h4>
+    </div>
+    <div class="col-sm-3">
+      <a href="agregar_por_csv.php?id=<?=$grupoId?>" class="btn btn-info btn-block">Actualizar grupo</a>
+    </div>
+    <?php else:?>
+    <h3>Error</h3>
+    <?php endif; ?>
+  </div><!--row-->
+  <?php endif;?>
   <?php if ($resultAlumnosSuccess):?>
-  <div class="row justify-content-center">
-    <table class="table">
+  <div class="row justify-content-center mt-3">
+    <table class="table table-sm">
       <thead>
         <tr>
           <th scope="col">No. LISTA</th>
