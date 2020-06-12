@@ -70,10 +70,12 @@
     <div class="col-sm-6 justify-content-center">
       <h3>No hay datos para enseñar</h3>
       <h3>Escuela:</h3>
-      <p><?=getNombreEscuela($pEscuela)?></p>
+      <p><?=$db->getEscuela($pEscuela)?></p>
       <h3>Grupo:</h3>
       <p><?=$pGrado . $pGrupo . " ". $pTurno ?></p>
       <h3>Grupo no existe</h3>
+      <a href="admin_crear_grupo.php?idEscuela=<?=$pEscuela?>&turno=<?=$pTurno?>&grado=<?=$pGrado?>&grupo=<?=$pGrupo?>" 
+        class="btn btn-outline-info">Crear grupo</a>
     </div>
     <?php elseif ($dato = $datos->fetch_assoc()):?>
     <div class="col-sm-6 justify-content-center">

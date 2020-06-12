@@ -1,6 +1,6 @@
 <?php
-include '../lib/Alumno.php';
-$alumno = new Alumno;
+include '../lib/Database.php';
+$db = new Database;
 
 function exportar($pAlumnos, $filename) {
   header('Content-Type: text/csv;charset=utf-8');
@@ -20,7 +20,7 @@ function exportar($pAlumnos, $filename) {
 
 if (isset($_POST['exportar_grupo'])) {
   $grupoId = $_GET['id'];
-  $pAlumnos = $alumno->getAllAlumnos($grupoId);
+  $pAlumnos = $db->getAllAlumnos($grupoId);
   exportar($pAlumnos, "alumnos_data.csv");
 }
 

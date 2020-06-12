@@ -43,8 +43,8 @@ function cerrar() {
       <li class="nav-item">
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Administrador</a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="admin_dashboard.php">Inicio<span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a class="nav-link" href="admin_dashboard.php">Inicio</a>
       </li>
       <li>
         <a class="nav-link" href="admin_sedes.php">Administrar Sedes</a>
