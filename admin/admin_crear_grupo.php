@@ -1,12 +1,9 @@
 <?php include 'navbar_admin.php' ?>
 <?php 
-  include '../lib/Database.php';
-  $db = new Database;
   $escuela = isset($_GET['idEscuela']) ? $db->getEscuela($_GET['idEscuela']) : "Error cargando escuela";
   $turno = isset($_GET['turno']) ? $_GET['turno'] : "Error cargando turno";
   $grado = isset($_GET['grado']) ? $_GET['grado'] : "Error cargando grado";
   $grupo = isset($_GET['grupo']) ? $_GET['grupo'] : "Error cargando grupo";
-
 
   if (isset($_POST['subir'])) {
     $_SESSION['message'] = "Grupo creado";
@@ -15,12 +12,12 @@
 ?>
 <div class="container mt-3">
   <?php if (isset($_SESSION['message'])): ?>
-    <div class="alert alert-success">
-    <?php
-      echo $_SESSION['message'];
-      unset($_SESSION['message']);
-    ?>
-    </div><!--alert-->
+  <div class="alert alert-success">
+  <?php
+    echo $_SESSION['message'];
+    unset($_SESSION['message']);
+  ?>
+  </div><!--alert-->
   <?php else: ?>
   <form method="post" action="admin_crear_grupo.php">
     <div class="form-group">

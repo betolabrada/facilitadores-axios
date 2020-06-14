@@ -1,3 +1,4 @@
+<?php include '../config/init.php'; ?>
 <?php include 'admin_check.php'; ?>
 
 <!DOCTYPE html>

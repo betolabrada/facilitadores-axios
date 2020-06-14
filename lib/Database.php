@@ -3,6 +3,14 @@
 class Database {
     private $conn;
 
+    private $host = DB_HOST;
+    private $user = DB_USER;
+    private $pass = DB_PASS;
+    private $dbname = DB_NAME;
+
+    private $error;
+    private $stmt;
+
     public function __construct() {
         $this->conn = new mysqli("localhost", "root", "", "axios") or 
             die("Conexión fallida: " . $this->conn->connect_error);
@@ -28,29 +36,19 @@ class Database {
         return $result->fetch_assoc()['nombre'];
     }
 
-    // Get information about student group
-    public function getDatos($pEscuela, $pTurno, $pGrado, $pGrupo) {
-        $sql = "SELECT 
-              grup.grupo
-              , a.nombre
-              , e.nombre as nombreEscuela
-              , t.tipo
-              , t.descripcion
-              , e.numero
-              , l.nombre as sede
-            FROM Grupo grup 
-              JOIN Grado grad on grad.idGrado = grup.idGrado 
-              JOIN Turno t on t.idTurno = grad.idTurno 
-              JOIN Asesor a on a.idAsesor = t.idAsesor 
-              JOIN Escuela e on e.idEscuela = t.idEscuela
-              JOIN Localidad l on l.idLocalidad = e.idLocalidad
-            WHERE e.idEscuela = '$pEscuela'
-            AND t.descripcion = '$pTurno'
-            AND grad.numero = '$pGrado'
-            AND grup.grupo LIKE '_$pGrupo%' " ;
-        
-        $result = $this->conn->query($sql) or die($GLOBALS['conn']->error);
-        return $result;
+    
+
+    public function getGradoId($pEscuela, $pTurno, $pGrado) {
+        $sql = "SELECT idGrado FROM Grado
+            JOIN Turno ON Grado.idTurno = Turno.idTurno
+            JOIN Escuela ON Turno.idEscuela = Escuela.idEscuela
+            WHERE Grado.numero = $pGrado 
+            AND Turno.tipo = '$pTurno'
+            AND Escuela.nombre = $pEscuela
+        ";
+
+
+
     }
 
     public function close() {
