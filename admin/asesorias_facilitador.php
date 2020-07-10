@@ -82,11 +82,11 @@ if (isset($_POST['filtrar'])) {
                     <?php foreach ($asesorias_asesor as $fila): ?>
                         <tr>
                             <td class="align-middle text-truncate"><?php echo $fila['idAsesoria']; ?></td>
-                            <td class="align-middle text-truncate"><?php echo $fila['alumno']; ?></td>
-                            <td class="align-middle text-truncate"><?php echo $fila['fecha']; ?></td>
-                            <td data-motivo="<?=$fila['motivo']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['motivo']; ?></td>
-                            <td class="align-middle text-truncate"><?php echo $fila['dinamica']; ?></td>
-                            <td data-obs="<?=$fila['observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['observaciones']; ?></td>
+                            <td class="align-middle text-truncate"><?php echo $fila['Alumno']; ?></td>
+                            <td class="align-middle text-truncate"><?php echo $fila['Fecha']; ?></td>
+                            <td data-motivo="<?=$fila['Motivo']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
+                            <td class="align-middle text-truncate"><?php echo $fila['Dinamica']; ?></td>
+                            <td data-obs="<?=$fila['Observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>

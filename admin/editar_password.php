@@ -1,5 +1,13 @@
 <?php include 'navbar_admin.php';
     $idUsuario = (int)$_GET['idUsuario'];
+
+  
+  require_once '../models/Asesor.php';
+
+  $asesor_model = new Asesor;
+  
+  $asesor = $asesor_model->getAsesorById($idUsuario);
+
 ?>
 
 <?php
@@ -11,18 +19,14 @@ if (isset($_POST['subir'])) {
         echo "<script type='text/javascript'>alert('$message');</script>";
     } else {
         if($newPassword === $newConPassword) {
-            include '../config/Conn.php';
-            $query = "UPDATE Asesor SET `password` = PASSWORD('$newPassword') WHERE Asesor.idAsesor = $idUsuario";
-            if ($conn->query($query) === TRUE) {
+            if ($asesor_model->changeAsesorPassword($newPassword)) {
                 $message = "Cambios guardados con éxito";
                 echo "<script type='text/javascript'>alert('$message');</script>";
                 echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
             } else {
-              $message = "Error: " . $query . "<br>" . $conn->error;
+              $message = "Error: " . $query . "<br>";
               echo "<script type='text/javascript'>alert('$message');</script>";
             }
-        
-            $conn->close();
         } else {
             $message = "Las contraseñas no coinciden";
             echo "<script type='text/javascript'>alert('$message');</script>";
@@ -34,19 +38,9 @@ if (isset($_POST['subir'])) {
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-10">
-        <?php
-        include '../config/Conn.php';
-        $query = "SELECT ass.nombre AS Asesor
-        FROM Asesor as ass
-        WHERE ass.idAsesor = $idUsuario";
-        $resultado = $conn->query($query);
-        if ($resultado) {
-          $resultado->data_seek(0);
-          $fila = $resultado->fetch_assoc()
-        ?>
          <h4 class="display-4 text-center">Editando contraseña</h4>
          <br>
-         <h4 class="text-center">Editando contraseña de:&nbsp;<?php echo $fila['Asesor']; ?></h4>
+         <h4 class="text-center">Editando contraseña de:&nbsp;<?php echo $asesor['nombre']; ?></h4>
           <form method="post" action="" id="insertForm" onsubmit="return validateForm()">
 
           <div class="row my-4">
@@ -58,13 +52,6 @@ if (isset($_POST['subir'])) {
                 <label for="input-confirmar-contraseña">Confirmar Contraseña</label>
                 <input type="input-confirmar-contraseña" class="form-control" name="newConPass" placeholder="Confirmar contraseña">
                 </div>
-              <?php
-        } else {
-          $message = "Error: " . $query . "<br>" . $conn->error;
-          echo "<script type='text/javascript'>alert('$message');</script>";
-        }
-              $conn->close();
-              ?>
               <div class="col-sm-2"></div>
             </div>
           </form>

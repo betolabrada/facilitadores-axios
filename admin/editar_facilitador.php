@@ -1,29 +1,12 @@
 <?php include 'navbar_admin.php';
     $idUsuario = (int)$_GET['idUsuario'];
-?>
+    require_once '../models/Asesor.php';
 
-<?php
+  $asesor_model = new Asesor;
 
-$oldNombre = "";
-$oldCorreo = "";
-
-include '../config/Conn.php';
-$query = "SELECT ass.nombre AS Asesor, ass.correo AS Correo
-    FROM Asesor as ass
-    WHERE ass.idAsesor = $idUsuario";
-    $resultado = $conn->query($query);
-    if ($resultado) {
-        $resultado->data_seek(0);
-        $fila = $resultado->fetch_assoc();
-        $oldNombre = $fila['Asesor'];
-        $oldCorreo = $fila['Correo'];
-    } else {
-      $message = "Error: " . $query . "<br>" . $conn->error;
-      echo "<script type='text/javascript'>alert('$message');</script>";
-    }
-    $conn->close();
-
-
+  $asesor = $asesor_model->getAsesorById($idUsuario);
+  $oldNombre = $asesor['nombre'];
+  $oldCorreo = $asesor['correo'];
 ?>
 
 <?php
@@ -38,18 +21,15 @@ if (isset($_POST['subir'])) {
   if($correo === $oldCorreo || $correo === "") {
     $correo = $oldCorreo;
   }
-  include '../config/Conn.php';
-  $query = "UPDATE Asesor SET nombre='" . $nombre . "', correo='" . $correo . "' WHERE idAsesor = $idUsuario";
-  if ($conn->query($query) === TRUE) {
+
+  if ($asesor_model->updateAsesor($idUsuario, $nombre, $correo)) {
     $message = "Cambios guardados con éxito";
     echo "<script type='text/javascript'>alert('$message');</script>";
     echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
   } else {
-    $message = "Error: " . $query . "<br>" . $conn->error;
+    $message = "Error: " . $query . "<br>";
     echo "<script type='text/javascript'>alert('$message');</script>";
   }
-
-  $conn->close();
 }
 ?>
 
@@ -58,7 +38,7 @@ if (isset($_POST['subir'])) {
       <div class="col-md-10">
           <h4 class="display-4 text-center">Editando usuario</h4>
           <br>
-          <h4 class="text-center">Editando a:&nbsp;<?php echo $fila['Asesor']; ?></h4>
+          <h4 class="text-center">Editando a:&nbsp;<?php echo $oldNombre; ?></h4>
           <form method="post" action="" id="insertForm" onsubmit="return validateForm()">
 
           <div class="row my-4">

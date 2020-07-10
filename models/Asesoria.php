@@ -329,5 +329,33 @@ class Asesoria {
     }
   }
 
+  // 
+  // @method    SELECT
+  // @desc      Tabla para exportar CSV
+  // @fields    "Asesoria No.", "ID Alumno", "Nombre", "idAsesor", "Asesor", "Fecha", "Motivo", 
+  //              "Dinamica", "Observaciones"
+  public function CSV() {
+    $query = "SELECT 
+        Asesoria.idAsesoria AS idAsesoria 
+        , Alumno.idAlumno AS id 
+        , CONCAT(Alumno.nombre,' ',Alumno.apellido) AS alumno
+        , Asesor.idAsesor AS idAsesor
+        , Asesor.nombre AS asesor
+        , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS fecha 
+        , Motivo.motivo AS motivo
+        , Integrantes.descripcion AS dinamica 
+        , Asesoria.observaciones AS observaciones
+    FROM Asesoria 
+    JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno 
+    JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
+    JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
+    JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
+    ORDER BY Asesoria.idAsesoria DESC";
+
+    $this->db->query($query);
+
+    return $this->db->resultSet();
+  }
+
 
 }

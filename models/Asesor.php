@@ -47,7 +47,9 @@ class Asesor {
     return $this->db->single();
   }
 
-  // Get asesor de grupo
+  // @method  SELECT
+  // @desc    GET Asesor from grupo (id)
+  // @fields  grupo, nombre, nombreEscuela, tipoTurno, descTurno, numeroEscuela, sede 
   public function getAsesorDeGrupo($idGrupo) {
     $sql = 'SELECT 
         grup.grupo, a.nombre, e.nombre as nombreEscuela, t.tipo, t.descripcion, e.numero, l.nombre as sede
@@ -69,7 +71,7 @@ class Asesor {
   // INSERT INTO Asesor (idAsesor, nombre, correo, `password`)
   public function insertarAsesor($nombre, $correo, $contra) {
     $this->db->query("INSERT INTO Asesor (nombre, correo, `password`)
-      VAUES (:nombre, :correo, PASSWORD(:contra))");
+      VALUES (:nombre, :correo, PASSWORD(:contra))");
     
     $this->db->bind(':nombre', $nombre);
     $this->db->bind(':correo', $correo);
@@ -77,4 +79,51 @@ class Asesor {
 
     return $this->db->execute();
   }
+
+  // @method  UPDATE 
+  // @desc    Updates nombre and correo from Asesor of provided (idAsesor)
+  public function updateAsesor($idAsesor, $nombre, $correo) {
+    $query = 'UPDATE Asesor 
+    SET nombre = :nombre,
+      correo = :correo
+    WHERE idAsesor = :idAsesor';
+
+    $this->db->query($query);
+
+    $this->db->bind(':idAsesor', $idAsesor);
+    $this->db->bind(':nombre', $nombre);
+    $this->db->bind(':correo', $correo);
+
+    return $this->db->execute();
+
+  }
+
+  // UPDATE Asesor SET `password` = PASSWORD('$newPassword') WHERE Asesor.idAsesor = $idUsuario
+  // @method  UPDATE 
+  // @desc    Changes the password from Asesor of provided (idAsesor)
+  public function changeAsesorPassword($idAsesor, $newPassword) {
+    $query = 'UPDATE Asesor SET `password` = PASSWORD(:newPassword) WHERE Asesor.idAsesor = :idAsesor';
+
+    $this->db->query($query);
+
+    $this->db->bind(':idAsesor', $idAsesor);
+    $this->db->bind(':newPassword', $newPassword);
+
+    return $this->db->execute();
+
+  }
+
+  // @method  DELETE (UNSAFE)
+  // @desc    Delete Asesor (idAsesor), CREAR STORE PROCEDURE!!
+  public function deleteAsesor($idAsesor) {
+    $query = 'DELETE FROM Asesor WHERE idAsesor = :idAsesor';
+
+    $this->db->query($query);
+
+    $this->db->bind(':idAsesor', $idAsesor);
+
+    return $this->db->execute();
+
+  }
+
 }

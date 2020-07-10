@@ -1,46 +1,28 @@
 <?php include 'navbar_admin.php';
     $idUsuario = (int)$_GET['idUsuario'];
-?>
 
-<?php
+  require_once '../models/Asesor.php';
 
-$nombre = "";
-$correo = "";
+  $asesor_model = new Asesor;
 
-include '../config/Conn.php';
-$query = "SELECT ass.nombre AS Asesor, ass.correo AS Correo
-    FROM Asesor as ass
-    WHERE ass.idAsesor = $idUsuario";
-    $resultado = $conn->query($query);
-    if ($resultado) {
-        $resultado->data_seek(0);
-        $fila = $resultado->fetch_assoc();
-        $nombre = $fila['Asesor'];
-        $correo = $fila['Correo'];
-    } else {
-      $message = "Error: " . $query . "<br>" . $conn->error;
-      echo "<script type='text/javascript'>alert('$message');</script>";
-    }
-    $conn->close();
-
-
+  $asesor = $asesor_model->getAsesorById($idUsuario);
+  $nombre = $asesor['nombre'];
+  $correo = $asesor['correo'];
 ?>
 
 <?php
 
 if (isset($_POST['eliminar'])) {
-  include '../config/Conn.php';
-  $query = "DELETE FROM Asesor WHERE idAsesor = $idUsuario";
-  if ($conn->query($query) === TRUE) {
+  // ESTE DELETE ES UN METODO INSEGURO, BORRAR ASESOR IMPLICA BORRAR SUS ASESORIAS Y 
+  // DONDE MAS ESTE REFERENCIADO
+  if ($asesor_model->deleteAsesor($idUsuario)) {
     $message = "Usuario eliminado con éxito";
     echo "<script type='text/javascript'>alert('$message');</script>";
     echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
   } else {
-    $message = "Error: " . $query . "<br>" . $conn->error;
+    $message = "Error: " . $query . "<br>";
     echo "<script type='text/javascript'>alert('$message');</script>";
   }
-
-  $conn->close();
 }
 ?>
   <div class="container">
@@ -48,7 +30,7 @@ if (isset($_POST['eliminar'])) {
       <div class="col-md-10">
         <h4 class="display-4 text-center">Eliminando usuario</h4>
           <br>
-          <h4 class="text-center">¿Estas seguro de que deseas eliminar a: <?php echo $fila['Asesor']; ?>?</h4>
+          <h4 class="text-center">¿Estas seguro de que deseas eliminar a: <?php echo $nombre; ?>?</h4>
           <form method="post" action="" id="insertForm" onsubmit="return validateForm()">
 
           <div class="row my-4">

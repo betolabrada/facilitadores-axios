@@ -152,8 +152,8 @@
         </tbody>
       </table>
     </div><!--row-->
-  <?php else: ?>
-
+  <?php elseif ($busqueda && !$resultAlumnosSuccess): ?>
+    <div class="pt-3 text-center">No hay alumnos para mostrar: Grupo no existe o está vacío</div>
     
   <?php endif;?>
 
