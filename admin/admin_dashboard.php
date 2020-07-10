@@ -10,16 +10,22 @@
 
 <?php
 include 'navbar_admin.php';
+require_once '../models/Asesoria.php';
+
+$asesoria = new Asesoria();
+
+// Ultimas asesorias
+$u_asesos = $asesoria->ultimasAsesorias();
 ?>
 <div class="container p-5">
   <div class="row p-2">
     <div class="col-md-6">
-      <button class="btn-b peach-gradient btn-block p-3" onclick="window.location.href='admin_sedes.php'">Sedes</button><br>
-      <button class="btn-b blue-gradient btn-block p-3" onclick="window.location.href='admin_facilitadores.php'">Facilitadores</button>
+      <button class="btn-b peach-gradient btn-block p-3" onclick="window.location.href='admin_facilitadores.php'">Facilitadores</button><br>
+      <button class="btn-b blue-gradient btn-block p-3" onclick="window.location.href='admin_alumnos.php'">Alumnos</button><br>
     </div>
     <div class="col-md-6">
-      <button class="btn-b purple-gradient btn-block p-3">Escuelas</button><br>
-      <button class="btn-b aqua-gradient btn-block p-3">---</button>
+      <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='admin_sedes.php'">Sedes</button><br>
+      <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_grupos.php'">Grupos</button><br>
     </div>
   </div>
 </div>
@@ -38,52 +44,17 @@ include 'navbar_admin.php';
           <th scope="col">Observaciones</th>
         </thead>
         <tbody>
-          <?php
-          include '../config/Conn.php';
-          $query = "SELECT 
-                      Asesoria.idAsesoria AS idAsesoria 
-                      , Alumno.idAlumno AS idAlumno 
-                      , CONCAT(Alumno.nombre,' ',Alumno.apellido) AS alumno
-                      , Asesor.idAsesor AS idAsesor
-                      , Asesor.nombre AS asesor
-                      , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS fecha 
-                      , Motivo.motivo AS motivo
-                      , Integrantes.descripcion AS dinamica 
-                      , Asesoria.observaciones AS observaciones
-                  FROM Asesoria 
-                  JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno 
-                  JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
-                  JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
-                  JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
-                  ORDER BY Asesoria.idAsesoria DESC 
-                  LIMIT 5";
-
-          $resultado = $conn->query($query);
-          if (!$resultado) {
-            echo "ERROR: " . $conn->error;
-          }
-          if (!$resultado->fetch_array()) {
-            echo "<tr><td colspan='5'>AUN NO HAY ASESORIAS REGISTRADAS</td></tr>";
-          } else {
-
-            $resultado->data_seek(0);
-
-            while ($fila = $resultado->fetch_assoc()) {
-          ?>
-              <tr>
-                <td class="align-middle text-truncate"><?php echo $fila['idAsesoria']; ?></td>
-                <td class="align-middle text-truncate"><?php echo $fila['alumno']; ?></td>
-                <td class="align-middle text-truncate"><?php echo $fila['asesor']; ?></td>
-                <td class="align-middle text-truncate"><?php echo $fila['fecha']; ?></td>
-                <td class="align-middle text-truncate"><?php echo $fila['motivo']; ?></td>
-                <td class="align-middle text-truncate"><?php echo $fila['dinamica']; ?></td>
-                <td class="align-middle text-truncate"><?php echo $fila['observaciones']; ?></td>
-              </tr>
-          <?php
-            }
-          }
-          $conn->close();
-          ?>
+          <?php foreach($u_asesos as $fila): ?>
+            <tr>
+              <td class="align-middle text-truncate"><?php echo $fila['idAsesoria']; ?></td>
+              <td class="align-middle text-truncate"><?php echo $fila['alumno']; ?></td>
+              <td class="align-middle text-truncate"><?php echo $fila['asesor']; ?></td>
+              <td class="align-middle text-truncate"><?php echo $fila['fecha']; ?></td>
+              <td class="align-middle text-truncate"><?php echo $fila['motivo']; ?></td>
+              <td class="align-middle text-truncate"><?php echo $fila['dinamica']; ?></td>
+              <td class="align-middle text-truncate"><?php echo $fila['observaciones']; ?></td>
+            </tr>
+          <?php endforeach; ?>
         </tbody>
       </table>
     </div>
@@ -91,5 +62,18 @@ include 'navbar_admin.php';
       <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_asesorias.php'">VER TODAS</button><br>
     </div>
   </div>
+
+  <!-- <script>
+    $(document).ready(function() {
+      $(document.body).on("click", "td[data-alumno]", function() {
+        window.location.href = this.dataset.href + "?idAlumno=" + this.dataset.id;
+      });
+      $(document.body).on("click", "td[data-asesor]", function() {
+        window.location.href = this.dataset.href + "?idUsuario=" + this.dataset.id;
+      });
+    });
+  </script> -->
+
   </body>
+
   </html>

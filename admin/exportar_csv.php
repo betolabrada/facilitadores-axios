@@ -1,6 +1,8 @@
 <?php
-include '../lib/Database.php';
-$db = new Database;
+include '../config/init.php';
+
+$asesoria = new Asesoria;
+
 
 function exportar($pAlumnos, $filename) {
   header('Content-Type: text/csv;charset=utf-8');
@@ -17,6 +19,31 @@ function exportar($pAlumnos, $filename) {
   }
   fclose($output);
 }
+if (isset($_POST['exportar_todo'])) {
+  header('Content-Type: text/csv;charset=utf-8');
+  header('Content-Disposition: attachment; filename="asesorias_completo.csv"');
+  $output = fopen('php://output', 'wb');
+  fputcsv($output, array("alumno", "grupo", "asesor", "escuela", "turno", "fecha_aseso",
+   "motivo", "dinamica", "observaciones"));
+
+  $asesorias = $asesoria->getAsesoriasCSV();
+
+  while ($row = $asesorias->fetch_assoc()) {
+    extract($row);
+    fputcsv($output, array( 
+      'alumno' => utf8_decode($alumno),
+      'grupo' => utf8_decode($grupo),
+      'asesor' => utf8_decode($asesor),
+      'escuela' => utf8_decode($escuela),
+      'turno' => utf8_decode($turno),
+      'fecha_aseso' => utf8_decode($fecha_aseso),
+      'motivo' => utf8_decode($motivo),
+      'dinamica' => utf8_decode($dinamica),
+      'observaciones' => utf8_decode($observaciones),
+    ));
+  }
+  fclose($output);
+}
 
 if (isset($_POST['exportar_grupo'])) {
   $grupoId = $_GET['id'];
@@ -25,7 +52,7 @@ if (isset($_POST['exportar_grupo'])) {
 }
 
 if (isset($_POST['exportar'])) {
-  $where = $_POST['where'];
+  $where = isset($_POST['filters']) ? $_POST['filters'] : "";
   include "../config/Conn.php";
   header('Content-Type: text/csv;charset=utf-8');
   header('Content-Disposition: attachment; filename="datos.csv"');
@@ -47,9 +74,10 @@ if (isset($_POST['exportar'])) {
   JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
   JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
   JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
-  $where
+  WHERE 1 $where
   ORDER BY Asesoria.idAsesoria DESC";
 
+  
   $result = $conn->query($query);
 
   if ($result) {
@@ -70,6 +98,4 @@ if (isset($_POST['exportar'])) {
       fputcsv($output, $toCSV);
     }
   }
-
-  fclose($output);
 }

@@ -1,5 +1,86 @@
-<?php include 'navbar_admin.php'; ?>
-<?php include 'admin_grupos_proc.php'; ?>
+<?php 
+  include 'navbar_admin.php'; 
+  require_once '../models/Escuela.php';
+  require_once '../models/Grupo.php';
+
+  function nombre_escuela($escuelas) {
+    foreach ($escuelas as $s) {
+      if ($s['idEscuela'] == $_GET['idEscuela']) {
+        return $s['nombre'];
+      }
+    }
+  }
+
+  // function getGrupoId($pEscuela, $pTurno, $pGrado, $pGrupo) {
+  //   $db = $GLOBALS['db'];
+
+  //   $sql = "SELECT Grupo.idGrupo 
+  //     from Grupo 
+  //     JOIN Grado on Grupo.idGrado = Grado.idGrado 
+  //     JOIN Turno on Grado.idTurno = Turno.idTurno 
+  //     JOIN Escuela on Turno.idEscuela = Escuela.idEscuela 
+  //     WHERE Escuela.idEscuela = '$pEscuela'
+  //     AND Turno.descripcion = '$pTurno' 
+  //     AND Grado.numero = '$pGrado' 
+  //     AND Grupo.grupo LIKE '_$pGrupo%'";
+        
+  //   $result = $db->query($sql) or die($conn->error);
+
+  //   if ($result->num_rows == 0) {
+  //     return 0;
+  //   }
+
+  //   return $result->fetch_row()[0];
+  // }
+
+  // function getAlumnos($grupoId) {
+
+  //   $db = $GLOBALS['db'];
+
+  //   $sql = "SELECT * FROM Alumno WHERE idGrupo = " . $grupoId . " ORDER BY idAlumno";
+  //   $result = $db->query($sql) or die($conn->error);
+
+  //   return $result;
+
+  // }
+
+  $escuela_model = new Escuela;
+  $grupo_model = new Grupo;
+
+  // Escuelas
+  $escuelas = $escuela_model->getEscuelas();
+
+  // Datos de busqueda
+  $busqueda = false;
+  $datos = null;
+
+  // Alumnos
+  $resultAlumnosSuccess = false;
+
+  // Busqueda
+  if (isset($_GET['search'])) {
+    $busqueda = true;
+    if (!$_GET['idEscuela'] || !$_GET['turno'] || !$_GET['grado'] || !$_GET['grupo'] ) {
+      $_SESSION['message'] = "Error. Por favor completa todos los campos.";
+      $badRequest = true;
+    } else {
+
+      $selected_escuela = nombre_escuela($escuelas);
+      $selected = array(
+        'escuela' => $_GET['idEscuela'], 
+        'turno' => $_GET['turno'],
+        'grado' => $_GET['grado'],
+        'grupo' => $_GET['grupo']
+      );
+      $grupoId = $grupo_model->getGrupoId(...array_values($selected));
+      $alumnos = $grupo_model->getAlumnos($grupoId);
+      if (count($alumnos) > 0) {
+        $resultAlumnosSuccess = true;
+      }
+    }
+  }
+
+?>
 
 <div class="container my-3">
   <?php if (isset($_SESSION['message'])):?>
@@ -17,100 +98,98 @@
   </div><!--row-->
   <form method="GET" action="admin_grupos.php">
     <div class="row mt-3">
+
       <div class="col-sm-6">
         <!-- First search filter: filtro escuela -->
-        <select id="filtroEscuela" class="form-control" name="escuela">
+        <select id="filtroEscuela" class="form-control" name="idEscuela">
           <option value="0">Escuela</option>
-          <?php while ($fila = $escuelas->fetch_assoc()):?>
-          <option value="<?=$fila['idEscuela']?>"><?=$fila['nombre']?></option>
-          <?php endwhile; ?>
+          <?php foreach ($escuelas as $fila): ?>
+          <?php if (isset($selected) && $selected['escuela'] == $fila['idEscuela']): ?>
+          <option value="<?=$fila['idEscuela'] ?>" selected><?=$fila['nombre'] ?></option>
+          <?php else:?>
+          <option value="<?=$fila['idEscuela'] ?>"><?=$fila['nombre'] ?></option>
+          <?php endif;?>
+          <?php endforeach; ?>
         </select>
       </div><!--col-->
+
       <div class="col-sm-3">
         <!-- Filtro turno -->
         <select id="filtroTurno" class="form-control" name="turno">
-          <option value="0" selected>Turno</option>
-          <option value="1">Matutino</option>
-          <option value="2">Vespertino</option>
+          <option value="" selected>Turno</option>
+          <option value="M" <?=(isset($selected) && $selected['turno'] == "M") ? "selected" : "" ?>>Matutino</option>
+          <option value="V" <?=(isset($selected) && $selected['turno'] == "V") ? "selected" : "" ?>>Vespertino</option>
         </select>
       </div><!--col-->
+
       <div class="col-sm-3">
         <!-- Filtro grado -->
         <select id="filtroGrado" class="form-control" name="grado">
           <option value="" selected>Grado</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
+            <?php for ($gr=1; $gr <= 3; $gr++): ?>
+              <?php if (isset($selected) && $selected['grado'] == $gr): ?>
+              <option value="<?=$gr?>" selected><?=$gr?></option>
+              <?php else: ?>
+              <option value="<?=$gr?>"><?=$gr?></option>
+              <?php endif; ?>
+            <?php endfor; ?>
         </select>
       </div><!--col-->
+
     </div><!--row-->
+    
     <div class="row mt-3">
+
       <div class="col-sm-3">
         <!-- Filtro grupo -->
         <select id="filtroGrupo" class="form-control" name="grupo">
-          <option value="0" selected>Grupo</option>
-          <option value="A">A</option>
-          <option value="B">B</option>
-          <option value="C">C</option>
-          <option value="D">D</option>
-          <option value="E">E</option>
-          <option value="F">F</option>
+          <option value="" selected>Grupo</option>
+          <?php foreach (str_split('ABCDEF') as $gr): ?>
+            <?php if (isset($selected) && $selected['grupo'] == $gr): ?>
+            <option value="<?=$gr?>" selected><?=$gr?></option>
+            <?php else: ?>
+            <option value="<?=$gr?>"><?=$gr?></option>
+            <?php endif; ?>
+          <?php endforeach; ?>
         </select>
       </div><!--col-->
+
     </div><!--row-->
+
     <div class="row mt-3">
       <div class="col-sm-12 d-flex justify-content-center">
         <button name="search" value="1" type="submit" class="btn btn-success flex-grow-1">Buscar Alumnos</button>
       </div>
     </div><!--row-->
+
   </form>
-  <?php if ($busqueda && !isset($badRequest)):?>
-  <div class="row mt-3">
-    <?php if ($datos->num_rows == 0):?>
-    <div class="col-sm-6 justify-content-center">
-      <h3>No hay datos para enseñar</h3>
-      <h3>Escuela:</h3>
-      <p><?=$db->getEscuela($pEscuela)?></p>
-      <h3>Grupo:</h3>
-      <p><?=$pGrado . $pGrupo . " ". $pTurno ?></p>
-      <h3>Grupo no existe</h3>
-      <a href="admin_crear_grupo.php?idEscuela=<?=$pEscuela?>&turno=<?=$pTurno?>&grado=<?=$pGrado?>&grupo=<?=$pGrupo?>" 
-        class="btn btn-outline-info">Crear grupo</a>
-    </div>
-    <?php elseif ($dato = $datos->fetch_assoc()):?>
-    <div class="col-sm-6 justify-content-center">
-      <h4><?=$dato['grupo']?> <?=$dato['nombreEscuela']?> <?=$dato['tipo']?></h4>
-    </div>
-    <div class="col-sm-3">
-      <a href="agregar_por_csv.php?id=<?=$grupoId?>" class="btn btn-info btn-block">Actualizar grupo</a>
-    </div>
-    <?php else:?>
-    <h3>Error</h3>
-    <?php endif; ?>
-  </div><!--row-->
-  <?php endif;?>
+
   <?php if ($resultAlumnosSuccess):?>
-  <div class="row justify-content-center mt-3">
-    <table class="table table-sm">
-      <thead>
-        <tr>
-          <th scope="col">No. LISTA</th>
-          <th scope="col">NOMBRE(s)</th>
-          <th scope="col">APELLIDOS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php while ($fila = $alumnos->fetch_assoc()):?>
-        <tr>
-          <td scope="row"><?=$fila['noLista']?></td>
-          <td><?=$fila['nombre']?></td>
-          <td><?=$fila['apellido']?></td>
-        </tr>
-        <?php endwhile;?>
-      </tbody>
-    </table>
-  </div><!--row-->
+    <div class="row justify-content-center mt-3">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th scope="col">No. LISTA</th>
+            <th scope="col">NOMBRE(s)</th>
+            <th scope="col">APELLIDOS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($alumnos as $fila):?>
+          <tr>
+            <td scope="row"><?=$fila['noLista']?></td>
+            <td><?=$fila['nombre']?></td>
+            <td><?=$fila['apellido']?></td>
+          </tr>
+          <?php endforeach;?>
+        </tbody>
+      </table>
+    </div><!--row-->
+  <?php else: ?>
+
+    
   <?php endif;?>
+
 </div><!--container-->
 </body>
 </html>

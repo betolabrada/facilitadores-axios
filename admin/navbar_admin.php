@@ -1,4 +1,9 @@
-<?php include '../config/init.php'; ?>
+<?php 
+  require_once '../config/db.php'; 
+  require_once '../lib/Database.php'; 
+
+  $current_page = basename($_SERVER['PHP_SELF']);
+?>
 <?php include 'admin_check.php'; ?>
 
 <!DOCTYPE html>
@@ -8,10 +13,10 @@ function cerrar() {
   window.location.href = "../logout.php";
 }
 </script>
-<head>
-  <meta charset="utf-8">
+<head><meta charset="gb18030">
+  
   <title>ADMIN AXIOS</title>
-  <link rel="stylesheet" href="../sauce/style.css">
+  <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -36,7 +41,7 @@ function cerrar() {
     <span class="navbar-toggler-icon"></span>
   </button>
   <a class="navbar-brand" href="#">
-    <img src="../sauce/Logo AXIOS.png" width="50" height="50" class="d-inline-block align-top" alt="">
+    <img src="../assets/logo.png" width="50" height="50" class="d-inline-block align-top" alt="">
   </a>
 
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
@@ -44,20 +49,30 @@ function cerrar() {
       <li class="nav-item">
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Administrador</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="admin_dashboard.php">Inicio</a>
+      <li class="nav-item <?=($current_page == 'admin_dashboard.php') ? 'active' : ''?>">
+        <a class="nav-link" href="admin_dashboard.php">Inicio
+          <?php if ($current_page == 'admin_dashboard.php') echo '<span class="sr-only">(current)</span>';?>
+        </a>
       </li>
-      <li>
-        <a class="nav-link" href="admin_sedes.php">Administrar Sedes</a>
+      <li class="nav-item <?=($current_page == 'admin_facilitadores.php') ? 'active' : ''?>">
+        <a class="nav-link" href="admin_facilitadores.php">Administrar Facilitadores
+          <?php if ($current_page == 'admin_facilitadores.php') echo '<span class="sr-only">(current)</span>';?>
+        </a>
       </li>
-      <li>
-        <a class="nav-link" href="admin_facilitadores.php">Administrar Facilitadores</a>
+      <li class="nav-item <?=($current_page == 'admin_sedes.php') ? 'active' : ''?>">
+        <a class="nav-link" href="admin_sedes.php">Administrar Sedes
+          <?php if ($current_page == 'admin_sedes.php') echo '<span class="sr-only">(current)</span>';?>
+        </a>
       </li>
-      <li>
-        <a class="nav-link" href="admin_sedes.php">Administrar Escuelas</a>
+      <li class="nav-item <?=($current_page == 'admin_alumnos.php') ? 'active' : ''?>">
+        <a class="nav-link" href="admin_alumnos.php">Administrar Alumnos
+          <?php if ($current_page == 'admin_alumnos.php') echo '<span class="sr-only">(current)</span>';?>
+        </a>
       </li>
-      <li>
-        <a class="nav-link" href="admin_grupos.php">Administrar Grupos</a>
+      <li class="nav-item <?=($current_page == 'admin_grupos.php') ? 'active' : ''?>">
+        <a class="nav-link" href="admin_grupos.php">Administrar Grupos
+          <?php if ($current_page == 'admin_grupos.php') echo '<span class="sr-only">(current)</span>';?>
+        </a>
       </li>
     </ul>
 

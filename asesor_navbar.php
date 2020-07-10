@@ -1,10 +1,16 @@
+<?php 
+  require_once 'config/db.php'; 
+  require_once 'lib/Database.php'; 
+
+  $current_page = basename($_SERVER['PHP_SELF']);
+?>
 <?php include 'asesor_check.php'; ?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <title>Registro</title>
-  <link rel="stylesheet" href="sauce/style.css">
+  <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -45,7 +51,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="#">
-      <img src="sauce/Logo AXIOS.png" width="50" height="50" class="d-inline-block align-top" alt="">
+      <img src="assets/logo.png" width="50" height="50" class="d-inline-block align-top" alt="">
     </a>
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">

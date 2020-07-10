@@ -18,8 +18,8 @@ $query = "SELECT ass.nombre AS Asesor, ass.correo AS Correo
         $oldNombre = $fila['Asesor'];
         $oldCorreo = $fila['Correo'];
     } else {
-        echo "ERROR: " . $conn->error . "ON: \n";
-        echo $query;
+      $message = "Error: " . $query . "<br>" . $conn->error;
+      echo "<script type='text/javascript'>alert('$message');</script>";
     }
     $conn->close();
 
@@ -45,7 +45,8 @@ if (isset($_POST['subir'])) {
     echo "<script type='text/javascript'>alert('$message');</script>";
     echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
   } else {
-    echo "Error: " . $query . "<br>" . $conn->error;
+    $message = "Error: " . $query . "<br>" . $conn->error;
+    echo "<script type='text/javascript'>alert('$message');</script>";
   }
 
   $conn->close();

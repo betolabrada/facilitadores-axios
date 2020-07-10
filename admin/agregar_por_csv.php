@@ -52,7 +52,7 @@ function importarAlumnos($alumnos) {
       }
     }
     fclose($file);
-    header("Refresh:0");  
+    echo "<meta http-equiv='refresh' content='0'>";
   } else {
     $_SESSION['message'] = "Por favor importa un archivo CSV.";
   }
@@ -67,7 +67,7 @@ if (isset($_POST['delete'])) {
 
   $conn->query($sql) or die($conn->error);
 
-  header("Refresh:0");
+  echo "<meta http-equiv='refresh' content='0'>";
 }
 ?>
 <div class="container">
