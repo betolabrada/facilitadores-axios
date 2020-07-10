@@ -31,7 +31,7 @@
       $observaciones)) {
       echo "<script type='text/javascript'> document.location = 'carga_exitosa.php?mail=$mail'; </script>";
     } else {
-      $message = "Error: " . $query . "<br>" . $conn->error;
+      $message = "Error: " . $query . "<br>";
       echo "<script type='text/javascript'>alert('$message');</script>";
     }
   }

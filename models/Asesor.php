@@ -46,4 +46,35 @@ class Asesor {
 
     return $this->db->single();
   }
+
+  // Get asesor de grupo
+  public function getAsesorDeGrupo($idGrupo) {
+    $sql = 'SELECT 
+        grup.grupo, a.nombre, e.nombre as nombreEscuela, t.tipo, t.descripcion, e.numero, l.nombre as sede
+        FROM Grupo grup 
+        JOIN Grado grad on grad.idGrado = grup.idGrado 
+        JOIN Turno t on t.idTurno = grad.idTurno 
+        JOIN Asesor a on a.idAsesor = t.idAsesor 
+        JOIN Escuela e on e.idEscuela = t.idEscuela
+        JOIN Localidad l on l.idLocalidad = e.idLocalidad
+        WHERE idGrupo = :idGrupo';
+
+    $this->db->query($sql);
+
+    $this->db->bind(':idGrupo', $idGrupo);
+
+    return $this->db->single();
+  }
+
+  // INSERT INTO Asesor (idAsesor, nombre, correo, `password`)
+  public function insertarAsesor($nombre, $correo, $contra) {
+    $this->db->query("INSERT INTO Asesor (nombre, correo, `password`)
+      VAUES (:nombre, :correo, PASSWORD(:contra))");
+    
+    $this->db->bind(':nombre', $nombre);
+    $this->db->bind(':correo', $correo);
+    $this->db->bind(':contra', $contra);
+
+    return $this->db->execute();
+  }
 }

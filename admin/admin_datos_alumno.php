@@ -81,25 +81,25 @@ if (isset($_POST['subir'])) {
   } else {
     
     $idGrupo = $alumno['idGrupo'];
-    $query = "UPDATE Alumno SET noLista= $nolista, nombre='" . $nombres . "', apellido='" . $apellidos . "', idGrupo= $idGrupo WHERE idAlumno = $idAlumno";
-    if ($conn->query($query) === TRUE) {
+    $updated_alumno = $alumno_model->updateAlumno($idAlumno, $noLista, $nombres, $apellidos, $idGrupo);
+    if ($updated_alumno) {
       $message = "Cambios guardados con éxito";
       echo "<script type='text/javascript'>alert('$message');</script>";
     } else {
-        $message = "Error: " . $query . "<br>" . $conn->error;
+        $message = "Error: " . $query . "<br>";
         echo "<script type='text/javascript'>alert('$message');</script>";
     }
   }
 }
 if (isset($_POST['borrar'])) {
-    include '../config/Conn.php';
-    $query = "DELETE FROM Alumno WHERE idAlumno = $idAlumno";
-    if ($conn->query($query) === TRUE) {
+    
+    $deleted = $alumno_model->deleteAlumno($idAlumno);
+    if ($deleted) {
         $message = "Alumno borrado con éxito";
         echo "<script type='text/javascript'>alert('$message');</script>";
         echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
     } else {
-      $message = "Error: " . $query . "<br>" . $conn->error;
+      $message = "Error: " . $query . "<br>";
       echo "<script type='text/javascript'>alert('$message');</script>";
     }
 }

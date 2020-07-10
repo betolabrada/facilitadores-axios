@@ -3,9 +3,13 @@
     include 'navbar_admin.php';
     require_once '../models/Escuela.php';
     require_once '../models/Asesor.php';
+    require_once '../models/Grupo.php';
+    require_once '../models/Alumno.php';
 
     $escuela_model = new Escuela;
     $asesor_model = new Asesor;
+    $grupo_model = new Grupo;
+    $alumno_model = new Alumno;
 
     $escuelas = $escuela_model->getEscuelas();
     $asesores = $asesor_model->getAsesores();
@@ -23,44 +27,27 @@ if (isset($_POST['subir'])) {
     $turno = $_POST['turno'];
     $asesor = $_POST['asesor'];
 
-    include '../config/Conn.php';
-    $query = "SELECT e.nombre AS Escuela, ga.numero AS Grado,
-    gu.grupo AS Grupo, gu.idGrupo AS idGrupo, ase.nombre AS NAsesor, t.descripcion AS Turno
-    FROM Grupo as gu JOIN Grado as ga
-    ON gu.idGrado = ga.idGrado
-    JOIN Turno as t
-    ON ga.idTurno = t.idTurno
-    JOIN Escuela as e
-    ON t.idEscuela = e.idEscuela
-    JOIN Localidad as l
-    on l.idLocalidad = e.idLocalidad
-    JOIN Asesor as ase
-    ON t.idAsesor = ase.idAsesor
-    WHERE gu.grupo = '" . $grupo . "' AND ga.numero = $grado AND t.descripcion = '" . $turno . "'
-    AND e.idEscuela = $escuela  AND ase.nombre = '" . $asesor . "'";
-    $resultado = $conn->query($query);
-    if(!$resultado->fetch_array()) {
+    $params = array($grupo, $grado, $descTurno, $escuela, $asesor);
+
+    $group_exists = $grupo_model->groupExists(...$params);
+    
+    if(!$group_exists) {
         $message = "Los datos ingresados no son válidos. Por favor ingresa una combinación permitida.";
         echo "<script type='text/javascript'>alert('$message');</script>";
-    } else if ($resultado) {
-        $resultado->data_seek(0);
-        $origin = $resultado->fetch_assoc();
-        $idGrupo = $origin['idGrupo'];
-        $query = "INSERT INTO Alumno (noLista, nombre, apellido, idGrupo)
-        VALUES ($nolista, '" . $nombres . "', '" . $apellidos . "', $idGrupo)";
-        if ($conn->query($query) === TRUE) {
+    } else {
+        // Insertar nuevo alumno
+        $idGrupo = $group_exists['idGrupo'];
+        $inserted = $alumno_model->insertarAlumno($noLista, $nombres, $apellidos, $idGrupo);
+
+        if ($inserted) {
             $message = "Cambios guardados con éxito";
             echo "<script type='text/javascript'>alert('$message');</script>";
             echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
         } else {
-            $message = "Error: " . $query . "<br>" . $conn->error;
-        echo "<script type='text/javascript'>alert('$message');</script>";
+            $message = "Error: " . $query . "<br>";
+            echo "<script type='text/javascript'>alert('$message');</script>";
         }
-    } else {
-        $message = "Error: " . $query . "<br>" . $conn->error;
-        echo "<script type='text/javascript'>alert('$message');</script>";
     }
-    $conn->close();
 }
 ?>
 

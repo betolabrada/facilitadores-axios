@@ -74,39 +74,46 @@ class Alumno {
 
   }
 
+  // Insertar alumno
+  public function insertarAlumno($noLista, $nombre, $apellido, $idGrupo) {
+    $sql = "INSERT INTO Alumno (noLista, nombre, apellido, idGrupo)
+      VALUES (:noLista, :nombre, :apellido, :idGrupo)";
+
+    $this->db->query($sql);
+
+    $this->db->bind(':noLista', $noLista);
+    $this->db->bind(':nombre', $nombre);
+    $this->db->bind(':apellido', $apellido);
+    $this->db->bind(':idGrupo', $idGrupo);
+
+    if ($this->db->execute()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   // @method  UPDATE
   // @desc    update ALUMNO
   // @fields  noLista, 
   //          
-  public function updateAlumno($idAlumno) {
-    $query = "SELECT 
-        a.idAlumno AS id, 
-        CONCAT(a.nombre,' ', a.apellido) AS Alumno,
-        a.nombre AS Nombres, 
-        a.apellido AS Apellidos, 
-        a.noLista AS NoLista,
-        e.idEscuela AS Escuela, 
-        ga.numero AS Grado, 
-        gu.idGrupo AS idGrupo,
-        gu.grupo AS Grupo,
-        ase.idAsesor AS idAsesor,
-        ase.nombre AS NAsesor, 
-      t.descripcion AS Turno
-      FROM Alumno as a 
-      JOIN Grupo as gu ON a.idGrupo = gu.idGrupo
-      JOIN Grado as ga ON gu.idGrado = ga.idGrado
-      JOIN Turno as t ON ga.idTurno = t.idTurno
-      JOIN Escuela as e ON t.idEscuela = e.idEscuela
-      JOIN Localidad as l ON l.idLocalidad = e.idLocalidad
-      LEFT JOIN Asesor as ase ON t.idAsesor = ase.idAsesor
-      WHERE a.idAlumno = :idAlumno";
+  public function updateAlumno($idAlumno, $noLista, $nombres, $apellidos, $idGrupo) {
+    $query = 'UPDATE Alumno 
+    SET noLista = :noLista, 
+      nombre = :nombres, 
+      apellido = :apellidos, 
+      idGrupo= :idGrupo 
+    WHERE idAlumno = :idAlumno';
 
     $this->db->query($query);
 
     $this->db->bind(':idAlumno', $idAlumno);
+    $this->db->bind(':noLista', $noLista);
+    $this->db->bind(':nombres', $nombres);
+    $this->db->bind(':apellidos', $apellidos);
+    $this->db->bind(':idGrupo', $idGrupo);
 
-    return $this->db->single();
-
+    return $this->db->execute();
   }
 
 
@@ -134,6 +141,63 @@ class Alumno {
     $this->db->query($query);
 
     $this->db->bind(':idAsesor', $idAsesor);
+
+    return $this->db->resultSet();
+
+  }
+
+  public function deleteAlumno($idAlumno) {
+    $sql = 'DELETE FROM Alumno WHERE idAlumno = :idAlumno';
+
+    $this->db->query($sql);
+
+    $this->db->bind(':idAlumno', $idAlumno);
+
+    if ($this->db->execute()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // Borra todos los alumnos de un grupo (limpia de lista)
+  public function deleteLista($idGrupo) {
+    $sql = 'DELETE FROM Alumno WHERE idGrupo = :idGrupo';
+
+    $this->db->query($sql);
+
+    $this->db->bind(':idGrupo', $idGrupo);
+
+    if ($this->db->execute()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // Asesorias de Alumno
+  public function getAsesoriasDeAlumno($idAlumno) {
+    $sql = 'SELECT 
+        Asesoria.idAsesoria AS idAsesoria 
+        , Alumno.idAlumno AS idAlumno 
+        , CONCAT(Alumno.nombre," ",Alumno.apellido) AS Alumno
+        , Asesor.idAsesor AS idAsesor
+        , Asesor.nombre AS Asesor
+        , DATE_FORMAT(Asesoria.fecha, "%d-%m-%Y") AS Fecha 
+        , Motivo.motivo AS Motivo
+        , Integrantes.descripcion AS Dinamica 
+        , Asesoria.observaciones AS Observaciones
+    FROM Asesoria 
+    JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno 
+    JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
+    JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
+    JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
+    WHERE Alumno.idAlumno = :idAlumno
+    ORDER BY Asesoria.idAsesoria DESC';
+
+    $this->db->query($sql);
+
+    $this->db->bind(':idAlumno', $idAlumno);
 
     return $this->db->resultSet();
 

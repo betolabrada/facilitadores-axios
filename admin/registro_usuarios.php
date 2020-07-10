@@ -1,21 +1,23 @@
 <?php include 'navbar_admin.php';
 
+require_once '../models/Asesor.php';
+
+$asesor_model = new Asesor;
+
 if (isset($_POST['registrar'])) {
   $name = $_POST['inputName'];
   $email = $_POST['inputEmail'];
   $pass = $_POST['inputPassword'];
 
-  include '../config/Conn.php';
-  $query = "INSERT INTO Asesor (idAsesor, nombre, correo, `password`) VALUES (NULL, '$name', '$email', PASSWORD('$pass'))";
-  if ($conn->query($query) === TRUE) {
+  $inserted = $asesor_model->insertarAsesor($name, $email, $pass);
+  if ($inserted) {
     $message = "Usuario registrado con éxito";
     echo "<script type='text/javascript'>alert('$message');</script>";
     echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
   } else {
-    $message = "Error: " . $query . "<br>" . $conn->error;
+    $message = "Error: " . $query . "<br>";
     echo "<script type='text/javascript'>alert('$message');</script>";
   }
-  $conn->close();
 }
 
 ?>

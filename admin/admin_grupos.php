@@ -11,39 +11,6 @@
     }
   }
 
-  // function getGrupoId($pEscuela, $pTurno, $pGrado, $pGrupo) {
-  //   $db = $GLOBALS['db'];
-
-  //   $sql = "SELECT Grupo.idGrupo 
-  //     from Grupo 
-  //     JOIN Grado on Grupo.idGrado = Grado.idGrado 
-  //     JOIN Turno on Grado.idTurno = Turno.idTurno 
-  //     JOIN Escuela on Turno.idEscuela = Escuela.idEscuela 
-  //     WHERE Escuela.idEscuela = '$pEscuela'
-  //     AND Turno.descripcion = '$pTurno' 
-  //     AND Grado.numero = '$pGrado' 
-  //     AND Grupo.grupo LIKE '_$pGrupo%'";
-        
-  //   $result = $db->query($sql) or die($conn->error);
-
-  //   if ($result->num_rows == 0) {
-  //     return 0;
-  //   }
-
-  //   return $result->fetch_row()[0];
-  // }
-
-  // function getAlumnos($grupoId) {
-
-  //   $db = $GLOBALS['db'];
-
-  //   $sql = "SELECT * FROM Alumno WHERE idGrupo = " . $grupoId . " ORDER BY idAlumno";
-  //   $result = $db->query($sql) or die($conn->error);
-
-  //   return $result;
-
-  // }
-
   $escuela_model = new Escuela;
   $grupo_model = new Grupo;
 
