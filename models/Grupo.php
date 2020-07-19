@@ -63,7 +63,9 @@
       return $res['idGrado'];
     }
 
-    // Grupo ID
+    // @method  SELECT
+    // @desc    GET id de grupo
+    // @params  idEscuela, turno tipo, grado, grupo
     public function getGrupoId($idEscuela, $tipoTurno, $grado, $grupo) {
       $sql = 'SELECT idGrupo
       FROM Grupo grup 

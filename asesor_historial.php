@@ -1,5 +1,4 @@
 <?php 
-session_start();
 if (isset($_SESSION['admin'])) {
   include 'admin/navbar_admin.php';
 } else {
