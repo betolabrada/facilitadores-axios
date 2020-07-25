@@ -4,10 +4,10 @@ session_start();
 if (isset($_SESSION['admin'])) {
   include 'navbar_admin.php';
 } else {
-  include '../asesor_navbar.php';
+  include '../../asesor_navbar.php';
 }
 
-require_once '../models/Asesoria.php';
+require_once '../../models/Asesoria.php';
 
 $asesoria_model = new Asesoria();
 
@@ -17,4 +17,4 @@ $asesoria_model->deleteAsesoria($idAsesoria);
 
 $mail = $_SESSION['user'];
 
-header("Location: ../asesor_dashboard.php?inputMail=$mail");
+header("Location: ../../asesor_dashboard.php?inputMail=$mail");

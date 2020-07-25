@@ -2,12 +2,12 @@
 
 session_start();
 if (isset($_SESSION['admin'])) {
-  include 'navbar_admin.php';
+  include '../navbar_admin.php';
 } else {
-  include '../asesor_navbar.php';
+  include '../../asesor_navbar.php';
 }
 
-require_once '../models/Asesoria.php';
+require_once '../../models/Asesoria.php';
 
 $asesoria_model = new Asesoria();
 
@@ -29,6 +29,6 @@ $mail = $_SESSION['user'];
     <input type="number" name="idAsesoria" value="<?php echo $_POST['idAsesoria']?>" hidden="hidden"/>
     <input type="submit" value="Aceptar"/>
 </form>
-<form action="../asesor_dashboard.php?inputMail=<?php echo $mail?>" method="POST">
+<form action="../../asesor_dashboard.php?inputMail=<?php echo $mail?>" method="POST">
     <input type="submit" value="Cancelar"/>
 </form>
