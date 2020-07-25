@@ -50,14 +50,6 @@ class Database {
 		$this->stmt->bindValue($param, $value, $type);
 	}
 
-    // Get all alumnos
-    public function getAllAlumnos($grupoId) {
-        $sql = "SELECT * FROM Alumno WHERE idGrupo = " . $grupoId . " ORDER BY idAlumno";
-        $result = $this->conn->query($sql) or die($this->conn->error);
-
-        return $result;
-    }
-
     // Execute the prepared statement
 	public function execute(){
 		return $this->stmt->execute();
