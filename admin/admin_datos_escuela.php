@@ -119,11 +119,20 @@ if (isset($_POST['subir'])) {
           </div>
         </div>
         </form>
+          <form method="POST" action="confirmar_borrar_escuela.php" id="borrarForm">
+              <input type="text" name="id" hidden="hidden" value="<?php echo $idEscuela ?>"/>
+          </form>
         <div class="row my-4 justify-content-center">
           <div class="col-sm-3">
             <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm">Aceptar cambios</button>
           </div>
+           
           <div class="col-sm-3">
+            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" form="borrarForm">Borrar</button>
+          </div>
+        </div>
+          <div class="row my-4 justify-content-center">
+          <div class="col-sm-6">
             <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_sedes.php'">Cancelar</button>
           </div>
         </div>
