@@ -144,4 +144,55 @@
         return false;
       }
     }
+   
+    public function addGrupo($descripcion,$grado){
+        $query = 'INSERT INTO Grupo (idGrupo, grupo, idGrado) '
+                . 'VALUES (null, :desGrupo, :idGrado)';
+        
+        $this->db->query($query);
+        
+        $this->db->bind('desGrupo', $descripcion);
+        $this->db->bind(':idGrado', $grado);
+        
+        if ($this->db->execute()) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function editarGrupo($variable,$variableCambiar,$idGrupo){
+        $query = 'UPDATE Grupo
+	SET :variable = :variableCambiar
+	WHERE idGrupo = :idGrupo';
+        
+        $this->db->query($query);
+        
+        $this->db->bind(':variable', $variable);
+        $this->db->bind(':variableCambiar', $variableCambiar);
+        $this->db->bind(':idGrupo', $idGrupo);
+        
+        
+        if ($this->db->execute()) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function updateGrado($idGrado,$idGrupo){
+        $query = 'UPDATE Grupo
+	SET idGrado = :idGrado
+	WHERE idGrupo = :idGrupo';
+        
+        $this->db->query($query);
+        
+        $this->db->bind(':idGrado', $idGrado);
+        $this->db->bind(':idGrupo', $idGrupo);
+        
+        
+        if ($this->db->execute()) {
+            return true;
+        }
+        return false;
+    }
+    
   }
