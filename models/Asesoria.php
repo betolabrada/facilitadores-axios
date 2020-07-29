@@ -230,6 +230,14 @@ class Asesoria {
 
   }
 
+  public function getAsesoriaById($idAsesoria) {
+    $this->db->query("SELECT * FROM Asesoria WHERE idAsesoria = :idAsesoria");
+    
+    $this->db->bind(':idAsesoria', $idAsesoria);
+
+    return $this->db->resultSet();
+  }
+  
   // @method    SELECT
   // @desc      Get tipos de asesoria
   // @tables    Tipo
@@ -355,6 +363,16 @@ class Asesoria {
     $this->db->query($query);
 
     return $this->db->resultSet();
+  }
+  
+  public function deleteAsesoria($idAsesoria){
+       $query = 'DELETE FROM Asesoria WHERE idAsesoria = :idAsesoria';
+
+        $this->db->query($query);
+
+        $this->db->bind(':idAsesoria', $idAsesoria);
+
+        return $this->db->execute();
   }
 
 

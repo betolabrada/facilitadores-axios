@@ -35,6 +35,8 @@ $mail = $_SESSION['user'];
               <th scope="col">Motivo</th>
               <th scope="col">Dinámica</th>
               <th scope="col">Observaciones</th>
+              <th>&nbsp;</th>
+              <th>&nbsp;</th>
           </thead>
           <tbody id="pagination">
             <?php foreach ($asesoriasDeAsesor as $fila): ?>
@@ -44,6 +46,20 @@ $mail = $_SESSION['user'];
                   <td data-motivo="<?=$fila['Motivo']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
                   <td class="align-middle text-truncate"><?php echo $fila['Dinamica']; ?></td>
                   <td data-obs="<?=$fila['Observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
+                  <td class="align-middle">
+                      <form action="admin/asesoria/confirmar_editar_asesoria.php" method="POST">
+                          <input type="number" name="idAsesoria" value="<?php echo $fila['id']?>" hidden="hidden"/>
+                          <input type="text" name="nombreAlumno" value="<?php echo $fila['Alumno']?>" hidden="hidden"/>
+                          <input type="submit" value="Editar" class=" btn btn-danger"/>
+                      </form>
+                  </td>
+                  <td class="align-middle">
+                      <form action="admin/asesoria/confirmar_borrar_asesoria.php" method="POST">
+                          <input type="number" name="idAsesoria" value="<?php echo $fila['id']?>" hidden="hidden"/>
+                          <input type="text" name="nombreAlumno" value="<?php echo $fila['Alumno']?>" hidden="hidden"/>
+                          <input type="submit" value="Eliminar" class=" btn btn-danger"/>
+                      </form>
+                  </td>
               </tr>
             <?php endforeach; ?>
           </tbody>
