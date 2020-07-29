@@ -374,6 +374,38 @@ class Asesoria {
 
         return $this->db->execute();
   }
+  
+  public function deleteAsesoriaFecha($idAlumno,$fecha){
+      $query = 'DELETE FROM Asesoria
+	WHERE idAlumno = :idAlumno AND fecha = :fecha';
+        
+      $this->db->query($query);
 
+      $this->db->bind(':idAlumno', $idAlumno);
+      $this->db->bind(':fecha', $fecha);
+
+      if ($this->db->execute()) {
+          return true;
+      }
+      return false;
+  }
+
+  public function updateAsesoria($variable,$variableChange,$idAlumno,$fecha){
+      $query = 'UPDATE Asesoria
+	SET :variable = :varibleChange
+        WHERE idAlumno = :idAlumno AND fecha = :fecha';
+        
+      $this->db->query($query);
+        
+      $this->db->bind(':variable', $variable);
+      $this->db->bind(':varibleChange', $variableChange);
+      $this->db->bind(':idAlumno', $idAlumno);
+      $this->db->bind(':fecha', $fecha);
+        
+      if ($this->db->execute()) {
+         return true;
+      }
+      return false;
+  }
 
 }
