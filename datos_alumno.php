@@ -8,6 +8,8 @@
 
   $asesor = $asesor_model->getAsesorById($_GET['idAsesor']);
   $alumno = $alumno_model->getAlumnoById($_GET['idAlumno']);
+
+  $mail = $asesor['correo'];
 ?>
 
 <div class="container">

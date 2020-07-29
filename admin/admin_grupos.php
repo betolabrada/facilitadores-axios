@@ -39,11 +39,21 @@
         'grado' => $_GET['grado'],
         'grupo' => $_GET['grupo']
       );
-      $grupoId = $grupo_model->getGrupoId(...array_values($selected));
+      print_r(array_values($selected));
+      // version: 7.4.6
+      // $grupoId = $grupo_model->getGrupoId(...array_values($selected));
+      $grupoId = $grupo_model->getGrupoId(
+        $selected['escuela'],
+        $selected['turno'],
+        $selected['grado'],
+        $selected['grupo']
+      );
+      echo $grupoId;
       $alumnos = $grupo_model->getAlumnos($grupoId);
       if (count($alumnos) > 0) {
         $resultAlumnosSuccess = true;
       }
+      echo $resultAlumnosSuccess;
     }
   }
 

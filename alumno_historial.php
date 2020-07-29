@@ -17,6 +17,8 @@ $asesoria_alumno = $asesoria_model->getAsesoriasDeAlumno($idAlumno);
 $asesor = $asesor_model->getAsesorById($idAsesor);
 $alumno = $alumno_model->getAlumnoById($idAlumno);
 
+$mail = $asesor['correo'];
+
 $where = "WHERE Alumno.idAlumno = $idAlumno";
 if (isset($_POST['filtrar'])) {
     if ($_POST['mes']) {
