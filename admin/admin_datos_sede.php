@@ -49,11 +49,17 @@ if (isset($_POST['subir'])) {
           </div>
         </div>
         </form>
-        <div class="row my-4 justify-content-center">
-          <div class="col-sm-3">
+          <form action="borrar_localidad.php" method="POST" id="borrarForm" >
+              <input type="number" name="idSede" value="<?php echo $idSede ?>" hidden="hidden"/>
+          </form>
+        <div class="row justify-content-center">
+          <div class="col-sm-4">
             <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm">Aceptar cambios</button>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-4">
+            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" form="borrarForm">Borrar localidad</button>
+          </div>
+          <div class="col-sm-4">
             <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_sedes.php'">Cancelar</button>
           </div>
         </div>

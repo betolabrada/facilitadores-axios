@@ -105,16 +105,19 @@ if (isset($_POST['filtrar'])) {
     </div>
 </div>
 <div class="row justify-content-center">
-    <div class="row my-12">
+    
         
-        <div class="col-sm-6">
-            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_nueva_escuela.php'">Nueva</button>
+        <div class="col-sm-4">
+            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_nueva_escuela.php'">Nueva Escuela</button>
         </div>
-        <div class="col-sm-6">
-            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_dashboard.php'">Cancelar</button>
+        <div class="col-sm-4">
+            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='confirmar_agregar_localidad.php'">Nueva Localidad</button>
+        </div>
+        <div class="col-sm-4">
+            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_dashboard.php'">Borrar localidad</button>
         </div>
         
-    </div>
+    
     
   </div>
   <br>
