@@ -130,7 +130,19 @@
           <?php endforeach; ?>
         </select>
       </div><!--col-->
-
+      
+      <div class="col-sm-3">
+        <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" form="crearForm">Nuevo Grupo</button>
+      </div>
+      
+      <?php 
+      if(isset($_GET['idEscuela']) && $_GET['idEscuela']!=0){
+          echo "<div class=\"col-sm-3\">
+            <button class=\"btn btn-success btn-lg btn-primary btn-block text-uppercase\" form=\"editForm\">Editar Grupo</button>
+          </div>";
+      }
+      ?>
+      
     </div><!--row-->
 
     <div class="row mt-3">
@@ -140,6 +152,13 @@
     </div><!--row-->
 
   </form>
+  
+    <form action="confirmar_agregar_grupo.php" method="POST" id='crearForm'>
+    </form>
+  
+    <form action="confirmar_editar_grupo.php" method="POST" id="editForm">
+        <input type="text" value="<?php echo $grupoId?>" name='idGrupo' hidden="hidden"/>
+    </form>
 
   <?php if ($resultAlumnosSuccess):?>
     <div class="row justify-content-center mt-3">

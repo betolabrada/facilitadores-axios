@@ -195,4 +195,29 @@
         return false;
     }
     
+    public function deleteGrupo($idGrupo){
+        $query = 'DELETE * FROM Grupo
+	WHERE idGrupo = :idGrupo';
+        
+        $this->db->query($query);
+        
+        $this->db->bind(':idGrado', $idGrado);
+        
+        
+        if ($this->db->execute()) {
+            return true;
+        }
+        return false;
+    }
+    
+    public function getGroupById($idGrupo){
+        $query = 'SELECT * FROM grupo WHERE idGrupo = :idGrupo';
+        
+        $this->db->query($query);
+        
+        $this->db->bind(':idGrupo', $idGrupo);
+        
+        return $this->db->resultSet();
+    }
+    
   }
