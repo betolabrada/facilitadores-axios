@@ -3,9 +3,25 @@
   --input-padding-y: 0.75rem;
 }
 
-body {
-  background: #007bff;
-  /* background: linear-gradient(to right, #0062E6, #33AEFF); */
+.tablePagination {
+  padding-left: 0;
+  margin-bottom: 1em;
+}
+
+.tablePagination li {
+  cursor: pointer;
+  display: inline-block;
+  list-style: none;
+  padding: 2px 9px;
+}
+
+.tablePagination li:hover {
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.tablePagination .current {
+  background: #26b;
+  color: #fff;
 }
 
 .card-signin {
@@ -165,6 +181,14 @@ body {
 .linkToModal:hover {
   background: #27ae60;
   cursor: pointer;
+}
+
+td[data-href] {
+  cursor: pointer;
+}
+
+td[data-href]:hover {
+  background-color: #33a652;
 }
 
 /* Fallback for Edge

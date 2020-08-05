@@ -36,7 +36,8 @@ if (isset($_POST['filtrar'])) {
   <div class="row">
     <h5>ASESORÍAS</h5>
     <div class="table-responsive">
-      <table class="table table-striped table-dark table-sm table-bordered" style="table-layout: fixed;">
+      <table class="table-pagination table table-striped table-dark table-sm table-bordered" 
+        style="table-layout: fixed;">
         <thead>
           <th scope="col">Fecha</th>
           <th scope="col">Motivo</th>
@@ -44,30 +45,30 @@ if (isset($_POST['filtrar'])) {
           <th scope="col">Observaciones</th>
         </thead>
         <tbody>
-            <?php foreach ($asesoria_alumno as $fila): ?>
-              <tr>
-                <td class="align-middle text-truncate"><?php echo $fila['Fecha']; ?></td>
-                <td data-motivo="<?=$fila['Motivo']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
-                <td class="align-middle text-truncate"><?php echo $fila['Dinamica']; ?></td>
-                <td data-obs="<?=$fila['Observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
-              </tr>
-            <?php endforeach; ?>
+          <?php foreach ($asesoria_alumno as $fila): ?>
+            <tr>
+              <td class="align-middle text-truncate"><?php echo $fila['Fecha']; ?></td>
+              <td data-motivo="<?=$fila['Motivo']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
+              <td class="align-middle text-truncate"><?php echo $fila['Dinamica']; ?></td>
+              <td data-obs="<?=$fila['Observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
+            </tr>
+          <?php endforeach; ?>
         </tbody>
       </table>
     </div><!--table-responsive-->
 
-    <div class="col-md-12 text-center">
-      <ul class="pagination pagination-lg pager" id="pagination_page"></ul>
-    </div>
-
     <div class="row">
-      <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'">Regresar</button><br>
+      <button class="btn-b purple-gradient btn-block p-3" 
+        onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'"
+      >Regresar
+      </button>
+      <br>
     </div>
   </div>
 </div>
 
-<script src="paginacion/bootstrap-table-pagination.js"></script>
-<script src="paginacion/pagination.js"></script>
+<script src="js/paginacion/tablePagination.js"></script>
+<script src="js/paginacion/pagination.js"></script>
 
 <?php include "modal_obs.php" ?>
 <?php include "modal_motivo.php" ?>

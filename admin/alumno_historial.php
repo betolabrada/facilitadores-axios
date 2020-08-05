@@ -70,7 +70,8 @@ if (isset($_POST['filtrar'])) {
     <div class="row">
         <h5>ASESORÍAS</h5>
         <div class="table-responsive">
-            <table class="table table-striped table-dark table-sm table-bordered" style="table-layout: fixed;">
+            <table class="table-pagination table table-striped table-dark table-sm table-bordered"  
+                style="table-layout: fixed;">
                 <thead>
                     <th scope="col">ID</th>
                     <th scope="col">Alumno</th>
@@ -96,10 +97,6 @@ if (isset($_POST['filtrar'])) {
             </table>
         </div>
 
-        <div class="col-md-12 text-center">
-            <ul class="pagination pagination-lg pager" id="pagination_page"></ul>
-        </div>
-
         <div class="row">
             <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='admin_asesorias.php'">Regresar</button><br>
         </div>
@@ -109,8 +106,8 @@ if (isset($_POST['filtrar'])) {
 <?php include '../modal_obs.php' ?>
 <?php include "../modal_motivo.php" ?>
 
-<script src="../paginacion/bootstrap-table-pagination.js"></script>
-<script src="../paginacion/pagination.js"></script>
+<script src="../js/paginacion/tablePagination.js"></script>
+<script src="../js/paginacion/pagination.js"></script>
 <script>
     $(document).ready(function() {
         $(document.body).on("click", "td[data-obs]", function() {
