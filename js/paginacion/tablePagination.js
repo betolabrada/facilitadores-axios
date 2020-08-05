@@ -49,7 +49,7 @@
         }
 
         if(settings.showAllButton) {
-          $('<li/>').text("All").click(function () {
+          $('<li/>').text("Todo").click(function () {
             showPage(0);
           }).appendTo($pageination);
         }
