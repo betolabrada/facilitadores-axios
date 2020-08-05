@@ -28,7 +28,8 @@ $mail = $_SESSION['user'];
       <h5>ASESORÍAS</h5>
 
       <div class="table-responsive">
-        <table class="table table-striped table-dark table-sm table-bordered" style="table-layout: fixed;">
+        <table class="table-pagination table table-striped table-dark table-sm table-bordered" 
+          style="table-layout: fixed;">
           <thead>
               <th scope="col">Alumno</th>
               <th scope="col">Fecha</th>
@@ -38,7 +39,7 @@ $mail = $_SESSION['user'];
               <th>&nbsp;</th>
               <th>&nbsp;</th>
           </thead>
-          <tbody id="pagination">
+          <tbody>
             <?php foreach ($asesoriasDeAsesor as $fila): ?>
               <tr>
                   <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle text-truncate"><?php echo $fila['Alumno']; ?></td>
@@ -66,10 +67,6 @@ $mail = $_SESSION['user'];
         </table>
       </div>
 
-      <div class="col-md-12 text-center">
-          <ul class="pagination pagination-lg pager" id="pagination_page"></ul>
-      </div>
-
       <div class="row">
           <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='asesor_dashboard.php?inputMail=<?php echo $mail; ?>'">REGRESAR</button><br>
       </div>
@@ -79,8 +76,8 @@ $mail = $_SESSION['user'];
 <?php include "modal_obs.php" ?>
 <?php include "modal_motivo.php" ?>
 
-<script src="paginacion/bootstrap-table-pagination.js"></script>
-<script src="paginacion/pagination.js"></script>
+<script src="js/paginacion/tablePagination.js"></script>
+<script src="js/paginacion/pagination.js"></script>
 
 <script>
     $(document).ready(function() {

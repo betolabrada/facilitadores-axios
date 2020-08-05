@@ -1,24 +1,22 @@
-<form method="POST" id="filtros">
-  <?php if (!isset($idAsesor)): ?>
   <div class="row mb-3">
     <div class="col-sm-12">
       <h5>FILTROS</h5>
     </div>
     <div class="col-sm-3">
-    <!-- FILTRO ASESOR -->
+      <!-- FILTRO ASESOR -->
       <select id="filtroAsesor" class="form-control" name="asesor">
         <option value="" selected>Facilitador</option>
         <?php foreach ($asesores as $fila): ?>
-        <?php if (isset($post_asesor) && $post_asesor == $fila['idAsesor']): ?>
-        <option value="<?=$fila['idAsesor'] ?>" selected><?=$fila['nombre'] ?></option>
-        <?php else:?>
-        <option value="<?=$fila['idAsesor'] ?>"><?=$fila['nombre'] ?></option>
-        <?php endif;?>
+          <?php if (isset($post_asesor) && $post_asesor == $fila['idAsesor']): ?>
+            <option value="<?=$fila['idAsesor'] ?>" selected><?=$fila['nombre'] ?></option>
+          <?php else:?>
+            <option value="<?=$fila['idAsesor'] ?>"><?=$fila['nombre'] ?></option>
+          <?php endif;?>
         <?php endforeach; ?>
       </select>
-    </div><!--col-sm-3-->
+    </div><!--col-->
     <div class="col-sm-3">
-    <!-- FILTRO SEDE -->
+      <!-- FILTRO SEDE -->
       <select id="filtroSede" class="form-control" name="sede">
         <option value="" selected>Sede</option>
         <?php foreach ($sedes as $fila): ?>
@@ -29,9 +27,9 @@
           <?php endif; ?>
         <?php endforeach; ?>
       </select>
-    </div>
+    </div><!--col-->
     <div class="col-sm-3">
-    <!-- FILTRO ESCUELA -->
+      <!-- FILTRO ESCUELA -->
       <select id="filtroEscuela" class="form-control" name="escuela">
         <option value="" selected>Escuela</option>
         <?php foreach ($escuelas as $fila): ?>
@@ -42,9 +40,8 @@
           <?php endif; ?>
         <?php endforeach; ?>
       </select>
-    </div>
-  </div>
-  <?php endif; ?>
+    </div><!--col-->
+  </div><!--row-->
 
   <div class="row mb-3">
     <div class="col-sm-12">
@@ -65,4 +62,3 @@
       <button name="filtrar" type="submit" class="btn btn-success">FILTRAR</button>
     </div>
   </div>
-</form>
