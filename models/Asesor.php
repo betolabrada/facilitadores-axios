@@ -54,8 +54,7 @@ class Asesor {
     $sql = 'SELECT 
         grup.grupo, a.nombre, e.nombre as nombreEscuela, t.tipo, t.descripcion, e.numero, l.nombre as sede
         FROM Grupo grup 
-        JOIN Grado grad on grad.idGrado = grup.idGrado 
-        JOIN Turno t on t.idTurno = grad.idTurno 
+        JOIN Turno t on t.idTurno = grup.idTurno 
         JOIN Asesor a on a.idAsesor = t.idAsesor 
         JOIN Escuela e on e.idEscuela = t.idEscuela
         JOIN Localidad l on l.idLocalidad = e.idLocalidad
