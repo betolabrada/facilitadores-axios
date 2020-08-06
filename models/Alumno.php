@@ -18,10 +18,8 @@ class Alumno {
       gu.grupo AS Grupo
               FROM Alumno as a JOIN Grupo as gu
               ON a.idGrupo = gu.idGrupo
-              JOIN Grado as ga
-              ON gu.idGrado = ga.idGrado
               JOIN Turno as t
-              ON ga.idTurno = t.idTurno
+              ON gu.idTurno = t.idTurno
               JOIN Escuela as e
               ON t.idEscuela = e.idEscuela
               JOIN Localidad as l
@@ -59,8 +57,7 @@ class Alumno {
       t.descripcion AS Turno
       FROM Alumno as a 
       JOIN Grupo as gu ON a.idGrupo = gu.idGrupo
-      JOIN Grado as ga ON gu.idGrado = ga.idGrado
-      JOIN Turno as t ON ga.idTurno = t.idTurno
+      JOIN Turno as t ON gu.idTurno = t.idTurno
       JOIN Escuela as e ON t.idEscuela = e.idEscuela
       JOIN Localidad as l ON l.idLocalidad = e.idLocalidad
       LEFT JOIN Asesor as ase ON t.idAsesor = ase.idAsesor
@@ -127,10 +124,8 @@ class Alumno {
     e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo
     FROM Alumno as a JOIN Grupo as gu
     ON a.idGrupo = gu.idGrupo
-    JOIN Grado as ga
-    ON gu.idGrado = ga.idGrado
     JOIN Turno as t
-    ON ga.idTurno = t.idTurno
+    ON gu.idTurno = t.idTurno
     JOIN Escuela as e
     ON t.idEscuela = e.idEscuela
     LEFT JOIN Asesor as ase

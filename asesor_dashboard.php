@@ -24,6 +24,14 @@ $u_asesoriasDeAsesor = $asesoria_model->ultimasAsesoriasDeAsesor($idAsesor);
       <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'">Historial</button><br>
     </div>
   </div>
+  <div class="row p-2">
+    <div class="col-md-6">
+      <button class="btn-b blue-gradient btn-block p-3" 
+        onclick="window.location.href='diario_de_campo.php?id=<?=$idAsesor?>'">
+        Diario de Campo
+      </button>
+    </div>
+  </div>
 </div>
 <div class="container">
   <div class="row">

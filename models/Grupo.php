@@ -18,8 +18,7 @@
             , e.numero
             , l.nombre as sede
           FROM Grupo grup 
-            JOIN Grado grad on grad.idGrado = grup.idGrado 
-            JOIN Turno t on t.idTurno = grad.idTurno 
+            JOIN Turno t on t.idTurno = grup.idTurno 
             JOIN Asesor a on a.idAsesor = t.idAsesor 
             JOIN Escuela e on e.idEscuela = t.idEscuela
             JOIN Localidad l on l.idLocalidad = e.idLocalidad
@@ -66,11 +65,10 @@
     // @method  SELECT
     // @desc    GET id de grupo
     // @params  idEscuela, turno tipo, grado, grupo
-    public function getGrupoId($idEscuela, $tipoTurno, $grado, $grupo) {
+    public function getGrupoId($idEscuela, $tipoTurno, $grupo) {
       $sql = 'SELECT idGrupo
       FROM Grupo grup 
-      JOIN Grado grad on grad.idGrado = grup.idGrado 
-      JOIN Turno t on t.idTurno = grad.idTurno 
+      JOIN Turno t on t.idTurno = grup.idTurno 
       JOIN Asesor a on a.idAsesor = t.idAsesor 
       JOIN Escuela e on e.idEscuela = t.idEscuela
       WHERE e.idEscuela = :idEscuela
@@ -83,7 +81,6 @@
       $this->db->bind(':idEscuela', $idEscuela);
       $this->db->bind(':tipoTurno', $tipoTurno);
       $this->db->bind(':grado', $grado);
-      $this->db->bind(':grupo', $grupo);
 
       if ($row = $this->db->single()) {
         print_r($row);
@@ -117,8 +114,7 @@
           ase.nombre AS NAsesor, 
           t.descripcion AS Turno
         FROM Grupo as gu 
-        JOIN Grado as ga ON gu.idGrado = ga.idGrado
-        JOIN Turno as t ON ga.idTurno = t.idTurno
+        JOIN Turno as t ON gu.idTurno = t.idTurno
         JOIN Escuela as e ON t.idEscuela = e.idEscuela
         JOIN Localidad as l ON l.idLocalidad = e.idLocalidad
         JOIN Asesor as ase ON t.idAsesor = ase.idAsesor
