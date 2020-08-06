@@ -14,6 +14,18 @@ $escuela_model = new Escuela;
 $sede_model = new Sede;
 
 $sedes = $sede_model->getSedes();
+
+
+if (isset($_POST['subir'])) {
+    if ($escuela_model->insertEscuela($_POST)) {
+        echo "datos subidos correctamente";
+        header('Location: admin_sedes.php');
+    } else {
+        echo "ERROR";
+    }
+}
+
+
 ?>
 
 <div class="container">
@@ -21,7 +33,7 @@ $sedes = $sede_model->getSedes();
   <br>
     <div class="row justify-content-center">
       <div class="col-md-10">
-        <form method="post" action="nueva_escuela.php" id="insertForm">
+        <form method="post" id="insertForm">
             <div class="row my-4">
               <div class="col-sm-2"></div>
               <div class="col-sm-8">
@@ -58,7 +70,7 @@ $sedes = $sede_model->getSedes();
         </form>
         <div class="row my-4 justify-content-center">
           <div class="col-sm-3">
-            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm">Aceptar cambios</button>
+            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm" type="submit">Aceptar cambios</button>
           </div>
           <div class="col-sm-3">
             <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_sedes.php'">Cancelar</button>

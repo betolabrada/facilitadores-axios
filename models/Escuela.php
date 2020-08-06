@@ -67,18 +67,20 @@
     }
     
     // Insert escuela
-    public function insertEscuela($nombre,$numero,$turno,$localidad){
-        $query = 'INSERT INTO Escuela (idEscuela, nombre, numero, turno, idLocalidad) '
-                . 'VALUES (null, :nombreEsc, :numeroEsc, :turnoEsc, :idLoc)';
+    public function insertEscuela($data){
+
+        $query = 'INSERT INTO Escuela (nombre, numero, turno, idLocalidad) '
+                . 'VALUES (:nombre, :numero, :turno, :localidad)';
         
         $this->db->query($query);
         
-        $this->db->bind(':nombreEsc', $nombre);
-        $this->db->bind(':numeroEsc', $numero);
-        $this->db->bind(':turnoEsc', $turno);
-        $this->db->bind(':idLoc', $localidad);
+        $this->db->bind(':nombre', $data['nombre']);
+        $this->db->bind(':numero', $data['numero']);
+        $this->db->bind(':turno', $data['turno']);
+        $this->db->bind(':localidad', $data['localidad']);
         
         if ($this->db->execute()) {
+            echo "<script type='text/javascript'>alert('Nueva Escuela creada');</script>";
             return true;
         }
         return false;
