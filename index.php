@@ -1,9 +1,5 @@
 <?php
-session_start();
-
-require_once 'config/db.php';
-require_once 'lib/Database.php';
-require_once 'models/Asesor.php';
+include 'init.php';
 
 $asesor = new Asesor();
 
@@ -14,7 +10,7 @@ if(isset($_GET['cerrar_sesion'])){
 
 if(isset($_SESSION['user'])){
   if(isset($_SESSION['admin'])){
-    header('location: admin/admin_dashboard.php');
+    header('location: admin_dashboard.php');
   }else if (isset($_SESSION['facilit'])){
     header('location: asesor_dashboard.php?inputMail=' . $_SESSION['user'] . '');
   } else {
@@ -32,10 +28,10 @@ if (isset($_POST['inputEmail']) && isset($_POST['inputPassword'])) {
     $_SESSION['user'] = $loggedIn['correo'];
     if(substr($mail,0,5) === "admin"){
       $_SESSION['admin'] = true;
-      header('location: admin/admin_dashboard.php?');
+      header('location: admin_dashboard.php');
     }else{
       $_SESSION['facilit'] = true;
-      header('location: asesor_dashboard.php?inputMail=' . $_SESSION['user'] . '');
+      header('location: asesor_dashboard.php?inputMail=' . $_SESSION['user']);
     }
   }else{
     echo '<script>alert("Usuario y/o contraseña incorrecto(s)");</script>';

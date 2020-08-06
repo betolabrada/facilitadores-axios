@@ -1,18 +1,8 @@
-<style>
-  td[data-href] {
-    cursor: pointer;
-  }
 
-  td[data-href]:hover {
-    background-color: #33a652;
-  }
-</style>
 
 <?php
-include 'navbar_admin.php';
-
-require_once '../models/Asesor.php';
-require_once '../models/Sede.php';
+include 'init.php';
+include 'admin_navbar.php';
 
 $asesor_model = new Asesor;
 $sede_model = new Sede;

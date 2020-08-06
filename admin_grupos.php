@@ -1,7 +1,6 @@
 <?php 
-  include 'navbar_admin.php'; 
-  require_once '../models/Escuela.php';
-  require_once '../models/Grupo.php';
+  include 'init.php';
+  include 'admin_navbar.php'; 
 
   function nombre_escuela($escuelas) {
     foreach ($escuelas as $s) {

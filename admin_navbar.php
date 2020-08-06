@@ -4,7 +4,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 <!DOCTYPE html>
 <html>
-<script>function cerrar() { window.location.href = "../logout.php"; }</script>
+<script>function cerrar() { window.location.href = "logout.php"; }</script>
 <head>
   <meta charset="gb18030">  
   <title>ADMIN AXIOS</title>
@@ -29,27 +29,27 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Administrador</a>
       </li>
       <li class="nav-item <?=($current_page == 'admin_dashboard.php') ? 'active' : ''?>">
-        <a class="nav-link" href="admin/admin_dashboard.php">Inicio
+        <a class="nav-link" href="admin_dashboard.php">Inicio
           <?php if ($current_page == 'admin_dashboard.php') echo '<span class="sr-only">(current)</span>';?>
         </a>
       </li>
       <li class="nav-item <?=($current_page == 'admin_facilitadores.php') ? 'active' : ''?>">
-        <a class="nav-link" href="admin/admin_facilitadores.php">Administrar Facilitadores
+        <a class="nav-link" href="admin_facilitadores.php">Administrar Facilitadores
           <?php if ($current_page == 'admin_facilitadores.php') echo '<span class="sr-only">(current)</span>';?>
         </a>
       </li>
       <li class="nav-item <?=($current_page == 'admin_sedes.php') ? 'active' : ''?>">
-        <a class="nav-link" href="admin/admin_sedes.php">Administrar Sedes
+        <a class="nav-link" href="admin_sedes.php">Administrar Sedes
           <?php if ($current_page == 'admin_sedes.php') echo '<span class="sr-only">(current)</span>';?>
         </a>
       </li>
       <li class="nav-item <?=($current_page == 'admin_alumnos.php') ? 'active' : ''?>">
-        <a class="nav-link" href="admin/admin_alumnos.php">Administrar Alumnos
+        <a class="nav-link" href="admin_alumnos.php">Administrar Alumnos
           <?php if ($current_page == 'admin_alumnos.php') echo '<span class="sr-only">(current)</span>';?>
         </a>
       </li>
       <li class="nav-item <?=($current_page == 'admin_grupos.php') ? 'active' : ''?>">
-        <a class="nav-link" href="admin/admin_grupos.php">Administrar Grupos
+        <a class="nav-link" href="admin_grupos.php">Administrar Grupos
           <?php if ($current_page == 'admin_grupos.php') echo '<span class="sr-only">(current)</span>';?>
         </a>
       </li>

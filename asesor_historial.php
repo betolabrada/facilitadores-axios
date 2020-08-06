@@ -1,5 +1,8 @@
 <?php 
 // Seleccion de navbar
+session_start();
+require_once 'config/db.php'; 
+require_once 'lib/Database.php'; 
 if (isset($_SESSION['admin'])) {
   include 'admin/navbar_admin.php';
 } else {
@@ -113,6 +116,7 @@ $_SESSION['toExport'] = $asesoriasDeAsesor;
 
 <?php include "modal_obs.php" ?>
 <?php include "modal_motivo.php" ?>
+<?php include 'bootstrap_js.php' ?>
 
 <script src="js/paginacion/tablePagination.js"></script>
 <script src="js/paginacion/index.js"></script>

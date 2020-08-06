@@ -1,9 +1,12 @@
 <?php
-include 'asesor_navbar.php';
-
-require_once 'models/Alumno.php';
-require_once 'models/Asesor.php';
-require_once 'models/Asesoria.php';
+include 'init.php';
+if (isset($_SESSION['admin'])) {
+  include 'admin_navbar.php';
+} else if (isset($_SESSION['facilit'])) {
+  include 'asesor_navbar.php';
+} else {
+  header('Location: index.php');
+}
 
 $alumno_model = new Alumno;
 $asesor_model = new Asesor;
@@ -59,7 +62,7 @@ if (isset($_POST['filtrar'])) {
 
     <div class="row">
       <button class="btn-b purple-gradient btn-block p-3" 
-        onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'"
+        onclick="window.location.href='asesor_historial.php?idAsesor=<?php echo $idAsesor; ?>'"
       >Regresar
       </button>
       <br>

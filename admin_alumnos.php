@@ -1,20 +1,16 @@
-<style>
-  td[data-href] {
-    cursor: pointer;
-  }
 
-  td[data-href]:hover {
-    background-color: #33a652;
-  }
-</style>
 
 <?php
-include 'navbar_admin.php';
-require_once '../models/Alumno.php';
+include 'init.php';
+include 'admin_navbar.php';
 
 $alumno_model = new Alumno();
+$escuela_model = new Escuela();
+$asesor_model = new Asesor();
 
 $alumnos = $alumno_model->getAlumnos();
+$escuelas = $escuela_model->getEscuelas();
+$asesores = $asesor_model->getAsesores();
 
 $where = "WHERE TRUE";
 
@@ -37,7 +33,42 @@ if (isset($_POST['filtrar'])) {
     </div>
     <br>
   <br>
-  <?php require_once '../utils/form_filtros_alumno.php'; ?>
+    <div class="row mb-3">
+      <div class="col-sm-3">
+        <!-- FILTRO ASESOR -->
+        <select id="filtroAsesor" class="form-control" name="asesor">
+          <option value="" selected>Facilitador</option>
+          <?php foreach ($asesores as $fila): ?>
+            <?php if (isset($post_asesor) && $post_asesor == $fila['idAsesor']): ?>
+              <option value="<?=$fila['idAsesor'] ?>" selected><?=$fila['nombre'] ?></option>
+            <?php else:?>
+              <option value="<?=$fila['idAsesor'] ?>"><?=$fila['nombre'] ?></option>
+            <?php endif;?>
+          <?php endforeach; ?>
+        </select>
+      </div><!--col-->
+      <div class="col-sm-3">
+        <!-- FILTRO ESCUELA -->
+        <select id="filtroEscuela" class="form-control" name="escuela">
+          <option value="" selected>Escuela</option>
+          <?php foreach ($escuelas as $fila): ?>
+            <?php if (isset($post_escuela) && $post_escuela == $fila['idEscuela']): ?>
+              <option value="<?=$fila['idEscuela'] ?>" selected><?=$fila['nombre'] ?></option>
+            <?php else: ?>
+              <option value="<?=$fila['idEscuela'] ?>"><?=$fila['nombre'] ?></option>
+            <?php endif; ?>
+          <?php endforeach; ?>
+        </select>
+      </div><!--col-->
+      <div class="col-sm-3">
+        <!-- FILTRO TURNO -->
+        <select id="filtroEscuela" class="form-control" name="escuela">
+          <option value="" selected>Turno</option>
+          <option value="M" selected>Matutino</option>
+          <option value="V">Vespertino</option>
+        </select>
+      </div><!--col-->
+    </div><!--row-->
 
 </div>
 

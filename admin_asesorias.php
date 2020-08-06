@@ -1,9 +1,7 @@
 <?php
-include 'navbar_admin.php';
-require_once '../models/Asesor.php';
-require_once '../models/Asesoria.php';
-require_once '../models/Sede.php';
-require_once '../models/Escuela.php';
+include 'init.php';
+include 'admin_navbar.php';
+
 
 $asesor = new Asesor();
 $asesoria = new Asesoria();
@@ -11,7 +9,7 @@ $sede = new Sede();
 $escuela = new Escuela();
 
 $asesores = $asesor->getAsesores();
-$asesoriasTabla = $asesoria->getAsesoriasTabla();
+$asesoriasTabla = $asesoria->getAsesorias();
 $stats = $asesoria->stats();
 $sedes = $sede->getSedes();
 $escuelas = $escuela->getEscuelas();
@@ -190,11 +188,11 @@ $total = count($tabla);
   </div><!--row-->
 </div><!--container-->
 
-<?php include "../modal_obs.php" ?>
-<?php include "../modal_motivo.php" ?>
-<?php include '../bootstrap_js.php' ?>
-<script src="../js/paginacion/tablePagination.js"></script>
-<script src="../js/paginacion/index.js"></script>
+<?php include "modal_obs.php" ?>
+<?php include "modal_motivo.php" ?>
+<?php include 'bootstrap_js.php' ?>
+<script src="js/paginacion/tablePagination.js"></script>
+<script src="js/paginacion/index.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 

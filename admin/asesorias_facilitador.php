@@ -1,13 +1,3 @@
-<style>
-    td[data-href] {
-        cursor: pointer;
-    }
-
-    td[data-href]:hover {
-        background-color: #33a652;
-    }
-</style>
-
 <?php include 'navbar_admin.php';
 
 require_once '../models/Asesor.php';

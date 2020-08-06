@@ -1,9 +1,8 @@
 <?php 
-  include 'navbar_admin.php'; 
-  require_once '../models/Asesor.php';
+  include 'init.php';
+  include 'admin_navbar.php'; 
 
   $asesor_model = new Asesor();
-
   $asesores = $asesor_model->getAsesores();
   
 ?>
@@ -36,7 +35,12 @@
               <td class="align-middle"><?php echo $fila['idAsesor']; ?></td>
               <td class="align-middle"><?php echo $fila['nombre']; ?></td>
               <td class="align-middle"><?php echo $fila['correo']; ?></td>
-              <td class="align-middle"><a role="button" href="asesorias_facilitador.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-primary">Historial</a></td>
+              <td class="align-middle">
+                <a role="button" 
+                  href="../asesor_historial.php?idAsesor=<?=$fila['idAsesor']?>" 
+                  class="btn btn-primary">Historial
+                </a>
+              </td>
               <td class="align-middle"><a role="button" href="editar_facilitador.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-danger">Editar</a></td>
               <td class="align-middle"><a role="button" href="editar_password.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-danger">Nueva contraseña</a></td>
               <td class="align-middle"><a role="button" href="borrar_facilitador.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-danger">Eliminar</a></td>

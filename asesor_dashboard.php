@@ -18,10 +18,13 @@ $u_asesoriasDeAsesor = $asesoria_model->ultimasAsesoriasDeAsesor($idAsesor);
 <div class="container p-5">
   <div class="row p-2">
     <div class="col-md-6">
-      <button class="btn-b peach-gradient btn-block p-3" onclick="window.location.href='registro_aseso.php?id=<?php echo $idAsesor; ?>'">Registrar Asesoría</button>
+      <button class="btn-b peach-gradient btn-block p-3" 
+        onclick="window.location.href='registro_asesoria.php?idAsesor=<?=$idAsesor?>'">
+        Registrar Asesoría
+      </button>
     </div>
     <div class="col-md-6">
-      <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'">Historial</button><br>
+      <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?idAsesor=<?php echo $idAsesor; ?>'">Historial</button><br>
     </div>
   </div>
   <div class="row p-2">
@@ -58,7 +61,7 @@ $u_asesoriasDeAsesor = $asesoria_model->ultimasAsesoriasDeAsesor($idAsesor);
           </tbody>
         </table>
       </div>
-      <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'">VER TODAS</button>
+      <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?idAsesor=<?php echo $idAsesor; ?>'">VER TODAS</button>
     </div>
   </div>
 
