@@ -14,7 +14,6 @@ class Alumno {
       a.idAlumno AS id, 
       CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
       e.nombre AS Escuela, 
-      ga.numero AS Grado, 
       gu.grupo AS Grupo
               FROM Alumno as a JOIN Grupo as gu
               ON a.idGrupo = gu.idGrupo
@@ -49,7 +48,6 @@ class Alumno {
         a.noLista AS NoLista,
         e.idEscuela AS Escuela,
         e.nombre AS nombreEscuela, 
-        ga.numero AS Grado, 
         gu.idGrupo AS idGrupo,
         gu.grupo AS Grupo,
         ase.idAsesor AS idAsesor,
@@ -121,7 +119,7 @@ class Alumno {
   public function getAlumnosDeAsesor($idAsesor) {
 
     $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
-    e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo
+    e.nombre AS Escuela, gu.grupo AS Grupo
     FROM Alumno as a JOIN Grupo as gu
     ON a.idGrupo = gu.idGrupo
     JOIN Turno as t

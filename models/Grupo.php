@@ -105,10 +105,9 @@
     }
 
     // Valida que el grupo existe
-    public function groupExists($grupo, $grado, $descTurno, $escuela, $asesor) {
+    public function groupExists($grupo, $descTurno, $escuela, $asesor) {
       $sql = "SELECT 
           e.nombre AS Escuela, 
-          ga.numero AS Grado,
           gu.grupo AS Grupo, 
           gu.idGrupo AS idGrupo, 
           ase.nombre AS NAsesor, 
@@ -119,7 +118,6 @@
         JOIN Localidad as l ON l.idLocalidad = e.idLocalidad
         JOIN Asesor as ase ON t.idAsesor = ase.idAsesor
         WHERE gu.grupo = :grupo 
-        AND ga.numero = :grado 
         AND t.descripcion = :descTurno
         AND e.idEscuela = :escuela  
         AND ase.nombre = :asesor";
@@ -127,7 +125,6 @@
       $this->db->query($sql);
 
       $this->db->bind(':grupo', $grupo);
-      $this->db->bind(':grado', $grado);
       $this->db->bind(':descTurno', $descTurno);
       $this->db->bind(':escuela', $escuela);
       $this->db->bind(':asesor', $asesor);
