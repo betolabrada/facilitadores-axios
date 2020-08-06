@@ -54,7 +54,7 @@
     
     // Insert localidad
     public function insertLocalidad($ciudad){
-        $query = 'INSERT INTO Localidad (idLocalidad, nombre) VALUES (null, :ciudad)';
+        $query = 'INSERT INTO Localidad (nombre) VALUES (:ciudad)';
         
         $this->db->query($query);
         
