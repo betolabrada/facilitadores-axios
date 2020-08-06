@@ -7,6 +7,14 @@ $grupo_model = new Grupo;
 
 $grupo = $grupo_model->getGroupById($_POST['idGrupo']);
 
+require_once '../models/Turno.php';
+
+$turno =  new Turno;
+
+$turnos = $turno->getTurnos();
+
+$selected = false;
+
 ?>
 
 <div class="container">
@@ -26,10 +34,14 @@ $grupo = $grupo_model->getGroupById($_POST['idGrupo']);
               <div class="col-sm-2"></div>
               <div class="col-sm-8">
                 <label for="input-turno">Grado</label>
-                <select id="input-turno" class="form-control" name="grado">
-                    <option value="1" <?php echo $grupo[0]['idGrado'] == '1'?'selected':'' ?>>1</option>
-                    <option value="2" <?php echo $grupo[0]['idGrado'] == '2'?'selected':'' ?>>2</option>
-                    <option value="3" <?php echo $grupo[0]['idGrado'] == '3'?'selected':'' ?>>3</option>
+                <select id="input-turno" class="form-control" name="turno">
+                    <?php foreach ($turnos as $fila): ?>
+                    <?php if ($selected==false): $selected=true;?>
+                    <option value="<?=$fila['idTurno'] ?>" selected><?php echo $fila['tipo'] . ", " . $fila['Escuela'] . ", " . $fila['nombre']?></option>
+                    <?php else:?>
+                    <option value="<?=$fila['idTurno'] ?>"><?=$fila['tipo'] . ", " . $fila['Escuela'] . ", " . $fila['nombre'] ?></option>
+                    <?php endif;?>
+                    <?php endforeach; ?>
                 </select>
               </div>
             </div>

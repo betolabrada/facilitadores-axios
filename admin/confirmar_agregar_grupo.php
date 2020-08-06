@@ -2,6 +2,14 @@
 
 include 'navbar_admin.php'; 
 
+require_once '../models/Turno.php';
+
+$turno =  new Turno;
+
+$turnos = $turno->getTurnos();
+
+$selected = false;
+
 ?>
 
 <div class="container">
@@ -9,7 +17,7 @@ include 'navbar_admin.php';
   <br>
     <div class="row justify-content-center">
       <div class="col-md-10">
-        <form method="post" action="agregar_grupo.php" id="insertForm">
+          <form method="post" action="agregar_grupo.php" id="insertForm">
             <div class="row my-4">
               <div class="col-sm-2"></div>
               <div class="col-sm-8">
@@ -20,11 +28,15 @@ include 'navbar_admin.php';
             <div class="row my-4">
               <div class="col-sm-2"></div>
               <div class="col-sm-8">
-                <label for="input-turno">Grado</label>
-                <select id="input-turno" class="form-control" name="grado">
-                    <option value="1" selected="selected">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
+                <label for="input-turno">Seleccione una escuela</label>
+                <select id="input-turno" class="form-control" name="turno">
+                    <?php foreach ($turnos as $fila): ?>
+                    <?php if ($selected==false): $selected=true;?>
+                    <option value="<?=$fila['idTurno'] ?>" selected><?php echo $fila['tipo'] . ", " . $fila['Escuela'] . ", " . $fila['nombre']?></option>
+                    <?php else:?>
+                    <option value="<?=$fila['idTurno'] ?>"><?=$fila['tipo'] . ", " . $fila['Escuela'] . ", " . $fila['nombre'] ?></option>
+                    <?php endif;?>
+                    <?php endforeach; ?>
                 </select>
               </div>
             </div>
@@ -32,7 +44,7 @@ include 'navbar_admin.php';
           
         <div class="row my-4 justify-content-center">
           <div class="col-sm-3">
-            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" form="insertForm">Crear Grupo</button>
+            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" form="insertForm">Agregar</button>
           </div>
           <div class="col-sm-3">
             <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_grupos.php'">Cancelar</button>
