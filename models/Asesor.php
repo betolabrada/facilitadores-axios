@@ -125,4 +125,46 @@ class Asesor {
 
   }
 
+  // @method  SELECT
+  // @desc    Grupos que maneja el Asesor
+  public function getGruposDeAsesor($idAsesor) {
+    $query = 'SELECT Grupo.grupo, Grupo.idGrupo FROM Asesor 
+    JOIN Turno ON Asesor.idAsesor = Turno.idAsesor
+    JOIN Grupo ON Grupo.idTurno = Turno.idTurno
+    WHERE Asesor.idAsesor = :idAsesor';
+
+    $this->db->query($query);
+
+    $this->db->bind(':idAsesor', $idAsesor);
+
+    return $this->db->resultSet();
+  }
+
+  // @method  INSERT
+  // @desc    Agregar nueva entrada de diario de campo
+  public function insertarNuevaEntrada($idAsesor, $data) {
+    $query = 'INSERT INTO DiarioCampo (idGrupo, idAsesor, Anotacion) 
+      VALUES (:idGrupo, :idAsesor, :anotacion)';
+
+    $this->db->query($query);
+
+    $this->db->bind(':idAsesor', $idAsesor);
+    $this->db->bind(':idGrupo', $data['grupo']);
+    $this->db->bind(':anotacion', $data['anotacion']);
+
+    return $this->db->execute();
+  }
+
+  // @method  SELECT
+  // @desc    Obtiene todas las entradas del diario de campo de un Asesor
+  public function getEntradas($idAsesor) {
+    $query = 'SELECT Grupo.grupo as Grupo, DiarioCampo.Fecha, DiarioCampo.Anotacion FROM DiarioCampo JOIN Asesor ON DiarioCampo.idAsesor = Asesor.idAsesor JOIN Grupo on DiarioCampo.idGrupo = Grupo.idGrupo WHERE Asesor.idAsesor = :idAsesor';
+
+    $this->db->query($query);
+
+    $this->db->bind(':idAsesor', $idAsesor);
+
+    return $this->db->resultSet();
+  }
+
 }

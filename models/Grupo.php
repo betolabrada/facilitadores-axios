@@ -65,7 +65,7 @@
     // @method  SELECT
     // @desc    GET id de grupo
     // @params  idEscuela, turno tipo, grado, grupo
-    public function getGrupoId($idEscuela, $tipoTurno, $grado, $grupo) {
+    public function getGrupoId($idEscuela, $tipoTurno, $grupo) {
       $sql = 'SELECT idGrupo
       FROM Grupo grup 
       JOIN Turno t on t.idTurno = grup.idTurno 
@@ -81,7 +81,6 @@
       $this->db->bind(':idEscuela', $idEscuela);
       $this->db->bind(':tipoTurno', $tipoTurno);
       $this->db->bind(':grado', $grado);
-      $this->db->bind(':grupo', $grupo);
 
       if ($row = $this->db->single()) {
         print_r($row);
