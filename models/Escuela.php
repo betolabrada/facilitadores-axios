@@ -80,7 +80,6 @@
         $this->db->bind(':localidad', $data['localidad']);
         
         if ($this->db->execute()) {
-            echo "<script type='text/javascript'>alert('Nueva Escuela creada');</script>";
             return true;
         }
         return false;
