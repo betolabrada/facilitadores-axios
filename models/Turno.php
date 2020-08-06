@@ -41,4 +41,14 @@ class Turno {
         return false;
     }
     
+     public function getTurnos() {
+        $this->db->query('SELECT Turno.idTurno, Turno.tipo, Escuela.nombre as Escuela, '
+                . 'Asesor.nombre FROM Turno JOIN Escuela ON Turno.idEscuela = '
+                . 'Escuela.idEscuela JOIN Asesor ON Asesor.idAsesor = Turno.idAsesor');
+
+        $results = $this->db->resultSet();
+
+        return $results;
+    }
+    
 }
