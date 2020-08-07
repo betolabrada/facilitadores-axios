@@ -76,6 +76,7 @@ session_start();
   
 //}
 
+// es un metodo GET
 // Lo único que se necesita para exportar es tener seteada la tabla en $_SESSION['toExport'] y llamar el metodo
 // exportar en un form de tipo GET con formaction a este archivo.
 // Ej: <button type="submit" name="exportar" formaction="exportar_csv.php" value="Exportar">Exportar</button>
