@@ -38,7 +38,7 @@
               </td>
               <td class="align-middle">
                 <a role="button" 
-                  href="borrar_facilitador.php?idTurno=<?=$fila['idTurno']?>" 
+                  href="borrar_turno.php?idTurno=<?=$fila['idTurno']?>" 
                   class=" btn btn-danger">Eliminar
                 </a>
               </td>

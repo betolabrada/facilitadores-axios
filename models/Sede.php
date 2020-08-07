@@ -50,17 +50,24 @@
     }
 
 
-    public function getEscuelaLocalidad() {
+    public function getEscuelaLocalidad($idLocalidad = '') {
       $sql = "SELECT 
-      Escuela.nombre as Escuela,
-      Escuela.idEscuela as idEscuela,
-      Escuela.idLocalidad as idSede, 
-      Localidad.nombre as Sede
-      FROM Escuela 
-      JOIN Localidad on Escuela.idLocalidad = Localidad.idLocalidad
-      ORDER BY Escuela.nombre ASC";
+        Escuela.nombre as Escuela,
+        Escuela.idEscuela as idEscuela,
+        Escuela.idLocalidad as idSede, 
+        Localidad.nombre as Sede
+        FROM Escuela 
+        JOIN Localidad on Escuela.idLocalidad = Localidad.idLocalidad";
+      
+      if (!empty($idLocalidad)) {
+        $sql .= " WHERE Escuela.idLocalidad = :idLocalidad";
+      }
+      $sql .= " ORDER BY Escuela.nombre ASC";
 
       $this->db->query($sql);
+      if (!empty($idLocalidad)) {
+        $this->db->bind(':idLocalidad', $idLocalidad);
+      }
 
       return $this->db->resultSet();
     }
