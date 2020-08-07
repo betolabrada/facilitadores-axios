@@ -11,7 +11,7 @@ require_once 'models/Asesor.php';
 $asesor_model = new Asesor();
 
 // Leemos parametro de idAsesor para obtener el asesor actual
-$idAsesor = (int) $_GET['idAsesor'];
+$idAsesor = (int) $_GET['id'];
 $asesor = $asesor_model->getAsesorById($idAsesor);
 
 // Arreglo de meses para el select
@@ -30,7 +30,6 @@ if (isset($_GET['filtrar'])) {
     $asesoriasDeAsesor = $asesor_model->getAsesorias($idAsesor, $mes);
   }
 }
-print_r($_GET);
 $_SESSION['toExport'] = $asesoriasDeAsesor;
 
 ?>
@@ -85,15 +84,15 @@ $_SESSION['toExport'] = $asesoriasDeAsesor;
               <td class="align-middle text-truncate"><?php echo $fila['Dinamica']; ?></td>
               <td data-obs="<?=$fila['Observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
               <td class="align-middle">
-                <form action="admin/asesoria/confirmar_editar_asesoria.php" method="POST">
-                  <input type="number" name="idAsesoria" value="<?php echo $fila['id']?>" hidden="hidden"/>
+                <form action="admin/confirmar_editar_asesoria.php" method="POST">
+                  <input type="number" name="idAsesoria" value="<?php echo $fila['idAsesoria']?>" hidden="hidden"/>
                   <input type="text" name="nombreAlumno" value="<?php echo $fila['Alumno']?>" hidden="hidden"/>
                   <input type="submit" value="Editar" class=" btn btn-danger"/>
                 </form>
               </td>
               <td class="align-middle">
-                <form action="admin/asesoria/confirmar_borrar_asesoria.php" method="POST">
-                  <input type="number" name="idAsesoria" value="<?php echo $fila['id']?>" hidden="hidden"/>
+                <form action="admin/confirmar_borrar_asesoria.php" method="POST">
+                  <input type="number" name="idAsesoria" value="<?php echo $fila['idAsesoria']?>" hidden="hidden"/>
                   <input type="text" name="nombreAlumno" value="<?php echo $fila['Alumno']?>" hidden="hidden"/>
                   <input type="submit" value="Eliminar" class=" btn btn-danger"/>
                 </form>

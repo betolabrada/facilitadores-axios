@@ -407,5 +407,22 @@ class Asesoria {
       }
       return false;
   }
+  
+  public function updateAsesoriaById($variable,$variableChange,$id){
+      
+      $query = "UPDATE Asesoria
+	SET $variable = :varibleChange
+        WHERE idAsesoria = :id";
+      
+      $this->db->query($query);
+      
+      $this->db->bind(':varibleChange', $variableChange);
+      $this->db->bind(':id', $id);
+      
+      if ($this->db->execute()) {
+         return true;
+      }
+      return false;
+  }
 
 }
