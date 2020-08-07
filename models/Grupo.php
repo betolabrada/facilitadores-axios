@@ -127,8 +127,8 @@
     
     public function editarGrupo($variable,$variableCambiar,$idGrupo){
         $query = 'UPDATE Grupo
-	SET :variable = :variableCambiar
-	WHERE idGrupo = :idGrupo';
+          SET :variable = :variableCambiar
+          WHERE idGrupo = :idGrupo';
         
         $this->db->query($query);
         
@@ -167,5 +167,38 @@
         
         return $this->db->resultSet();
     }
-    
+
+    // @method  SELECT
+    // @desc    GET Grupo por su 'grupo' y su $idTurno. Ej. getGrupo('1A', 3)
+    public function getGrupo($grupo, $idTurno) {
+      $query = "SELECT * FROM Grupo WHERE grupo = :grupo AND idTurno = :idTurno";
+
+      $this->db->query($query);
+
+      $this->db->bind(':grupo', $grupo);
+      $this->db->bind(':idTurno', $idTurno);
+
+      return $this->db->single();
+    }
+
+    // @method  SELECT
+    // @desc    GET Escuela,Turno dado idGrupo Ej. Mixta #5 "Lic. Juan Manuel Ruvalcaba De la Mora",M
+    public function getTurnoByIdGrupo($idGrupo) {
+      $query = "SELECT CONCAT(Escuela.nombre, ',', Turno.tipo) AS turno 
+        FROM Grupo 
+          JOIN Turno on Turno.idTurno = Grupo.idTurno 
+          JOIN Escuela on Escuela.idEscuela = Turno.idEscuela 
+        WHERE idGrupo = :idGrupo";
+
+      $this->db->query($query);
+
+      $this->db->bind(':idGrupo', $idGrupo);
+
+      $record = $this->db->single();
+      if ($record) {
+        return $record['turno'];
+      } else {
+        return 'N/A';
+      }
+    }
   }
