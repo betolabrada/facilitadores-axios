@@ -25,10 +25,10 @@ class Turno {
         return false;
     }
     
-    public function updateTurno($idAsesor,$idTurno) {
-        $query = 'Update Turno
-	SET idAsesor = :idAsesor
-	WHERE idTurno = :idTurno';
+    public function updateTurno($idAsesor, $idTurno) {
+        $query = 'UPDATE Turno
+            SET idAsesor = :idAsesor
+            WHERE idTurno = :idTurno';
         
         $this->db->query($query);
         
