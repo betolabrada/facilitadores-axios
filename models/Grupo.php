@@ -145,7 +145,7 @@
     
     
     public function deleteGrupo($idGrupo){
-        $query = 'DELETE * FROM Grupo WHERE idGrupo = :idGrupo';
+        $query = 'DELETE FROM Grupo WHERE idGrupo = :idGrupo';
         
         $this->db->query($query);
         
