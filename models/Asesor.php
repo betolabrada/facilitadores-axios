@@ -167,4 +167,37 @@ class Asesor {
     return $this->db->resultSet();
   }
 
+  // @method  SELECT
+  // @desc    Obtiene historial de asesorias de Asesor con opcion de filtrado de mes
+  public function getAsesorias($idAsesor, $mes = null) {
+    $query = 'SELECT
+      Alumno.idAlumno AS idAlumno 
+      , CONCAT(Alumno.nombre," ",Alumno.apellido) AS Alumno
+      , DATE_FORMAT(Asesoria.fecha, "%d-%m-%Y") AS Fecha 
+      , Motivo.motivo AS Motivo
+      , Integrantes.descripcion AS Dinamica 
+      , Asesoria.observaciones AS Observaciones
+    FROM Asesoria 
+    JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno 
+    JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
+    JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
+    JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
+    WHERE Asesor.idAsesor = :idAsesor';
+
+    if (!is_null($mes)) {
+      $query .= ' AND MONTH(Asesoria.fecha) = :mes';
+    }
+
+    $query .= ' ORDER BY Asesoria.fecha DESC';
+
+    $this->db->query($query);
+
+    $this->db->bind(':idAsesor', $idAsesor);
+    if (!is_null($mes)) {
+      $this->db->bind(':mes', $mes);
+    }
+
+    return $this->db->resultSet();
+  }
+
 }

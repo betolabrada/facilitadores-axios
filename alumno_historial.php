@@ -68,7 +68,7 @@ if (isset($_POST['filtrar'])) {
 </div>
 
 <script src="js/paginacion/tablePagination.js"></script>
-<script src="js/paginacion/pagination.js"></script>
+<script src="js/paginacion/index.js"></script>
 
 <?php include "modal_obs.php" ?>
 <?php include "modal_motivo.php" ?>

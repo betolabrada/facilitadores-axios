@@ -107,7 +107,7 @@ if (isset($_POST['filtrar'])) {
 <?php include "../modal_motivo.php" ?>
 
 <script src="../js/paginacion/tablePagination.js"></script>
-<script src="../js/paginacion/pagination.js"></script>
+<script src="../js/paginacion/index.js"></script>
 <script>
     $(document).ready(function() {
         $(document.body).on("click", "td[data-obs]", function() {
