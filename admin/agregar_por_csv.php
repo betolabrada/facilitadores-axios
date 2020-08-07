@@ -2,19 +2,15 @@
 <?php include 'navbar_admin.php'; ?>
 <?php
 
-require_once '../models/Grupo.php';
-require_once '../models/Alumno.php';
-require_once '../models/Asesor.php';
-
 $grupo_model = new Grupo;
 $alumno_model = new Alumno;
 $asesor_model = new Asesor;
 
 
-if (!isset($_GET['id'])) {
+if (!isset($_GET['idGrupo'])) {
   $grupoId = 1;
 } else {
-  $grupoId = $_GET['id'];
+  $grupoId = $_GET['idGrupo'];
 }
 
 $asesorDeGrupo = $asesor_model->getAsesorDeGrupo($grupoId);
@@ -22,6 +18,9 @@ $asesorDeGrupo = $asesor_model->getAsesorDeGrupo($grupoId);
 
 // Alumnos de grupo
 $alumnos = $grupo_model->getAlumnos($grupoId);
+
+// toExport
+$_SESSION['toExport'] = $alumnos;
 
 if (isset($_POST['importar'])) {
   // Grupo debe de estar vacio para importar csv
@@ -89,14 +88,36 @@ if (isset($_POST['delete'])) {
         <input type="file" name="archivo" id="inputArchivo" accept=".csv">
       </div>
     </div>
-    <div class="row mt-3">
+    <div class="row my-3">
       <div class="col-sm-3">
-        <button type="submit" name="importar" class="btn btn-success">Importar Alumnos</button>
+        <button type="submit" name="importar" class="btn btn-success btn-block">Importar Alumnos</button>
       </div>
+
+      <div class="col-sm-3">
+        <button 
+          type="submit" 
+          name="exportar" 
+          value="Exportar" 
+          class="btn btn-dark btn-block" 
+          formaction="exportar_csv.php"
+          formmethod="get"
+        >Exportar grupo
+        </button>
+      </div>
+
       <!-- Button trigger modal -->
       <div class="col-sm-3">
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+        <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#exampleModal">
           Limpiar lista
+        </button>
+      </div>
+
+      <div class="col-sm-3">
+        <button  
+          type="button"
+          class="btn btn-secondary btn-block"
+          onclick="window.location.href='admin_grupos.php'" 
+        >Regresar
         </button>
       </div>
 
@@ -112,28 +133,22 @@ if (isset($_POST['delete'])) {
             </div>
             <div class="modal-body">
               ¿Seguro(a) que quieres borrar los alumnos de esta lista?
+              Los datos se borrarán para SIEMPRE y será IMPOSIBLE recuperarlos. Asegúrate de exportar la lista antes de hacer este paso
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-              <button type="submit" name="delete" class="btn btn-danger">Borrar</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Ir a exportar</button>
+              <button type="submit" name="delete" class="btn btn-danger">Ya estoy seguro, borrar</button>
             </div><!--modal-footer-->
           </div><!--modal-content-->
         </div><!--modal-dialog-->
       </div><!--modal-fade-->
     </div><!--row-->
   </form> 
-  <form method="post" action="exportar_csv.php?id=<?=$grupoId?>">
-  <div class="row mt-3">
-    <div class="col-sm-3">
-      <button type="submit" name="exportar_grupo" class="btn btn-secondary">Exportar grupo</button>
-    </div>
-  </div>
-  </form>     
 <?php
-  echo "<p>Grupo: <strong>" . $asesorDeGrupo['grupo'] . "</strong></p>";
-  echo "<p>Escuela: <strong> " . $asesorDeGrupo['nombreEscuela'] . "</strong></p>";
-  echo "<p>Turno: <strong> " . $asesorDeGrupo['tipo'] . "</strong></p>";
-  echo "<p>Descripcion: <strong> " . $asesorDeGrupo['numero'] . " ". $asesorDeGrupo['sede'] . " " . $asesorDeGrupo['descripcion']  . "</strong></p>";
+  echo "<p>Grupo: <strong>" . $asesorDeGrupo['grupo'] . "</strong><br>";
+  echo "Escuela: <strong> " . $asesorDeGrupo['nombreEscuela'] . "</strong><br>";
+  echo "Turno: <strong> " . $asesorDeGrupo['tipo'] . "</strong><br>";
+  echo "Descripcion: <strong> " . $asesorDeGrupo['numero'] . " ". $asesorDeGrupo['sede'] . " " . $asesorDeGrupo['descripcion']  . "</strong></p>";
 ?>
 
 <?php if (count($alumnos) == 0):?>
@@ -143,6 +158,7 @@ if (isset($_POST['delete'])) {
     <thead>
       <tr>
         <th>No. LISTA</th>
+        <th>No. ALUMNO</th>
         <th>NOMBRE(s)</th>
         <th>APELLIDOS</th>
       </tr>
@@ -151,6 +167,7 @@ if (isset($_POST['delete'])) {
       <?php foreach ($alumnos as $fila):?>
       <tr>
         <td><?=$fila['noLista']?></td>
+        <td><?=$fila['idAlumno']?></td>
         <td><?=$fila['nombre']?></td>
         <td><?=$fila['apellido']?></td>
       </tr>
@@ -159,6 +176,9 @@ if (isset($_POST['delete'])) {
   </table>
 <?php endif;?>
 </div>
+
+<?php include '../bootstrap_js.php' ?>
+
 </body>
 </html>
 

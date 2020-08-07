@@ -11,7 +11,7 @@ class Alumno {
   // @fields  id, alumno(nombre completo), escuela(nombre), grado, grupo, 
   public function getAlumnos() {
     $query = "SELECT 
-      a.idAlumno AS id, 
+      a.idAlumno AS NumAlumno, 
       CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
       e.nombre AS Escuela, 
       gu.grupo AS Grupo

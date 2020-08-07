@@ -8,7 +8,7 @@
     }
 
     // Get information about student group
-    public function getInfoGrupo($idEscuela, $descTurno, $numGrado, $grupo) {
+    public function getInfoGrupo($idEscuela, $descTurno, $grupo) {
       $sql = 'SELECT 
             grup.grupo
             , a.nombre
@@ -24,7 +24,6 @@
             JOIN Localidad l on l.idLocalidad = e.idLocalidad
           WHERE e.idEscuela = :idEscuela
           AND t.descripcion = :descTurno
-          AND grad.numero = :numGrado
           AND grup.grupo = :grupo ' ;
       
       $this->db->query($sql);
@@ -32,39 +31,15 @@
       // Bind params
       $this->db->bind(':idEscuela', $idEscuela);
       $this->db->bind(':descTurno', $descTurno);
-      $this->db->bind(':numGrado', $numGrado);
       $this->db->bind(':grupo', $grupo);
 
       // Get result
       return $this->db->single();
     }
 
-    // Get grado Id
-    public function getGradoId($pEscuela, $pTurno, $pGrado) {
-      $sql = 'SELECT idGrado FROM Grado
-          JOIN Turno ON Grado.idTurno = Turno.idTurno
-          JOIN Escuela ON Turno.idEscuela = Escuela.idEscuela
-          WHERE Grado.numero = :numGrado
-          AND Turno.descripcion = :descTurno
-          AND Escuela.idEscuela = :idEscuela';
-
-      // Prepare query
-      $this->db->query($sql);
-
-      // Bind params
-      $this->db->bind(':numGrado', $numGrado);
-      $this->db->bind(':descTurno', $descTurno);
-      $this->db->bind(':idEscuela', $idEscuela);
-
-      // Execute
-      $res = $this->db->single();
-
-      return $res['idGrado'];
-    }
-
     // @method  SELECT
     // @desc    GET id de grupo
-    // @params  idEscuela, turno tipo, grado, grupo
+    // @params  idEscuela, turno tipo, grupo
     public function getGrupoId($idEscuela, $tipoTurno, $grupo) {
       $sql = 'SELECT idGrupo
       FROM Grupo grup 
@@ -73,17 +48,15 @@
       JOIN Escuela e on e.idEscuela = t.idEscuela
       WHERE e.idEscuela = :idEscuela
       AND t.tipo = :tipoTurno
-      AND grad.numero = :grado
       AND grup.grupo = :grupo';
 
       $this->db->query($sql);
 
       $this->db->bind(':idEscuela', $idEscuela);
       $this->db->bind(':tipoTurno', $tipoTurno);
-      $this->db->bind(':grado', $grado);
+      $this->db->bind(':grupo', $grupo);
 
       if ($row = $this->db->single()) {
-        print_r($row);
         return $row['idGrupo'];
       } else {
         return null;
@@ -95,7 +68,7 @@
     // @desc    GET ALUMNOS de Grupo
     // @fields  noLista, nombre, apellido 
     public function getAlumnos($grupoId) {
-      $query = "SELECT noLista, nombre, apellido FROM Alumno WHERE idGrupo = :grupoId";
+      $query = "SELECT noLista, idAlumno, nombre, apellido FROM Alumno WHERE idGrupo = :grupoId";
 
       $this->db->query($query);
 
@@ -138,14 +111,13 @@
       }
     }
    
-    public function addGrupo($descripcion,$grado){
-        $query = 'INSERT INTO Grupo (idGrupo, grupo, idGrado) '
-                . 'VALUES (null, :desGrupo, :idGrado)';
+    public function addGrupo($grupo, $idTurno) {
+        $query = 'INSERT INTO Grupo (idGrupo, grupo, idTurno) VALUES (null, :grupo, :idTurno)';
         
         $this->db->query($query);
         
-        $this->db->bind('desGrupo', $descripcion);
-        $this->db->bind(':idGrado', $grado);
+        $this->db->bind('grupo', $grupo);
+        $this->db->bind(':idTurno', $turno);
         
         if ($this->db->execute()) {
             return true;
@@ -171,14 +143,12 @@
         return false;
     }
     
-    public function updateGrado($idGrado,$idGrupo){
-        $query = 'UPDATE Grupo
-	SET idGrado = :idGrado
-	WHERE idGrupo = :idGrupo';
+    
+    public function deleteGrupo($idGrupo){
+        $query = 'DELETE * FROM Grupo WHERE idGrupo = :idGrupo';
         
         $this->db->query($query);
         
-        $this->db->bind(':idGrado', $idGrado);
         $this->db->bind(':idGrupo', $idGrupo);
         
         
@@ -188,23 +158,8 @@
         return false;
     }
     
-    public function deleteGrupo($idGrupo){
-        $query = 'DELETE * FROM Grupo
-	WHERE idGrupo = :idGrupo';
-        
-        $this->db->query($query);
-        
-        $this->db->bind(':idGrado', $idGrado);
-        
-        
-        if ($this->db->execute()) {
-            return true;
-        }
-        return false;
-    }
-    
-    public function getGroupById($idGrupo){
-        $query = 'SELECT * FROM grupo WHERE idGrupo = :idGrupo';
+    public function getGrupoById($idGrupo){
+        $query = 'SELECT * FROM Grupo WHERE idGrupo = :idGrupo';
         
         $this->db->query($query);
         

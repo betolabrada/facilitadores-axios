@@ -112,13 +112,26 @@ class Asesor {
 
   }
 
-  // @method  DELETE (UNSAFE)
-  // @desc    Delete Asesor (idAsesor), CREAR STORE PROCEDURE!!
+  // @method  DELETE
+  // @desc    Delete Asesor (idAsesor), STORE PROCEDURE
   public function deleteAsesor($idAsesor) {
-    $query = 'DELETE FROM Asesor WHERE idAsesor = :idAsesor';
-
+    // Set to NULL: Asesoria
+    $query = 'UPDATE Asesoria SET idAsesor = NULL WHERE idAsesor = :idAsesor';
     $this->db->query($query);
+    $this->db->bind(':idAsesor', $idAsesor);
+    $res = $this->db->execute();
+    if (!$res) return $res;
 
+    // Set to NULL Turno
+    $query = 'UPDATE Turno SET idAsesor = NULL WHERE idAsesor = :idAsesor';
+    $this->db->query($query);
+    $this->db->bind(':idAsesor', $idAsesor);
+    $res = $this->db->execute();
+    if (!$res) return $res;
+
+    // Perform DELETE
+    $query = 'DELETE FROM Asesor WHERE idAsesor = :idAsesor';
+    $this->db->query($query);
     $this->db->bind(':idAsesor', $idAsesor);
 
     return $this->db->execute();
@@ -195,6 +208,31 @@ class Asesor {
     $this->db->bind(':idAsesor', $idAsesor);
     if (!is_null($mes)) {
       $this->db->bind(':mes', $mes);
+    }
+
+    return $this->db->resultSet();
+  }
+
+  // @method  SELECT
+  // @desc    Obtiene todas los turnos (de que escuelas) que atiende un Asesor
+  public function getTurnos($idAsesor = '') {
+    $query = 'SELECT 
+      Asesor.idAsesor as idAsesor,
+      Turno.idTurno as idTurno,
+      Asesor.nombre as nombreAsesor, 
+      Turno.idTurno, CONCAT(Escuela.nombre, ", ", Turno.tipo) as turno
+      FROM Turno 
+      JOIN Asesor ON Turno.idAsesor = Asesor.idAsesor
+      JOIN Escuela ON Turno.idEscuela = Escuela.idEscuela';
+
+    if (!empty($idAsesor)) {
+      $query .= ' WHERE Asesor.idAsesor = :idAsesor';
+    }
+
+    $this->db->query($query);
+
+    if (!empty($idAsesor)) {
+      $this->db->bind(':idAsesor', $idAsesor);
     }
 
     return $this->db->resultSet();

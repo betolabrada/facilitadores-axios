@@ -35,6 +35,20 @@
       return false;
     }
 
+    // @method    DELETE  
+    // @desc      borrar sede pasando su id
+    public function removeSede($idSede) {
+      $this->db->query('DELETE FROM Localidad 
+        WHERE idLocalidad = :idLocalidad');
+
+      $this->db->bind(':idLocalidad', $idSede);
+
+      if ($this->db->execute()) {
+        return true;
+      }
+      return false;
+    }
+
 
     public function getEscuelaLocalidad() {
       $sql = "SELECT 

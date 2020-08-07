@@ -67,6 +67,7 @@ if (isset($_POST['filtrar'])) {
   </div>
 </div>
 
+<?php include 'bootstrap_js.php' ?>
 <script src="js/paginacion/tablePagination.js"></script>
 <script src="js/paginacion/index.js"></script>
 

@@ -11,80 +11,53 @@
 <?php
 include 'navbar_admin.php';
 
-require_once '../models/Asesor.php';
 require_once '../models/Sede.php';
 
-$asesor_model = new Asesor;
 $sede_model = new Sede;
 
-$asesores = $asesor_model->getAsesores();
 $sedes = $sede_model->getSedes();
 $escuelas_sedes = $sede_model->getEscuelaLocalidad();
 
 $where = "WHERE TRUE";
 
-$asesor = !empty($_POST['asesor']) ? $_POST['asesor'] : "";
 $sede = !empty($_POST['sede']) ? $_POST['sede'] : "";
 
 if (isset($_POST['filtrar'])) {
-  if ($asesor) $where .= " AND Asesor.nombre = '" . $asesor . "' ";
   if ($sede) $where .= " AND Localidad.idLocalidad = " . $sede . " ";
 }
 ?>
 
 <div class="container">
-  <div class="row">
-      <div class="col-lg-12 text-center">
-          <h5 class="display-4 text-center">Escuelas y Localidades </h5>
+  <div class="row mb-3">
+    <div class="col-12 text-center">
+      <h5 class="display-4 text-center">Escuelas y Localidades </h5>
+    </div><!--col-->
+  </div><!--row-->
+  <form method="POST">
+    <div class="row justify-content-center">
+      <div class="col-sm-12 text-center">
+        <h5>FILTRAR</h5>
+      </div><!--col-->
+      <div class="col-sm-3">
+        <!-- FILTRO SEDE -->
+        <select id="filtroSede" class="form-control" name="sede">
+          <option value="" selected>Sede</option>
+          <?php foreach ($sedes as $fila): ?>
+            <?php if (isset($post_sede) && $post_sede == $fila['idLocalidad']): ?>
+              <option value="<?=$fila['idLocalidad'] ?>" selected><?=$fila['nombre'] ?></option>
+            <?php else: ?>
+              <option value="<?=$fila['idLocalidad'] ?>"><?=$fila['nombre'] ?></option>
+            <?php endif; ?>
+          <?php endforeach; ?>
+        </select>
+      </div><!--col-->
+    </div><!--row-->
+    <div class="row">
+      <div class="col-sm-12 text-center">
+        <button name="filtrar" type="submit" class="btn btn-success">FILTRAR</button>
       </div>
-  </div>
-  <br>
-  <br>
-  <div class="row justify-content-center">
-    <form method="POST">
-      <div class="row mb-3 justify-content-center">
-        <div class="col-sm-12 text-center">
-          <h5>FILTROS</h5>
-        </div>
-        <div class="col-sm-3">
-          <!-- FILTRO ASESOR -->
-          <select id="filtroAsesor" class="form-control" name="asesor">
-            <option value="" selected>Facilitador</option>
-            <?php foreach ($asesores as $fila): ?>
-            <?php if (isset($post_asesor) && $post_asesor == $fila['idAsesor']): ?>
-            <option value="<?=$fila['idAsesor'] ?>" selected><?=$fila['nombre'] ?></option>
-            <?php else:?>
-            <option value="<?=$fila['idAsesor'] ?>"><?=$fila['nombre'] ?></option>
-            <?php endif;?>
-            <?php endforeach; ?>
-          </select>
-        </div>
-
-        <div class="col-sm-3">
-          <!-- FILTRO SEDE -->
-          <select id="filtroSede" class="form-control" name="sede">
-            <option value="" selected>Sede</option>
-            <?php foreach ($sedes as $fila): ?>
-              <?php if (isset($post_sede) && $post_sede == $fila['idLocalidad']): ?>
-                <option value="<?=$fila['idLocalidad'] ?>" selected><?=$fila['nombre'] ?></option>
-              <?php else: ?>
-                <option value="<?=$fila['idLocalidad'] ?>"><?=$fila['nombre'] ?></option>
-              <?php endif; ?>
-            <?php endforeach; ?>
-          </select>
-        </div>
-
-      </div>
-      <div class="row">
-        <div class="col-sm-12 text-center">
-          <button name="filtrar" type="submit" class="btn btn-success">FILTRAR</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div class="container">
+    </div><!--row-->
+  </form>
   <br>
   <div class="row">
     <div class="table-responsive">
@@ -102,23 +75,17 @@ if (isset($_POST['filtrar'])) {
           <?php endforeach; ?>
         </tbody>
       </table>
-    </div>
-</div>
-<div class="row justify-content-center">
-    
-        
-        <div class="col-sm-4">
-            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_nueva_escuela.php'">Nueva Escuela</button>
-        </div>
-        <div class="col-sm-4">
-            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='confirmar_agregar_localidad.php'">Nueva Localidad</button>
-        </div>
-        
-    
-    
-  </div>
-  <br>
-</div>
+    </div><!--table-responsive-->
+  </div><!--row-->
+  <div class="row justify-content-center">
+    <div class="col-sm-4">
+        <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_nueva_escuela.php'">Nueva Escuela</button>
+    </div><!--col-->
+    <div class="col-sm-4">
+        <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='confirmar_agregar_localidad.php'">Nueva Localidad</button>
+    </div><!--col-->
+  </div><!--row-->
+</div><!--container-->
 
 <?php include '../bootstrap_js.php' ?>
 

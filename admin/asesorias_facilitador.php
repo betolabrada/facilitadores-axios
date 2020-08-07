@@ -1,17 +1,4 @@
-<style>
-    td[data-href] {
-        cursor: pointer;
-    }
-
-    td[data-href]:hover {
-        background-color: #33a652;
-    }
-</style>
-
 <?php include 'navbar_admin.php';
-
-require_once '../models/Asesor.php';
-require_once '../models/Asesoria.php';
 
 $asesor_model = new Asesor;
 $asesoria_model = new Asesoria;
@@ -102,7 +89,7 @@ if (isset($_POST['filtrar'])) {
 
 <?php include "../modal_obs.php" ?>
 <?php include "../modal_motivo.php" ?>
-
+<?php include '../bootstrap_js.php' ?>
 <script src="../js/paginacion/tablePagination.js"></script>
 <script src="../js/paginacion/index.js"></script>
 

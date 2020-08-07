@@ -48,7 +48,7 @@ if (isset($_POST['registrar'])) {
               </div>
 
               <button role="button" class="btn btn-lg btn-primary btn-block text-uppercase" name="registrar">Registrar</button>
-              <button role="button" class="btn btn-lg btn-primary btn-block text-uppercase" name="cancelar" onclick="window.location.href='admin_facilitadores.php'">Cancelar</button>
+              <button role="button" class="btn btn-lg btn-secondary btn-block text-uppercase" name="cancelar" onclick="window.location.href='admin_facilitadores.php'">Cancelar</button>
               <hr class="my-4">
             </form>
           </div>

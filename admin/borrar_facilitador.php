@@ -31,6 +31,7 @@ if (isset($_POST['eliminar'])) {
         <h4 class="display-4 text-center">Eliminando usuario</h4>
           <br>
           <h4 class="text-center">¿Estas seguro de que deseas eliminar a: <?php echo $nombre; ?>?</h4>
+          <h6 class="text-center">Todas las asesorías, turnos y diarios de este asesor seguirán guardados</p>
           <form method="post" action="" id="insertForm" onsubmit="return validateForm()">
 
           <div class="row my-4">
@@ -48,11 +49,11 @@ if (isset($_POST['eliminar'])) {
         
         
         <div class="row my-4 justify-content-center">
-          <div class="col-sm-3">
-            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="eliminar" form="insertForm" >Eliminar</button>
+          <div class="col-sm-2">
+            <button class="btn btn-secondary btn-lg btn-block text-uppercase" onclick="window.location.href='admin_facilitadores.php'">Cancelar</button>
           </div>
           <div class="col-sm-3">
-            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_facilitadores.php'">Cancelar</button>
+            <button class="btn btn-danger btn-lg btn-block text-uppercase" name="eliminar" form="insertForm" >Eliminar</button>
           </div>
         </div>
       </div>

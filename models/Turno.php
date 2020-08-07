@@ -50,5 +50,26 @@ class Turno {
 
         return $results;
     }
+
+    // @method  SELECT
+    // @desc    Obtiene el turno indicado por id
+    public function getTurnoById($idTurno) {
+        $query = 'SELECT 
+            Asesor.idAsesor as idAsesor,
+            Turno.idTurno as idTurno,
+            Asesor.nombre as nombreAsesor, 
+            Turno.idTurno, CONCAT(Escuela.nombre, ", ", Turno.tipo) as turno
+        FROM Turno 
+        JOIN Asesor ON Turno.idAsesor = Asesor.idAsesor
+        JOIN Escuela ON Turno.idEscuela = Escuela.idEscuela
+        WHERE idTurno = :idTurno';
+
+
+        $this->db->query($query);
+
+        $this->db->bind(':idTurno', $idTurno);
+
+        return $this->db->single();
+    }
     
 }

@@ -1,18 +1,8 @@
 <?php 
   include 'navbar_admin.php'; 
-  require_once '../models/Escuela.php';
-  require_once '../models/Grupo.php';
 
-  function nombre_escuela($escuelas) {
-    foreach ($escuelas as $s) {
-      if ($s['idEscuela'] == $_GET['idEscuela']) {
-        return $s['nombre'];
-      }
-    }
-  }
-
-  $escuela_model = new Escuela;
-  $grupo_model = new Grupo;
+  $escuela_model = new Escuela();
+  $grupo_model = new Grupo();
 
   // Escuelas
   $escuelas = $escuela_model->getEscuelas();
@@ -27,29 +17,23 @@
   // Busqueda
   if (isset($_GET['search'])) {
     $busqueda = true;
-    if (!$_GET['idEscuela'] || !$_GET['turno'] || !$_GET['grado'] || !$_GET['grupo'] ) {
-      $_SESSION['message'] = "Error. Por favor completa todos los campos.";
+    if (!$_GET['idEscuela'] || !$_GET['turno'] || !$_GET['grupo'] ) {
+      $_SESSION['message'] = "Por favor completa todos los campos.";
       $badRequest = true;
     } else {
 
-      $selected_escuela = nombre_escuela($escuelas);
+      $selected_escuela = $escuela_model->getEscuela($_GET['idEscuela'])['nombre'];
       $selected = array(
-        'escuela' => $_GET['idEscuela'], 
+        'escuela' => (int) $_GET['idEscuela'], 
         'turno' => $_GET['turno'],
-        'grado' => $_GET['grado'],
-        'grupo' => $_GET['grupo']
+        'grupo' => strtoupper($_GET['grupo'])
       );
-      print_r(array_values($selected));
-      // version: 7.4.6
-      // $grupoId = $grupo_model->getGrupoId(...array_values($selected));
-      $grupoId = $grupo_model->getGrupoId(
+      $idGrupo = $grupo_model->getGrupoId(
         $selected['escuela'],
         $selected['turno'],
-        $selected['grado'],
         $selected['grupo']
       );
-      echo $grupoId;
-      $alumnos = $grupo_model->getAlumnos($grupoId);
+      $alumnos = $grupo_model->getAlumnos($idGrupo);
       if (count($alumnos) > 0) {
         $resultAlumnosSuccess = true;
       }
@@ -61,21 +45,20 @@
 
 <div class="container my-3">
   <?php if (isset($_SESSION['message'])):?>
-  <div class="alert alert-danger">
-  <?php
-    echo $_SESSION['message'];
-    unset($_SESSION['message']);
-  ?>
-  </div><!--alert-->
+    <div class="alert alert-danger">
+      <?php
+        echo $_SESSION['message'];
+        unset($_SESSION['message']);
+      ?>
+    </div><!--alert-->
   <?php endif; ?>
   <div class="row">
     <div class="col-sm-4">
       <h4>Búsqueda</h4>
     </div>
   </div><!--row-->
-  <form method="GET" action="admin_grupos.php">
+  <form>
     <div class="row mt-3">
-
       <div class="col-sm-6">
         <!-- First search filter: filtro escuela -->
         <select id="filtroEscuela" class="form-control" name="idEscuela">
@@ -90,59 +73,23 @@
         </select>
       </div><!--col-->
 
-      <div class="col-sm-3">
+      <div class="col-sm-2">
         <!-- Filtro turno -->
         <select id="filtroTurno" class="form-control" name="turno">
           <option value="" selected>Turno</option>
-          <option value="M" <?=(isset($selected) && $selected['turno'] == "M") ? "selected" : "" ?>>Matutino</option>
-          <option value="V" <?=(isset($selected) && $selected['turno'] == "V") ? "selected" : "" ?>>Vespertino</option>
+          <option value="M" <?=(isset($selected) && $selected['turno'] == "M") ? "selected" : "" ?>>
+            Matutino</option>
+          <option value="V" <?=(isset($selected) && $selected['turno'] == "V") ? "selected" : "" ?>>
+            Vespertino</option>
         </select>
-      </div><!--col-->
+      </div><!--col-->    
 
-      <div class="col-sm-3">
-        <!-- Filtro grado -->
-        <select id="filtroGrado" class="form-control" name="grado">
-          <option value="" selected>Grado</option>
-            <?php for ($gr=1; $gr <= 3; $gr++): ?>
-              <?php if (isset($selected) && $selected['grado'] == $gr): ?>
-              <option value="<?=$gr?>" selected><?=$gr?></option>
-              <?php else: ?>
-              <option value="<?=$gr?>"><?=$gr?></option>
-              <?php endif; ?>
-            <?php endfor; ?>
-        </select>
-      </div><!--col-->
-
-    </div><!--row-->
-    
-    <div class="row mt-3">
-
-      <div class="col-sm-3">
+      <div class="col-sm-2">
         <!-- Filtro grupo -->
-        <select id="filtroGrupo" class="form-control" name="grupo">
-          <option value="" selected>Grupo</option>
-          <?php foreach (str_split('ABCDEF') as $gr): ?>
-            <?php if (isset($selected) && $selected['grupo'] == $gr): ?>
-            <option value="<?=$gr?>" selected><?=$gr?></option>
-            <?php else: ?>
-            <option value="<?=$gr?>"><?=$gr?></option>
-            <?php endif; ?>
-          <?php endforeach; ?>
-        </select>
+        <input type="text" class="form-control" id="grupo" aria-describedby="grupoHelp" placeholder="Grupo"
+          name="grupo">
+        <small id="grupoHelp" class="form-text text-muted">Escribe un numero seguido de una letra</small>
       </div><!--col-->
-      
-      <div class="col-sm-3">
-        <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" form="crearForm">Nuevo Grupo</button>
-      </div>
-      
-      <?php 
-      if(isset($_GET['idEscuela']) && $_GET['idEscuela']!=0){
-          echo "<div class=\"col-sm-3\">
-            <button class=\"btn btn-success btn-lg btn-primary btn-block text-uppercase\" form=\"editForm\">Editar Grupo</button>
-          </div>";
-      }
-      ?>
-      
     </div><!--row-->
 
     <div class="row mt-3">
@@ -152,34 +99,56 @@
     </div><!--row-->
 
   </form>
-  
-    <form action="confirmar_agregar_grupo.php" method="POST" id='crearForm'>
-    </form>
-  
-    <form action="confirmar_editar_grupo.php" method="POST" id="editForm">
-        <input type="text" value="<?php echo $grupoId?>" name='idGrupo' hidden="hidden"/>
-    </form>
+  <div class="row mt-4">
+    <div class="col-sm-3">
+      <button class="btn btn-success btn-lg btn-block text-uppercase" form="crearForm">
+        Nuevo Grupo</button>
+    </div>
+
+    <?php if(isset($idGrupo)) :?>
+      <div class="col-sm-3">
+        <button class="btn btn-warning btn-lg btn-block text-uppercase" form="editForm"
+          onclick="window.location.href='confirmar_editar_grupo.php?idGrupo=<?=$idGrupo?>'">
+          Editar Grupo
+        </button>
+      </div>
+      <div class="col-sm-3">
+        <button class="btn btn-info btn-lg btn-block text-uppercase" form="editForm"
+          onclick="window.location.href='agregar_por_csv.php?idGrupo=<?=$idGrupo?>'">
+          Manejo de Archivo
+        </button>
+      </div>
+    <?php endif; ?>
+  </div>
 
   <?php if ($resultAlumnosSuccess):?>
     <div class="row justify-content-center mt-3">
-      <table class="table table-sm">
-        <thead>
-          <tr>
-            <th scope="col">No. LISTA</th>
-            <th scope="col">NOMBRE(s)</th>
-            <th scope="col">APELLIDOS</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php foreach ($alumnos as $fila):?>
-          <tr>
-            <td scope="row"><?=$fila['noLista']?></td>
-            <td><?=$fila['nombre']?></td>
-            <td><?=$fila['apellido']?></td>
-          </tr>
-          <?php endforeach;?>
-        </tbody>
-      </table>
+      <div class="col-10">
+        <div class="table-responsive">
+          <table class="table-pagination table table-sm">
+            <thead>
+              <tr>
+                <th scope="col">No. LISTA</th>
+                <th scope="col">No. Alumno</th>
+                <th scope="col">NOMBRE(s)</th>
+                <th scope="col">APELLIDOS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($alumnos as $fila):?>
+              <tr>
+                <td><?=$fila['noLista']?></td>
+                <td data-href="alumno_historial.php" data-id="<?=$fila['idAlumno']?>">
+                  <?=$fila['idAlumno']?>
+                </td>
+                <td><?=$fila['nombre']?></td>
+                <td><?=$fila['apellido']?></td>
+              </tr>
+              <?php endforeach;?>
+            </tbody>
+          </table>
+        </div><!--table responsive-->
+      </div><!--col-->
     </div><!--row-->
   <?php elseif ($busqueda && !$resultAlumnosSuccess): ?>
     <div class="pt-3 text-center">No hay alumnos para mostrar: Grupo no existe o está vacío</div>
@@ -187,5 +156,17 @@
   <?php endif;?>
 
 </div><!--container-->
+
+<?php include '../bootstrap_js.php' ?>
+<script src='../js/paginacion/tablePagination.js'></script>
+<script src='../js/paginacion/index.js'></script>
+<script>
+$(document).ready(function () {
+  $(document.body).on('click', 'td[data-href]', function () {
+    window.location.href = this.dataset.href + '?idAlumno='+ this.dataset.id;
+  })
+})
+</script>
+
 </body>
 </html>

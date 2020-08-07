@@ -5,7 +5,7 @@ require_once '../models/Grupo.php';
 
 $grupo_model = new Grupo;
 
-$grupo = $grupo_model->getGroupById($_POST['idGrupo']);
+$grupo = $grupo_model->getGrupoById($_GET['idGrupo']);
 
 require_once '../models/Turno.php';
 

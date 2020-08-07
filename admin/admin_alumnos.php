@@ -1,20 +1,11 @@
-<style>
-  td[data-href] {
-    cursor: pointer;
-  }
-
-  td[data-href]:hover {
-    background-color: #33a652;
-  }
-</style>
-
 <?php
 include 'navbar_admin.php';
-require_once '../models/Alumno.php';
 
 $alumno_model = new Alumno();
+$asesor_model = new Asesor();
 
 $alumnos = $alumno_model->getAlumnos();
+$asesores = $asesor_model->getAsesores();
 
 $where = "WHERE TRUE";
 
@@ -30,19 +21,66 @@ if (isset($_POST['filtrar'])) {
 ?>
 
 <div class="container">
-    <div class="row">
-        <div class="col-lg-12 text-center">
-            <h5 class="display-4 text-center">Alumnos</h5>
-        </div>
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <h5 class="display-4 text-center">Alumnos</h5>
     </div>
-    <br>
-  <br>
-  <?php require_once '../utils/form_filtros_alumno.php'; ?>
+  </div>
+  <div class="row mb-3">
+    <div class="col-sm-12">
+      <h5>FILTROS</h5>
+    </div>
+  </div>
+  <form method="POST" id="filtros">
+    <div class="row my-3">
+      <div class="col-sm-3">
+        <!-- FILTRO ASESOR -->
+        <select id="filtroAsesor" class="form-control" name="asesor">
+          <option value="" selected>Facilitador</option>
+          <?php foreach ($asesores as $fila): ?>
+          <?php if (isset($post_asesor) && $post_asesor == $fila['idAsesor']): ?>
+          <option value="<?=$fila['idAsesor'] ?>" selected><?=$fila['nombre'] ?></option>
+          <?php else:?>
+          <option value="<?=$fila['idAsesor'] ?>"><?=$fila['nombre'] ?></option>
+          <?php endif;?>
+          <?php endforeach; ?>
+        </select>
+      </div><!--col-->
+      <div class="col-sm-3">
+      <!-- FILTRO SEDE -->
+        <select id="filtroSede" class="form-control" name="sede">
+          <option value="" selected>Sede</option>
+          <?php foreach ($sedes as $fila): ?>
+            <?php if (isset($post_sede) && $post_sede == $fila['idLocalidad']): ?>
+              <option value="<?=$fila['idLocalidad'] ?>" selected><?=$fila['nombre'] ?></option>
+            <?php else: ?>
+              <option value="<?=$fila['idLocalidad'] ?>"><?=$fila['nombre'] ?></option>
+            <?php endif; ?>
+          <?php endforeach; ?>
+        </select>
+      </div><!--col-->
+      <div class="col-sm-3">
+        <select id="filtroEscuela" class="form-control" name="escuela">
+          <option value="" selected>Escuela</option>
+          <?php foreach ($escuelas as $fila): ?>
+            <?php if (isset($post_escuela) && $post_escuela == $fila['idEscuela']): ?>
+              <option value="<?=$fila['idEscuela'] ?>" selected><?=$fila['nombre'] ?></option>
+            <?php else: ?>
+              <option value="<?=$fila['idEscuela'] ?>"><?=$fila['nombre'] ?></option>
+            <?php endif; ?>
+          <?php endforeach; ?>
+        </select>
+      </div><!--col-->
+    </div><!--row-->
+    
+    <div class="row">
+      <div class="col-sm-2">
+        <button name="filtrar" type="submit" class="btn btn-success">FILTRAR</button>
+      </div>
+    </div><!--row-->
+  </form>
 
-</div>
 
-<div class="container">
-  <br>
   <h4 class="text-center">Escriba el nombre del alumno</h4>
   <div class="row justify-content-center">
       <input id="search" type="text" size="50" style="text-align:center;" placeholder="Escriba aquí">
@@ -65,7 +103,6 @@ if (isset($_POST['filtrar'])) {
           <thead>
             <th scope="col">Alumno</th>
             <th scope="col">Escuela</th>
-            <th scope="col">Grado</th>
             <th scope="col">Grupo</th>
           </thead>
           <tbody id="filter"> 
@@ -73,7 +110,6 @@ if (isset($_POST['filtrar'])) {
               <tr>
                 <td data-href="admin_datos_alumno.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
                 <td class="align-middle"><?php echo $fila['Escuela']; ?></td>
-                <td class="align-middle"><?php echo $fila['Grado']; ?></td>
                 <td class="align-middle"><?php echo $fila['Grupo']; ?></td>
               </tr>
             <?php endforeach; ?>
@@ -83,6 +119,7 @@ if (isset($_POST['filtrar'])) {
   </div>
 </div>
   
+<?php include '../bootstrap_js.php'?>
 <script src="../js/houdini.js"></script>
 
 <script>
