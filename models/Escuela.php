@@ -8,8 +8,13 @@
     }
 
     // Get all escuelas
-    public function getEscuelas() {
-      $this->db->query('SELECT * FROM Escuela');
+    public function getEscuelas($idLocalidad = "") {
+      $sql = 'SELECT * FROM Escuela';
+
+      if (!empty($sede)) {
+        $sql .= ' WHERE idLocalidad = :idLocalidad';
+      }
+      $this->db->query($sql);
 
       $results = $this->db->resultSet();
 

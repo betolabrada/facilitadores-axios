@@ -1,29 +1,16 @@
-<style>
-  td[data-href] {
-    cursor: pointer;
-  }
-
-  td[data-href]:hover {
-    background-color: #33a652;
-  }
-</style>
-
 <?php
 include 'navbar_admin.php';
 
-require_once '../models/Sede.php';
-
-$sede_model = new Sede;
+$sede_model = new Sede();
+$escuela_model = new Escuela();
 
 $sedes = $sede_model->getSedes();
 $escuelas_sedes = $sede_model->getEscuelaLocalidad();
 
-$where = "WHERE TRUE";
-
-$sede = !empty($_POST['sede']) ? $_POST['sede'] : "";
+$idSede = !empty($_POST['sede']) ? $_POST['sede'] : "";
 
 if (isset($_POST['filtrar'])) {
-  if ($sede) $where .= " AND Localidad.idLocalidad = " . $sede . " ";
+  $escuelas_sedes = $sede_model->getEscuelaLocalidad($idSede); 
 }
 ?>
 
@@ -43,11 +30,11 @@ if (isset($_POST['filtrar'])) {
         <select id="filtroSede" class="form-control" name="sede">
           <option value="" selected>Sede</option>
           <?php foreach ($sedes as $fila): ?>
-            <?php if (isset($post_sede) && $post_sede == $fila['idLocalidad']): ?>
-              <option value="<?=$fila['idLocalidad'] ?>" selected><?=$fila['nombre'] ?></option>
-            <?php else: ?>
-              <option value="<?=$fila['idLocalidad'] ?>"><?=$fila['nombre'] ?></option>
-            <?php endif; ?>
+          <?php if (isset($idSede) && $idSede == $fila['idLocalidad']): ?>
+          <option value="<?=$fila['idLocalidad'] ?>" selected><?=$fila['nombre'] ?></option>
+          <?php else: ?>
+          <option value="<?=$fila['idLocalidad'] ?>"><?=$fila['nombre'] ?></option>
+          <?php endif; ?>
           <?php endforeach; ?>
         </select>
       </div><!--col-->
