@@ -15,7 +15,7 @@ $escuela_model = new Escuela;
 $sede_model = new Sede;
 
 $escuela = $escuela_model->getEscuela($idEscuela);
-print_r($escuela);
+// print_r($escuela);
 $sedes = $sede_model->getSedes();
 
 if (isset($_POST['subir'])) {
