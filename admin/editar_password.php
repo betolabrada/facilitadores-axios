@@ -1,11 +1,7 @@
-<?php include 'navbar_admin.php';
-    $idUsuario = (int)$_GET['idUsuario'];
-
-  
-  require_once '../models/Asesor.php';
-
+<?php 
+  include 'navbar_admin.php';
+  $idUsuario = (int)$_GET['idUsuario'];
   $asesor_model = new Asesor;
-  
   $asesor = $asesor_model->getAsesorById($idUsuario);
 
 ?>
@@ -19,7 +15,7 @@ if (isset($_POST['subir'])) {
         echo "<script type='text/javascript'>alert('$message');</script>";
     } else {
         if($newPassword === $newConPassword) {
-            if ($asesor_model->changeAsesorPassword($newPassword)) {
+            if ($asesor_model->changeAsesorPassword($idUsuario, $newPassword)) {
                 $message = "Cambios guardados con éxito";
                 echo "<script type='text/javascript'>alert('$message');</script>";
                 echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
@@ -47,10 +43,13 @@ if (isset($_POST['subir'])) {
             <div class="col-sm-2"></div>
               <div class="col-sm-8">
                 <label for="input-nueva-contraseña">Nueva Contraseña</label>
-                <input type="input-nueva-contraseña" class="form-control" name="newPass" placeholder="Nueva contraseña">
+                <input id="input-nueva-contraseña" type="password" class="form-control" name="newPass" 
+                  placeholder="Nueva contraseña">
                 <br>
                 <label for="input-confirmar-contraseña">Confirmar Contraseña</label>
-                <input type="input-confirmar-contraseña" class="form-control" name="newConPass" placeholder="Confirmar contraseña">
+                <input id="input-confirmar-contraseña" type="password" class="form-control" 
+                  name="newConPass" 
+                  placeholder="Confirmar contraseña">
                 </div>
               <div class="col-sm-2"></div>
             </div>
