@@ -108,7 +108,8 @@ if (isset($_POST['filtrar'])) {
           <tbody id="filter"> 
             <?php foreach ($alumnos as $fila): ?>
               <tr>
-                <td data-href="admin_datos_alumno.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
+                <td data-href="admin_datos_alumno.php" data-id="<?php echo $fila['idAlumno']; ?>" 
+                  class="align-middle"><?php echo $fila['Alumno']; ?></td>
                 <td class="align-middle"><?php echo $fila['Escuela']; ?></td>
                 <td class="align-middle"><?php echo $fila['Grupo']; ?></td>
               </tr>

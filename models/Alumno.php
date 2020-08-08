@@ -11,7 +11,7 @@ class Alumno {
   // @fields  id, alumno(nombre completo), escuela(nombre), grado, grupo, 
   public function getAlumnos() {
     $query = "SELECT 
-      a.idAlumno AS NumAlumno, 
+      a.idAlumno AS idAlumno, 
       CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
       e.nombre AS Escuela, 
       gu.grupo AS Grupo
@@ -41,7 +41,7 @@ class Alumno {
   //          idAsesor, Nasesor, turno
   public function getAlumnoById($idAlumno) {
     $query = "SELECT 
-        a.idAlumno AS id, 
+        a.idAlumno AS idAlumno, 
         CONCAT(a.nombre,' ', a.apellido) AS Alumno,
         a.nombre AS Nombres, 
         a.apellido AS Apellidos, 
@@ -139,9 +139,27 @@ class Alumno {
 
   }
 
-  public function deleteAlumno($idAlumno) {
-    $sql = 'DELETE FROM Alumno WHERE idAlumno = :idAlumno';
+  // @method    DELETE
+  // @desc      Borra alumno pasando su id
+  public function deleteAlumno($idAlumno, $tambienAse) {
+    // If borrar tambien asesorias
+    if ($tambienAse) {
+      $sql = 'DELETE FROM Asesoria WHERE idAlumno = :idAlumno';
+      $this->db->query($sql);
+      $this->db->bind(':idAlumno', $idAlumno);
+      $res = $this->db->execute();
+      if (!$res) return false;
+    } else {
+      // Setear a NULL
+      $sql = 'UPDATE Asesoria SET idAlumno = NULL WHERE idAlumno = :idAlumno';
+      $this->db->query($sql);
+      $this->db->bind(':idAlumno', $idAlumno);
+      $res = $this->db->execute();
+      if (!$res) return false;
+    }
 
+    $sql = 'DELETE FROM Alumno WHERE idAlumno = :idAlumno';
+  
     $this->db->query($sql);
 
     $this->db->bind(':idAlumno', $idAlumno);

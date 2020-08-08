@@ -1,8 +1,5 @@
 <?php 
 include 'navbar_admin.php'; 
-require_once '../models/Alumno.php';
-require_once '../models/Escuela.php';
-require_once '../models/Asesor.php';
 
 $idAlumno = (int)$_GET['idAlumno'];
 $alumno_model = new Alumno();
@@ -10,6 +7,11 @@ $escuela_model = new Escuela();
 $asesor_model = new Asesor();
 
 $alumno = $alumno_model->getAlumnoById($idAlumno);
+if (!$alumno) {
+  $message = "El alumno que buscas no se ha encontrado";
+  echo "<script type='text/javascript'>alert('$message');</script>";
+  echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
+}
 $escuelas = $escuela_model->getEscuelas();
 $asesores = $asesor_model->getAsesores();
   
@@ -17,10 +19,10 @@ $oldNombres = $alumno['Nombres'];
 $oldApellidos = $alumno['Apellidos'];
 $oldNoLista = $alumno['NoLista'];
 $oldEscuela = $alumno['Escuela'];
-$oldGrado = $alumno['Grado'];
 $oldGrupo = $alumno['Grupo'];
 $oldTurno = $alumno['Turno'];
 $oldAsesor = $alumno['NAsesor'];
+
 
 if (isset($_POST['subir'])) {
   print_r($_POST);
@@ -28,7 +30,6 @@ if (isset($_POST['subir'])) {
   $apellidos = $_POST['apellidos'];
   $nolista = $_POST['nolista'];
   $escuela = $_POST['escuela'];
-  $grado = $_POST['grado'];
   $grupo = $_POST['grupo'];
   $turno = $_POST['turno'];
   $asesor = $_POST['asesor'];
@@ -93,7 +94,12 @@ if (isset($_POST['subir'])) {
 }
 if (isset($_POST['borrar'])) {
     
-    $deleted = $alumno_model->deleteAlumno($idAlumno);
+    print_r($_POST);
+    if (isset($_POST['tambienAse'])) {
+      $deleted = $alumno_model->deleteAlumno($idAlumno, true);
+    } else {
+      $deleted = $alumno_model->deleteAlumno($idAlumno, false);
+    }
     if ($deleted) {
         $message = "Alumno borrado con éxito";
         echo "<script type='text/javascript'>alert('$message');</script>";
@@ -106,7 +112,7 @@ if (isset($_POST['borrar'])) {
 ?>
 
 <div class="container">
-  <h4 class="display-4 text-center">Datos del alumno:</h4>
+  <h4 class="display-4 text-center">Editando Alumno(a):</h4>
   <br>
   <h4 class="text-center"><?php echo $alumno['Alumno']; ?></h4>
   <div class="row justify-content-center">
@@ -116,10 +122,10 @@ if (isset($_POST['borrar'])) {
           <div class="col-sm-8">
 
             <label for="input-nombre">Nombre(s)</label>
-            <input type="input-nombre" class="form-control" name="nombres" placeholder="<?php echo $alumno['Nombres']; ?>" readonly>
+            <input type="input-nombre" class="form-control" name="nombres" placeholder="<?php echo $alumno['Nombres']; ?>">
 
             <label for="input-apellidos">Apellido(s)</label>
-            <input type="input-apellidos" class="form-control" name="apellidos" placeholder="<?php echo $alumno['Apellidos']; ?>" readonly>
+            <input type="input-apellidos" class="form-control" name="apellidos" placeholder="<?php echo $alumno['Apellidos']; ?>">
 
             <label for="input-nlista">Número de Lista</label>
             <input type="input-nlista" class="form-control" name="nolista" placeholder="<?php echo $alumno['NoLista']; ?>">
@@ -136,30 +142,6 @@ if (isset($_POST['borrar'])) {
               <?php endforeach; ?>
             </select>
 
-            <label for="input-grado">Grado</label>
-            <select id="grado" class="form-control" name="grado">
-              <option value="" selected>Grado</option>
-              <?php for ($gr=1; $gr <= 3; $gr++): ?>
-                <?php if ($gr == $alumno['Grado']): ?>
-                  <option value="<?=$gr?>" selected><?=$gr?></option>
-                <?php else: ?>
-                  <option value="<?=$gr?>"><?=$gr?></option>
-                <?php endif; ?>
-              <?php endfor; ?>
-            </select>
-
-            <label for="input-grupo">Grupo</label>
-            <select id="grupo" class="form-control" name="grupo">
-              <option value="" selected>Grado</option>
-              <?php foreach (str_split('ABCDEF') as $gr): ?>
-                <?php if ($gr == $alumno['Grupo']): ?>
-                  <option value="<?=$gr?>" selected><?=$gr?></option>
-                <?php else: ?>
-                  <option value="<?=$gr?>"><?=$gr?></option>
-                <?php endif; ?>
-              <?php endforeach; ?>
-            </select>
-
             <label for="input-turno">Turno</label>
             <select id="turno" class="form-control" name="turno">
               <option value="" selected>Turno</option>
@@ -167,33 +149,69 @@ if (isset($_POST['borrar'])) {
               <option value="V" <?=($alumno['Turno'] == "Vespertino") ? "selected" : "" ?>>Vespertino</option>
             </select>
 
-            <label for="input-asesor">Facilitador</label>
-            <select id="asesor" class="form-control" name="asesor">
-            <option value="" selected>Facilitador</option>
-              <?php foreach ($asesores as $fila): ?>
-              <?php if ($alumno['idAsesor'] == $fila['idAsesor']): ?>
-              <option value="<?=$fila['idAsesor'] ?>" selected><?=$fila['nombre'] ?></option>
-              <?php else:?>
-              <option value="<?=$fila['idAsesor'] ?>"><?=$fila['nombre'] ?></option>
-              <?php endif;?>
-              <?php endforeach; ?>
-            </select>
+            <label for="input-grupo">Grupo</label>
+            <!-- Filtro grupo -->
+            <input type="text" class="form-control" id="grupo" aria-describedby="grupoHelp" 
+            placeholder="<?=$oldGrupo?>" name="grupo">
+            <small id="grupoHelp" class="form-text text-muted">Escribe un numero seguido de una letra</small>
 
           </div><!--col-->
         </div><!--row-->
       </form>
       <div class="row my-4 justify-content-center">
         <div class="col-sm-3">
-          <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm">Aceptar cambios</button>
+          <button class="btn btn-success btn-lg btn-block text-uppercase" name="subir" form="insertForm">Aceptar cambios</button>
+        </div>
+        <!-- Button trigger modal -->
+        <div class="col-sm-3">
+          <button type="button" class="btn btn-danger btn-lg btn-block text-uppercase" data-toggle="modal" data-target="#exampleModal">
+            Borrar Alumno
+          </button>
         </div>
         <div class="col-sm-3">
-          <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" name="borrar" form="insertForm">Borrar alumno</button>
-        </div>
-        <div class="col-sm-3">
-          <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_alumnos.php'">Cancelar</button>
+          <button class="btn btn-danger btn-lg btn-block text-uppercase" onclick="window.location.href='admin_alumnos.php'">Cancelar</button>
         </div>
       </div>
     </div>
   </div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" 
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Borrar lista</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <p>¿Seguro(a) que quieres borrar a este alumno?
+              Los datos se borrarán para SIEMPRE y será IMPOSIBLE recuperarlos.</p>
+            </div>
+          </div>
+          <form id="deleteForm" method="post">
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="borrarAsesorias" name="tambienAse">
+              <label class="form-check-label" for="borrarAsesorias">
+                También borrar asesorías de este alumno
+              </label>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" name="borrar" form="deleteForm" class="btn btn-danger">
+            Estoy seguro(a), borrar</button>
+        </div><!--modal-footer-->
+      </div><!--modal-content-->
+    </div><!--modal-dialog-->
+  </div><!--modal-fade-->
+
+  <?php include '../bootstrap_js.php' ?>
 </body>
 </html>
+
+
