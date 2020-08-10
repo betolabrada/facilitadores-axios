@@ -85,4 +85,16 @@ class Turno {
 
         return $this->db->single();
     }
+
+    // @method  DELETE
+    // @desc    Delete el turno indicado por su id
+    public function deleteTurno($idTurno) {
+        $query = 'DELETE FROM Turno WHERE idTurno = :idTurno';
+
+        $this->db->query($query);
+
+        $this->db->bind(':idTurno', $idTurno);
+
+        return $this->db->execute();
+    }
 }
