@@ -70,12 +70,12 @@ class Alumno {
   }
 
   // Insertar alumno
-  public function insertarAlumno($noLista, $nombre, $apellido, $idGrupo) {
-    $sql = "INSERT INTO Alumno (noLista, nombre, apellido, idGrupo)
-      VALUES (:noLista, :nombre, :apellido, :idGrupo)";
+  public function insertarAlumno($noLista, $nombre, $apellido, $idGrupo, $idAlumno = NULL) {
+    $sql = "INSERT INTO Alumno (idAlumno, noLista, nombre, apellido, idGrupo)
+      VALUES (:idAlumno, :noLista, :nombre, :apellido, :idGrupo)";
 
     $this->db->query($sql);
-
+    $this->db->bind(':idAlumno', $idAlumno, PDO::PARAM_INT);
     $this->db->bind(':noLista', $noLista);
     $this->db->bind(':nombre', $nombre);
     $this->db->bind(':apellido', $apellido);

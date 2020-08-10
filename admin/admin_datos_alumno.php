@@ -4,7 +4,7 @@ include 'navbar_admin.php';
 $idAlumno = (int)$_GET['idAlumno'];
 $alumno_model = new Alumno();
 $escuela_model = new Escuela();
-$asesor_model = new Asesor();
+$grupo_model = new Grupo();
 
 $alumno = $alumno_model->getAlumnoById($idAlumno);
 if (!$alumno) {
@@ -13,7 +13,6 @@ if (!$alumno) {
   echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
 }
 $escuelas = $escuela_model->getEscuelas();
-$asesores = $asesor_model->getAsesores();
   
 $oldNombres = $alumno['Nombres'];
 $oldApellidos = $alumno['Apellidos'];
@@ -21,18 +20,11 @@ $oldNoLista = $alumno['NoLista'];
 $oldEscuela = $alumno['Escuela'];
 $oldGrupo = $alumno['Grupo'];
 $oldTurno = $alumno['Turno'];
-$oldAsesor = $alumno['NAsesor'];
 
 
 if (isset($_POST['subir'])) {
   print_r($_POST);
-  $nombres = $_POST['nombres'];
-  $apellidos = $_POST['apellidos'];
-  $nolista = $_POST['nolista'];
-  $escuela = $_POST['escuela'];
-  $grupo = $_POST['grupo'];
-  $turno = $_POST['turno'];
-  $asesor = $_POST['asesor'];
+  extract($_POST);
   $noChanges = 0;
 
   if($nombres === $oldNombres || $nombres === "") {
@@ -45,18 +37,13 @@ if (isset($_POST['subir'])) {
     $noChanges++;
   }
   
-  if($nolista === $oldNoLista || $nolista === "") {
-    $nolista = $oldNoLista;
+  if($noLista === $oldNoLista || $noLista === "") {
+    $noLista = $oldNoLista;
     $noChanges++;
   }
 
-  if($escuela === $oldEscuela || $escuela === "") {
-    $escuela = $oldEscuela;
-    $noChanges++;
-  }
-
-  if($grado === $oldGrado || $grado === "") {
-    $grado = $oldGrado;
+  if($idEscuela === $oldEscuela || $idEscuela === "") {
+    $idEscuela = $oldEscuela;
     $noChanges++;
   }
 
@@ -70,25 +57,34 @@ if (isset($_POST['subir'])) {
     $noChanges++;
   }
 
-  if($asesor === $oldAsesor || $asesor === "") {
-    $asesor = $oldAsesor;
-    $noChanges++;
-  }
-
-  if($noChanges == 8) {
+  if($noChanges == 6) {
     $message = "No se realizaron cambios a los datos del alumno";
     echo "<script type='text/javascript'>alert('$message');</script>";
     echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
   } else {
-    
-    $idGrupo = $alumno['idGrupo'];
-    $updated_alumno = $alumno_model->updateAlumno($idAlumno, $noLista, $nombres, $apellidos, $idGrupo);
-    if ($updated_alumno) {
-      $message = "Cambios guardados con éxito";
-      echo "<script type='text/javascript'>alert('$message');</script>";
+     // Busqueda de grupo por idEscuela, turno (M|V), grupo (numero y letra)
+     $params = array(
+      'idEscuela' => (int) $idEscuela, 
+      'turno' => $turno,
+      'grupo' => strtoupper($grupo)
+    );
+    $idGrupo = $grupo_model->getGrupoId(
+      $params['idEscuela'],
+      $params['turno'],
+      $params['grupo']
+    );
+    if (!$idGrupo) {
+      $_SESSION['message'] = "No se encontró el grupo que buscaste, reintentar con diferentes datos";
     } else {
-        $message = "Error: " . $query . "<br>";
+      $updated_alumno = $alumno_model->updateAlumno($idAlumno, $noLista, $nombres, $apellidos, $idGrupo);
+      if ($updated_alumno) {
+        $message = "Cambios guardados con éxito";
         echo "<script type='text/javascript'>alert('$message');</script>";
+        echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
+      } else {
+          $message = "Error: " . $query . "<br>";
+          echo "<script type='text/javascript'>alert('$message');</script>";
+      }
     }
   }
 }
@@ -112,8 +108,14 @@ if (isset($_POST['borrar'])) {
 ?>
 
 <div class="container">
-  <h4 class="display-4 text-center">Editando Alumno(a):</h4>
-  <br>
+  <?php if (isset($_SESSION['message'])):?>
+  <div class="alert alert-danger" role="alert">
+    <?=$_SESSION['message'] ?>
+  </div>
+  <?php unset($_SESSION['message']); ?>
+  <?php endif; ?>
+<h4 class="display-4 text-center">Editando Alumno(a):</h4>
+<br>
   <h4 class="text-center"><?php echo $alumno['Alumno']; ?></h4>
   <div class="row justify-content-center">
     <div class="col-md-10">
@@ -122,16 +124,19 @@ if (isset($_POST['borrar'])) {
           <div class="col-sm-8">
 
             <label for="input-nombre">Nombre(s)</label>
-            <input type="input-nombre" class="form-control" name="nombres" placeholder="<?php echo $alumno['Nombres']; ?>">
+            <input type="input-nombre" class="form-control" name="nombres" 
+              value="<?php echo $alumno['Nombres']; ?>">
 
             <label for="input-apellidos">Apellido(s)</label>
-            <input type="input-apellidos" class="form-control" name="apellidos" placeholder="<?php echo $alumno['Apellidos']; ?>">
+            <input type="input-apellidos" class="form-control" name="apellidos" 
+              value="<?php echo $alumno['Apellidos']; ?>">
 
             <label for="input-nlista">Número de Lista</label>
-            <input type="input-nlista" class="form-control" name="nolista" placeholder="<?php echo $alumno['NoLista']; ?>">
+            <input type="input-nlista" class="form-control" name="noLista" 
+              value="<?php echo $alumno['NoLista']; ?>">
 
             <label for="input-escuela">Escuela</label>
-            <select id="escuela" class="form-control" name="escuela">
+            <select id="escuela" class="form-control" name="idEscuela">
               <option value="" selected>Escuela</option>
               <?php foreach ($escuelas as $fila): ?>
                 <?php if ($alumno['Escuela'] == $fila['idEscuela']): ?>
@@ -150,9 +155,8 @@ if (isset($_POST['borrar'])) {
             </select>
 
             <label for="input-grupo">Grupo</label>
-            <!-- Filtro grupo -->
             <input type="text" class="form-control" id="grupo" aria-describedby="grupoHelp" 
-            placeholder="<?=$oldGrupo?>" name="grupo">
+              value="<?=$oldGrupo?>" name="grupo">
             <small id="grupoHelp" class="form-text text-muted">Escribe un numero seguido de una letra</small>
 
           </div><!--col-->
@@ -160,7 +164,7 @@ if (isset($_POST['borrar'])) {
       </form>
       <div class="row my-4 justify-content-center">
         <div class="col-sm-3">
-          <button class="btn btn-success btn-lg btn-block text-uppercase" name="subir" form="insertForm">Aceptar cambios</button>
+          <button class="btn btn-danger btn-lg btn-block text-uppercase" onclick="window.location.href='admin_alumnos.php'">Cancelar</button>
         </div>
         <!-- Button trigger modal -->
         <div class="col-sm-3">
@@ -169,7 +173,7 @@ if (isset($_POST['borrar'])) {
           </button>
         </div>
         <div class="col-sm-3">
-          <button class="btn btn-danger btn-lg btn-block text-uppercase" onclick="window.location.href='admin_alumnos.php'">Cancelar</button>
+          <button class="btn btn-success btn-lg btn-block text-uppercase" name="subir" form="insertForm">Aceptar cambios</button>
         </div>
       </div>
     </div>
