@@ -14,7 +14,7 @@ class Asesoria {
         , Grupo.grupo
         , Asesor.nombre AS asesor
         , Escuela.nombre AS escuela
-        , Turno.descripcion AS turno
+        , Turno.tipo AS turno
         , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS fecha_aseso
         , Motivo.motivo AS motivo
         , Integrantes.descripcion AS dinamica

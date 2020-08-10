@@ -12,6 +12,9 @@
       <h5 class="display-4 text-center">TURNOS</h5>
     </div>
   </div>
+  <div class="row mb-2">
+    <a role="button" href="agregar_turno.php" class="btn btn-success">NUEVO TURNO</a>
+  </div>
 </div>
 
 <div class="container text-center">
