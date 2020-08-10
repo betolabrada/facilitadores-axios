@@ -52,7 +52,7 @@ class Alumno {
         gu.grupo AS Grupo,
         ase.idAsesor AS idAsesor,
         ase.nombre AS NAsesor, 
-      t.descripcion AS Turno
+        t.tipo AS Turno
       FROM Alumno as a 
       JOIN Grupo as gu ON a.idGrupo = gu.idGrupo
       JOIN Turno as t ON gu.idTurno = t.idTurno
