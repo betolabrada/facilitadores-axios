@@ -57,7 +57,7 @@
         Escuela.idLocalidad as idSede, 
         Localidad.nombre as Sede
         FROM Escuela 
-        JOIN Localidad on Escuela.idLocalidad = Localidad.idLocalidad";
+        LEFT JOIN Localidad on Escuela.idLocalidad = Localidad.idLocalidad";
       
       if (!empty($idLocalidad)) {
         $sql .= " WHERE Escuela.idLocalidad = :idLocalidad";
