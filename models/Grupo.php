@@ -14,7 +14,6 @@
             , a.nombre
             , e.nombre as nombreEscuela
             , t.tipo
-            , t.descripcion
             , e.numero
             , l.nombre as sede
           FROM Grupo grup 
@@ -23,7 +22,6 @@
             JOIN Escuela e on e.idEscuela = t.idEscuela
             JOIN Localidad l on l.idLocalidad = e.idLocalidad
           WHERE e.idEscuela = :idEscuela
-          AND t.descripcion = :descTurno
           AND grup.grupo = :grupo ' ;
       
       $this->db->query($sql);
@@ -84,14 +82,13 @@
           gu.grupo AS Grupo, 
           gu.idGrupo AS idGrupo, 
           ase.nombre AS NAsesor, 
-          t.descripcion AS Turno
+          t.tipo AS Turno
         FROM Grupo as gu 
         JOIN Turno as t ON gu.idTurno = t.idTurno
         JOIN Escuela as e ON t.idEscuela = e.idEscuela
         JOIN Localidad as l ON l.idLocalidad = e.idLocalidad
         JOIN Asesor as ase ON t.idAsesor = ase.idAsesor
         WHERE gu.grupo = :grupo 
-        AND t.descripcion = :descTurno
         AND e.idEscuela = :escuela  
         AND ase.nombre = :asesor";
 

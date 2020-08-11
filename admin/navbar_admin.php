@@ -47,6 +47,9 @@
         <li class="nav-item <?=($current_page == 'admin_grupos.php') ? 'active' : ''?>">
           <a class="nav-link" href="admin_grupos.php">Grupos</a>
         </li>
+        <li class="nav-item <?=($current_page == 'admin_asesorias.php') ? 'active' : ''?>">
+          <a class="nav-link" href="admin_asesorias.php">Asesorías</a>
+        </li>
       </ul>
       <button class="btn" type="submit" onclick="cerrar()">Cerrar Sesión</button>
     </div>
