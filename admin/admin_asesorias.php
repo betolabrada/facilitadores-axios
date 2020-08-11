@@ -11,28 +11,28 @@ $sede = new Sede();
 $escuela = new Escuela();
 
 $asesores = $asesor->getAsesores();
-$asesoriasTabla = $asesoria->getAsesoriasTabla();
+$asesoriasTabla = $asesoria->getAsesorias();
 $stats = $asesoria->stats();
 $sedes = $sede->getSedes();
 $escuelas = $escuela->getEscuelas();
 
 if (isset($_POST['filtrar'])) {
-  $where = "";
-
-  $post_asesor = $_POST['asesor'];
-  $post_sede = $_POST['sede'];
-  $post_escuela = $_POST['escuela'];
-  $rangoDeFechasInicio = $_POST['rangoDeFechasInicio'];
-  $rangoDeFechasFin = $_POST['rangoDeFechasFin'];
-
-  if ($post_asesor) $where .= " AND Asesor.idAsesor = '$post_asesor'";
-  if ($post_sede) $where .= " AND Localidad.idLocalidad = '$post_sede'";
-  if ($post_escuela) $where .= " AND Escuela.idEscuela = " . $post_escuela . " ";
-  if (isset($_POST['filtroFecha']) && $rangoDeFechasInicio && $rangoDeFechasFin) {
+  extract($_POST);
+  $where = '';
+  if (!empty($sede)) {
+    $where .= ' AND Localidad.idLocalidad = ' . $sede;
+  }
+  if (!empty($escuela)) {
+    $where .= ' AND Escuela.idEscuela = ' . $escuela;
+  }
+  if (!empty($asesor)) {
+    $where .= ' AND Asesor.idAsesor = ' . $asesor;
+  }
+  if (isset($filtroFecha)) {
     $where .= " AND Asesoria.fecha BETWEEN '$rangoDeFechasInicio' AND '$rangoDeFechasFin'";
   }
 
-  $asesoriasFiltrado = $asesoria->getAsesoriasTabla($where);
+  $asesoriasFiltrado = $asesoria->getAsesorias($where);
   $stats = $asesoria->stats($where);
 }
 
@@ -43,6 +43,7 @@ if (isset($asesoriasFiltrado)) {
 }
 
 $total = count($tabla);
+$_SESSION['toExport'] = $tabla;
 
 ?>
 
@@ -51,10 +52,8 @@ $total = count($tabla);
     <h4 class="display-4 text-center">Historial de asesorías</h4>
   </div><!--row-->
   <!-- FILTROS-->
-  <div class="row mb-3">
-    <div class="col-sm-12">
-      <h5>FILTROS</h5>
-    </div><!--col-->
+  <div class="row mt-5">
+    <h5>FILTROS</h5>
   </div><!--row-->
   <form method="post">
     <div class="row mb-3">
@@ -63,7 +62,7 @@ $total = count($tabla);
         <select id="filtroAsesor" class="form-control" name="asesor">
           <option value="" selected>Facilitador</option>
           <?php foreach ($asesores as $fila): ?>
-            <?php if (isset($post_asesor) && $post_asesor == $fila['idAsesor']): ?>
+            <?php if (isset($asesor) && $asesor == $fila['idAsesor']): ?>
               <option value="<?=$fila['idAsesor'] ?>" selected><?=$fila['nombre'] ?></option>
             <?php else:?>
               <option value="<?=$fila['idAsesor'] ?>"><?=$fila['nombre'] ?></option>
@@ -76,7 +75,7 @@ $total = count($tabla);
         <select id="filtroSede" class="form-control" name="sede">
           <option value="" selected>Sede</option>
           <?php foreach ($sedes as $fila): ?>
-            <?php if (isset($post_sede) && $post_sede == $fila['idLocalidad']): ?>
+            <?php if (isset($sede) && $sede == $fila['idLocalidad']): ?>
               <option value="<?=$fila['idLocalidad'] ?>" selected><?=$fila['nombre'] ?></option>
             <?php else: ?>
               <option value="<?=$fila['idLocalidad'] ?>"><?=$fila['nombre'] ?></option>
@@ -89,7 +88,7 @@ $total = count($tabla);
         <select id="filtroEscuela" class="form-control" name="escuela">
           <option value="" selected>Escuela</option>
           <?php foreach ($escuelas as $fila): ?>
-            <?php if (isset($post_escuela) && $post_escuela == $fila['idEscuela']): ?>
+            <?php if (isset($escuela) && $escuela == $fila['idEscuela']): ?>
               <option value="<?=$fila['idEscuela'] ?>" selected><?=$fila['nombre'] ?></option>
             <?php else: ?>
               <option value="<?=$fila['idEscuela'] ?>"><?=$fila['nombre'] ?></option>
@@ -99,20 +98,26 @@ $total = count($tabla);
       </div><!--col-->
     </div><!--row-->
     <!-- filtros por fecha -->
-    <div class="row mb-3">
+    <div class="row">
+      <h6>FILTRAR POR FECHA</h6>
       <div class="col-sm-12">
-        <h5>FILTRAR POR FECHA</h5>
         <label class="checkbox-label"><input type="checkbox" name="filtroFecha" id="filtroFecha">
           Activar filtros
         </label>
-      </div>
-      <div id="rangoDeFechas" class="form-group col-sm-5">
-          <input id="rangoDate" type="text" autocomplete="off" name="fechas" class="form-control">
+      </div><!--col-->
+    </div><!--row-->
+    <div class="row">
+      <div class="col-6">
+        <div id="rangoDeFechas" class="form-group">
+          <input id="rangoDate" type="text" autocomplete="off" class="form-control">
           <input id="resultStart" type="hidden" name="rangoDeFechasInicio">
           <input id="resultEnd" type="hidden" name="rangoDeFechasFin">
+        </div>
+      </div><!--col-->
+      <div class="col-6">
+        <button name="filtrar" type="submit" class="btn btn-success">FILTRAR</button>
       </div>
-    </div>
-    <button name="filtrar" type="submit" class="btn btn-success">FILTRAR</button>
+    </div><!--row-->
   </form>         
   <div class="row mt-4">
     <div class="col-sm-6">
@@ -121,16 +126,13 @@ $total = count($tabla);
         <p>Mostrando <strong><?=$total?></strong> resultados</p>
       </div>
     </div><!--col-sm-6-->
-    <div class="col-sm-6">
-      <form action="exportar_csv.php" method="post">
+    <div class="col-sm-6 align-self-end">
+      <form action="exportar_csv.php">
         <div class="row justify-content-end">
           <div class="col-sm-6">
-            <button type="submit" name="exportar" class="btn btn-warning btn-block">Exportar CSV</button>
-          </div>
-          <div class="col-sm-6">
-            <button type="submit" name="exportar_todo" class="btn btn-secondary btn-block">Exportar Todo</button>
-          </div>
-        </div>
+            <button type="submit" name="exportar" class="btn btn-dark btn-block">Exportar</button>
+          </div><!--col-->
+        </div><!--row-->
       </form>
     </div><!--col-sm-6-->
   </div><!--row-->

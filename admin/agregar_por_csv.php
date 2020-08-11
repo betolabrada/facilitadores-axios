@@ -8,16 +8,16 @@ $asesor_model = new Asesor;
 
 
 if (!isset($_GET['idGrupo'])) {
-  $grupoId = 1;
+  $idGrupo = 1;
 } else {
-  $grupoId = $_GET['idGrupo'];
+  $idGrupo = $_GET['idGrupo'];
 }
 
-$asesorDeGrupo = $asesor_model->getAsesorDeGrupo($grupoId);
+$asesorDeGrupo = $asesor_model->getAsesorDeGrupo($idGrupo);
 
 
 // Alumnos de grupo
-$alumnos = $grupo_model->getAlumnos($grupoId);
+$alumnos = $grupo_model->getAlumnos($idGrupo);
 
 // toExport
 $_SESSION['toExport'] = $alumnos;
@@ -38,13 +38,15 @@ if (isset($_POST['importar'])) {
       while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
         // Define params to insert
         $params = array (
-          'noLista' => $column[0],
-          'nombre' => utf8_encode($column[1]),
-          'apellido' => utf8_encode($column[2]),
-          'idGrupo' => $grupoId
+          'noLista' => (int) $column[0],
+          'idAlumno' => (int) $column[1],
+          'nombre' => utf8_encode($column[2]),
+          'apellido' => utf8_encode($column[3]),
+          'idGrupo' => (int) $idGrupo
         );
+        extract($params);
         // Insert to DB
-        $inserted = $alumno_model->insertarAlumno(...$params);
+        $inserted = $alumno_model->insertarAlumno($noLista, $nombre, $apellido, $idGrupo, $idAlumno);
         
         // Check if error
         if (!$inserted) {
@@ -62,7 +64,7 @@ if (isset($_POST['importar'])) {
 
 if (isset($_POST['delete'])) {
   
-  $deleted = $alumno_model->deleteLista($grupoId);
+  $deleted = $alumno_model->deleteLista($idGrupo);
 
   if ($deleted) {
     echo "<meta http-equiv='refresh' content='0'>";

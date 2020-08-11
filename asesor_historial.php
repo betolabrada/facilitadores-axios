@@ -1,10 +1,5 @@
 <?php 
-// Seleccion de navbar
-if (isset($_SESSION['admin'])) {
-  include 'admin/navbar_admin.php';
-} else {
-  include 'asesor_navbar.php';
-}
+include 'asesor_navbar.php';
 
 // Traemos modelo de Asesor para los queries y lo instanciamos
 require_once 'models/Asesor.php';

@@ -14,7 +14,6 @@
             , a.nombre
             , e.nombre as nombreEscuela
             , t.tipo
-            , t.descripcion
             , e.numero
             , l.nombre as sede
           FROM Grupo grup 
@@ -23,7 +22,6 @@
             JOIN Escuela e on e.idEscuela = t.idEscuela
             JOIN Localidad l on l.idLocalidad = e.idLocalidad
           WHERE e.idEscuela = :idEscuela
-          AND t.descripcion = :descTurno
           AND grup.grupo = :grupo ' ;
       
       $this->db->query($sql);
@@ -84,14 +82,13 @@
           gu.grupo AS Grupo, 
           gu.idGrupo AS idGrupo, 
           ase.nombre AS NAsesor, 
-          t.descripcion AS Turno
+          t.tipo AS Turno
         FROM Grupo as gu 
         JOIN Turno as t ON gu.idTurno = t.idTurno
         JOIN Escuela as e ON t.idEscuela = e.idEscuela
         JOIN Localidad as l ON l.idLocalidad = e.idLocalidad
         JOIN Asesor as ase ON t.idAsesor = ase.idAsesor
         WHERE gu.grupo = :grupo 
-        AND t.descripcion = :descTurno
         AND e.idEscuela = :escuela  
         AND ase.nombre = :asesor";
 
@@ -125,15 +122,14 @@
         return false;
     }
     
-    public function editarGrupo($variable,$variableCambiar,$idGrupo){
+    public function editarNombreGrupo($idGrupo, $nombre){
         $query = 'UPDATE Grupo
-	SET :variable = :variableCambiar
-	WHERE idGrupo = :idGrupo';
+          SET grupo = :nombre
+          WHERE idGrupo = :idGrupo';
         
         $this->db->query($query);
         
-        $this->db->bind(':variable', $variable);
-        $this->db->bind(':variableCambiar', $variableCambiar);
+        $this->db->bind(':nombre', $nombre);
         $this->db->bind(':idGrupo', $idGrupo);
         
         
@@ -145,7 +141,7 @@
     
     
     public function deleteGrupo($idGrupo){
-        $query = 'DELETE * FROM Grupo WHERE idGrupo = :idGrupo';
+        $query = 'DELETE FROM Grupo WHERE idGrupo = :idGrupo';
         
         $this->db->query($query);
         
@@ -167,5 +163,38 @@
         
         return $this->db->resultSet();
     }
-    
+
+    // @method  SELECT
+    // @desc    GET Grupo por su 'grupo' y su $idTurno. Ej. getGrupo('1A', 3)
+    public function getGrupo($grupo, $idTurno) {
+      $query = "SELECT * FROM Grupo WHERE grupo = :grupo AND idTurno = :idTurno";
+
+      $this->db->query($query);
+
+      $this->db->bind(':grupo', $grupo);
+      $this->db->bind(':idTurno', $idTurno);
+
+      return $this->db->single();
+    }
+
+    // @method  SELECT
+    // @desc    GET Escuela,Turno dado idGrupo Ej. Mixta #5 "Lic. Juan Manuel Ruvalcaba De la Mora",M
+    public function getTurnoByIdGrupo($idGrupo) {
+      $query = "SELECT CONCAT(Escuela.nombre, ',', Turno.tipo) AS turno 
+        FROM Grupo 
+          JOIN Turno on Turno.idTurno = Grupo.idTurno 
+          JOIN Escuela on Escuela.idEscuela = Turno.idEscuela 
+        WHERE idGrupo = :idGrupo";
+
+      $this->db->query($query);
+
+      $this->db->bind(':idGrupo', $idGrupo);
+
+      $record = $this->db->single();
+      if ($record) {
+        return $record['turno'];
+      } else {
+        return 'N/A';
+      }
+    }
   }

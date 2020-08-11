@@ -8,16 +8,15 @@ class Turno {
     }
 
     // Agregar turno
-    public function agregarTurno($tipo, $descripcion, $escuela, $asesor) {
-        $query = 'INSERT INTO Turno (idTurno, tipo, descripcion, idEscuela, idAsesor) 
-            VALUE (null, :tipo, :descripcion, :idEsc, :idAse)';
+    public function agregarTurno($tipo, $idEscuela, $idAsesor) {
+        $query = 'INSERT INTO Turno (tipo, idEscuela, idAsesor) 
+            VALUE (:tipo, :idEsc, :idAse)';
         
         $this->db->query($query);
         
         $this->db->bind(':tipo', $tipo);
-        $this->db->bind(':descripcioen', $descripcion);
-        $this->db->bind(':idEsc', $escuela);
-        $this->db->bind(':idAse', $asesor);
+        $this->db->bind(':idEsc', $idEscuela);
+        $this->db->bind(':idAse', $idAsesor);
         
         if ($this->db->execute()) {
             return true;
@@ -72,4 +71,30 @@ class Turno {
         return $this->db->single();
     }
     
+    // @method  SELECT
+    // @desc    Obtiene el turno indicado por tipo (M/V) y idEscuela
+    public function getTurnoByTipoyEscuela($tipo, $idEscuela) {
+        $query = 'SELECT * 
+        FROM Turno 
+        WHERE tipo = :tipo AND idEscuela = :idEscuela';
+
+        $this->db->query($query);
+
+        $this->db->bind(':tipo', $tipo);
+        $this->db->bind(':idEscuela', $idEscuela);
+
+        return $this->db->single();
+    }
+
+    // @method  DELETE
+    // @desc    Delete el turno indicado por su id
+    public function deleteTurno($idTurno) {
+        $query = 'DELETE FROM Turno WHERE idTurno = :idTurno';
+
+        $this->db->query($query);
+
+        $this->db->bind(':idTurno', $idTurno);
+
+        return $this->db->execute();
+    }
 }

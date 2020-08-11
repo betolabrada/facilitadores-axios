@@ -52,7 +52,7 @@ class Asesor {
   // @fields  grupo, nombre, nombreEscuela, tipoTurno, descTurno, numeroEscuela, sede 
   public function getAsesorDeGrupo($idGrupo) {
     $sql = 'SELECT 
-        grup.grupo, a.nombre, e.nombre as nombreEscuela, t.tipo, t.descripcion, e.numero, l.nombre as sede
+        grup.grupo, a.nombre, e.nombre as nombreEscuela, t.tipo, t.tipo, e.numero, l.nombre as sede
         FROM Grupo grup 
         JOIN Turno t on t.idTurno = grup.idTurno 
         JOIN Asesor a on a.idAsesor = t.idAsesor 
@@ -155,15 +155,15 @@ class Asesor {
 
   // @method  INSERT
   // @desc    Agregar nueva entrada de diario de campo
-  public function insertarNuevaEntrada($idAsesor, $data) {
+  public function insertarNuevaEntrada($idAsesor, $idGrupo, $anotacion) {
     $query = 'INSERT INTO DiarioCampo (idGrupo, idAsesor, Anotacion) 
       VALUES (:idGrupo, :idAsesor, :anotacion)';
 
     $this->db->query($query);
 
     $this->db->bind(':idAsesor', $idAsesor);
-    $this->db->bind(':idGrupo', $data['grupo']);
-    $this->db->bind(':anotacion', $data['anotacion']);
+    $this->db->bind(':idGrupo', $idGrupo);
+    $this->db->bind(':anotacion', $anotacion);
 
     return $this->db->execute();
   }
@@ -171,7 +171,11 @@ class Asesor {
   // @method  SELECT
   // @desc    Obtiene todas las entradas del diario de campo de un Asesor
   public function getEntradas($idAsesor) {
-    $query = 'SELECT Grupo.grupo as Grupo, DiarioCampo.Fecha, DiarioCampo.Anotacion FROM DiarioCampo JOIN Asesor ON DiarioCampo.idAsesor = Asesor.idAsesor JOIN Grupo on DiarioCampo.idGrupo = Grupo.idGrupo WHERE Asesor.idAsesor = :idAsesor';
+    $query = 'SELECT Grupo.idGrupo, Grupo.grupo as Grupo, DiarioCampo.Fecha, DiarioCampo.Anotacion 
+      FROM DiarioCampo 
+      JOIN Asesor ON DiarioCampo.idAsesor = Asesor.idAsesor 
+      JOIN Grupo on DiarioCampo.idGrupo = Grupo.idGrupo 
+      WHERE Asesor.idAsesor = :idAsesor';
 
     $this->db->query($query);
 

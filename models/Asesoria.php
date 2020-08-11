@@ -14,7 +14,7 @@ class Asesoria {
         , Grupo.grupo
         , Asesor.nombre AS asesor
         , Escuela.nombre AS escuela
-        , Turno.descripcion AS turno
+        , Turno.tipo AS turno
         , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS fecha_aseso
         , Motivo.motivo AS motivo
         , Integrantes.descripcion AS dinamica
@@ -33,7 +33,7 @@ class Asesoria {
     return $asesorias;
   }
 
-  public function getAsesoriasTabla($filters = "") {
+  public function getAsesorias($filters = '') {
     $sql =
         "SELECT
             Asesoria.idAsesoria AS idAsesoria
@@ -53,9 +53,13 @@ class Asesoria {
         JOIN Turno on Turno.idAsesor = Asesor.idAsesor
         JOIN Escuela on Escuela.idEscuela = Turno.idEscuela
         JOIN Localidad on Localidad.idLocalidad = Escuela.idLocalidad
-        WHERE 1 $filters
-        ORDER BY Asesoria.fecha DESC";
-
+        WHERE 1";
+    
+    if (!empty($filters)) {
+      $sql .= $filters;
+    }
+    
+    $sql .= " ORDER BY Asesoria.fecha DESC";
     $this->db->query($sql);
     
     return $this->db->resultSet();

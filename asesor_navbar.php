@@ -1,7 +1,4 @@
 <?php 
-  require_once 'config/db.php'; 
-  require_once 'lib/Database.php'; 
-
   $current_page = basename($_SERVER['PHP_SELF']);
 ?>
 <?php include 'asesor_check.php'; ?>

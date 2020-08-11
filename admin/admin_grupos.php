@@ -14,7 +14,7 @@
   // Alumnos
   $resultAlumnosSuccess = false;
 
-  // Busqueda
+  // Busqueda de grupo
   if (isset($_GET['search'])) {
     $busqueda = true;
     if (!$_GET['idEscuela'] || !$_GET['turno'] || !$_GET['grupo'] ) {
