@@ -2,12 +2,12 @@
 
 session_start();
 if (isset($_SESSION['admin'])) {
-  include '../navbar_admin.php';
+  include 'navbar_admin.php';
 } else {
-  include '../../asesor_navbar.php';
+  include '../asesor_navbar.php';
 }
 
-require_once '../../models/Asesoria.php';
+require_once '../models/Asesoria.php';
 
 $asesoria_model = new Asesoria();
 
@@ -39,11 +39,11 @@ $mail = $_SESSION['user'];
 
                 <label for="input-dinamica">Dinamica</label>
                 <select id="input-dinamica" class="form-control" name="integrantes">
-                    <option value="1" <?php echo $asesoria[0]['idIntegrantes'] == "1"?'checked/"checked/"':'' ?>>Sólo alumno</option>
-                    <option value="2" <?php echo $asesoria[0]['idIntegrantes'] == "2"?'checked/"checked/"':'' ?>>Con padres</option>
+                    <option value="1" <?php echo $asesoria[0]['idIntegrantes'] == "1"?'checked=/"checked/"':'' ?>>Sólo alumno</option>
+                    <option value="2" <?php echo $asesoria[0]['idIntegrantes'] == "2"?'checked=/"checked/"':'' ?>>Con padres</option>
                 </select>
                 
-                <label>Nombre alumno</label>
+                <label>Observaciones</label>
                 <input type="text" class="form-control" name="observaciones" value="<?php echo $asesoria[0]['observaciones']?>"/>
                 
                 <input type="number" name="idAsesoria" value="<?php echo $_POST['idAsesoria']?>" hidden="hidden"/>
@@ -51,7 +51,7 @@ $mail = $_SESSION['user'];
               </div>
             </div>
         </form>
-        <form action="../../asesor_dashboard.php?inputMail=<?php echo $mail?>" method="POST" id="cancelarForm">
+        <form action="../asesor_dashboard.php?inputMail=<?php echo $mail?>" method="POST" id="cancelarForm">
         </form>
         <div class="row my-4 justify-content-center">
           <div class="col-sm-3">

@@ -70,7 +70,7 @@ if (isset($_POST['subir'])) {
         </form>
         <div class="row my-4 justify-content-center">
           <div class="col-sm-3">
-            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm" type="submit">Aceptar cambios</button>
+            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm" type="submit">Crear escuela</button>
           </div>
           <div class="col-sm-3">
             <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_sedes.php'">Cancelar</button>

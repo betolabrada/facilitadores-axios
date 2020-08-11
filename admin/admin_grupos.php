@@ -99,6 +99,10 @@
     </div><!--row-->
 
   </form>
+  
+  <form method="POST" action="confirmar_agregar_grupo.php" id="crearForm">
+  </form>
+  
   <div class="row mt-4">
     <div class="col-sm-3">
       <button class="btn btn-success btn-lg btn-block text-uppercase" form="crearForm">

@@ -109,11 +109,11 @@
     }
     
     // Delete escuela
-    public function deleteEscuela($nombreEscuela){
-        $this->db->query('DELETE FROM Escuela WHERE nombre = :nombreEscuela');
+    public function deleteEscuela($idEscuela){
+        $this->db->query('DELETE FROM Escuela WHERE idEscuela = :idEscuela');
         
         // Bind value
-        $this->db->bind(':nombreEscuela', $nombreEscuela);
+        $this->db->bind(':idEscuela', $idEscuela);
         
         // Execute
         if ($this->db->execute()) {
