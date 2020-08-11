@@ -188,7 +188,8 @@ class Asesor {
   // @desc    Obtiene historial de asesorias de Asesor con opcion de filtrado de mes
   public function getAsesorias($idAsesor, $mes = null) {
     $query = 'SELECT
-      Alumno.idAlumno AS idAlumno 
+      Asesoria.idAsesoria AS idAsesoria 
+      , Alumno.idAlumno AS idAlumno 
       , CONCAT(Alumno.nombre," ",Alumno.apellido) AS Alumno
       , DATE_FORMAT(Asesoria.fecha, "%d-%m-%Y") AS Fecha 
       , Motivo.motivo AS Motivo
