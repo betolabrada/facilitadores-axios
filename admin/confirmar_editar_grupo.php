@@ -25,6 +25,15 @@ if (isset($_POST['borrarGrupo'])) {
     }
 }
 
+if (isset($_POST['actualizarGrupo'])) {
+    if ($grupo_model->editarNombreGrupo($_POST['idGrupo'], $_POST['nombre'])) {
+        echo "Cambio de nombre Exitoso";
+        header('Location: admin_grupos.php');
+    } else {
+        echo "ERROR";
+    }
+}
+
 ?>
 
 <div class="container">
@@ -32,7 +41,7 @@ if (isset($_POST['borrarGrupo'])) {
   <br>
     <div class="row justify-content-center">
       <div class="col-md-10">
-        <form method="post" action="editar_grupo.php" id="insertForm">
+        <form method="post" id="insertForm">
             <div class="row my-4">
               <div class="col-sm-2"></div>
               <div class="col-sm-8">
@@ -64,7 +73,7 @@ if (isset($_POST['borrarGrupo'])) {
           
         <div class="row my-4 justify-content-center">
           <div class="col-sm-3">
-            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" form="insertForm">Actualizar</button>
+            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name='actualizarGrupo' form="insertForm" type="submit">Actualizar</button>
           </div>
           <div class="col-sm-3">
             <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" name='borrarGrupo' form='borrarForm' type="submit">Borrar grupo</button>

@@ -122,15 +122,14 @@
         return false;
     }
     
-    public function editarGrupo($variable,$variableCambiar,$idGrupo){
+    public function editarNombreGrupo($idGrupo, $nombre){
         $query = 'UPDATE Grupo
-          SET :variable = :variableCambiar
+          SET grupo = :nombre
           WHERE idGrupo = :idGrupo';
         
         $this->db->query($query);
         
-        $this->db->bind(':variable', $variable);
-        $this->db->bind(':variableCambiar', $variableCambiar);
+        $this->db->bind(':nombre', $nombre);
         $this->db->bind(':idGrupo', $idGrupo);
         
         
