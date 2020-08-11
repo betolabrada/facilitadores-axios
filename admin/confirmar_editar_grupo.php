@@ -27,9 +27,15 @@ if (isset($_POST['borrarGrupo'])) {
 
 if (isset($_POST['actualizarGrupo'])) {
     if ($grupo_model->editarNombreGrupo($_POST['idGrupo'], $_POST['nombre'])) {
-        echo "Cambio de nombre Exitoso";
+        echo "Cambio de Nombre Exitoso";
         header('Location: admin_grupos.php');
     } else {
+        echo "ERROR";
+    }
+    if ($grupo_model->editarTurnoGrupo($_POST['idGrupo'], $_POST['idTurno'])){
+        echo "Cambio de Turno Exitoso";
+        header('Location: admin_grupos.php'); 
+    } else{
         echo "ERROR";
     }
 }
@@ -52,8 +58,8 @@ if (isset($_POST['actualizarGrupo'])) {
             <div class="row my-4">
               <div class="col-sm-2"></div>
               <div class="col-sm-8">
-                <label for="input-turno">Grado</label>
-                <select id="input-turno" class="form-control" name="turno">
+                <label for="input-turno">Turno</label>
+                <select id="input-turno" class="form-control" name="idTurno">
                     <?php foreach ($turnos as $fila): ?>
                     <?php if ($selected==false): $selected=true;?>
                     <option value="<?=$fila['idTurno'] ?>" selected><?php echo $fila['tipo'] . ", " . $fila['Escuela'] . ", " . $fila['nombre']?></option>

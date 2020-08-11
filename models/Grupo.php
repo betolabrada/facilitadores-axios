@@ -61,6 +61,7 @@
       }
 
     }
+    
 
     // @method  SELECT
     // @desc    GET ALUMNOS de Grupo
@@ -115,6 +116,24 @@
         
         $this->db->bind('grupo', $grupo);
         $this->db->bind(':idTurno', $turno);
+        
+        if ($this->db->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+
+    public function editarTurnoGrupo($idGrupo, $idTurno){
+        $query = 'UPDATE Grupo
+          SET idTurno = :idTurno
+          WHERE idGrupo = :idGrupo';
+        
+        $this->db->query($query);
+        
+        $this->db->bind(':idTurno', $idTurno);
+        $this->db->bind(':idGrupo', $idGrupo);
+        
         
         if ($this->db->execute()) {
             return true;
