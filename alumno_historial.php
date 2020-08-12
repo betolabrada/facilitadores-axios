@@ -1,9 +1,11 @@
 <?php
-include 'asesor_navbar.php';
+/**
+ * alumno_historial.php
+ * @desc  pagina que despliega el historial del alumno (vista de asesor)
+ */
 
-require_once 'models/Alumno.php';
-require_once 'models/Asesor.php';
-require_once 'models/Asesoria.php';
+
+include 'asesor_navbar.php';
 
 $alumno_model = new Alumno;
 $asesor_model = new Asesor;
@@ -18,13 +20,6 @@ $asesor = $asesor_model->getAsesorById($idAsesor);
 $alumno = $alumno_model->getAlumnoById($idAlumno);
 
 $mail = $asesor['correo'];
-
-$where = "WHERE Alumno.idAlumno = $idAlumno";
-if (isset($_POST['filtrar'])) {
-    if ($_POST['mes']) {
-        $where .= " AND MONTH(Asesoria.fecha) = " . $_POST['mes'];
-    }    
-}
 
 ?>
 
@@ -70,11 +65,12 @@ if (isset($_POST['filtrar'])) {
 <?php include 'bootstrap_js.php' ?>
 <script src="js/paginacion/tablePagination.js"></script>
 <script src="js/paginacion/index.js"></script>
-
+<!-- MODALES DE MÁS INFORMACIÓN -->
 <?php include "modal_obs.php" ?>
 <?php include "modal_motivo.php" ?>
 
 <script>
+    // Activa modales
     $(document).ready(function() {
         $(document.body).on("click", "td[data-obs]", function() {
             $("#modalObservacion .modal-body").html(this.dataset.obs);
