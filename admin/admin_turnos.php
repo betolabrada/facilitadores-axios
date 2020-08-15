@@ -32,7 +32,7 @@
           <?php foreach ($turnos as $fila): ?>
             <tr>
               <td class="align-middle"><?=$fila['turno']; ?></td>
-              <td class="align-middle"><?=$fila['nombreAsesor']; ?></td>
+              <td class="align-middle"><?=!empty($fila['nombreAsesor']) ? $fila['nombreAsesor'] : 'ASESOR BORRADO' ?></td>
               <td class="align-middle">
                 <a role="button" 
                   href="editar_turno.php?idTurno=<?=$fila['idTurno']; ?>" 

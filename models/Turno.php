@@ -43,7 +43,7 @@ class Turno {
      public function getTurnos() {
         $this->db->query('SELECT Turno.idTurno, Turno.tipo, Escuela.nombre as Escuela, '
                 . 'Asesor.nombre FROM Turno JOIN Escuela ON Turno.idEscuela = '
-                . 'Escuela.idEscuela JOIN Asesor ON Asesor.idAsesor = Turno.idAsesor');
+                . 'Escuela.idEscuela LEFT JOIN Asesor ON Asesor.idAsesor = Turno.idAsesor');
 
         $results = $this->db->resultSet();
 
@@ -59,7 +59,7 @@ class Turno {
             Asesor.nombre as nombreAsesor, 
             Turno.idTurno, CONCAT(Escuela.nombre, ", ", Turno.tipo) as turno
         FROM Turno 
-        JOIN Asesor ON Turno.idAsesor = Asesor.idAsesor
+        LEFT JOIN Asesor ON Turno.idAsesor = Asesor.idAsesor
         JOIN Escuela ON Turno.idEscuela = Escuela.idEscuela
         WHERE idTurno = :idTurno';
 
