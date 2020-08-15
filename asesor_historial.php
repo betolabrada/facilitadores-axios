@@ -6,7 +6,7 @@ require_once 'models/Asesor.php';
 $asesor_model = new Asesor();
 
 // Leemos parametro de idAsesor para obtener el asesor actual
-$idAsesor = (int) $_GET['id'];
+$idAsesor = (int) $_GET['idAsesor'];
 $asesor = $asesor_model->getAsesorById($idAsesor);
 
 // Arreglo de meses para el select

@@ -7,6 +7,8 @@
   $asesores = $asesor_model->getAsesores();
 
   $turno = $turno_model->getTurnoById($idTurno);
+  print_r($turno);
+  echo '<br>';
 
   print_r($_POST);
 
@@ -53,7 +55,7 @@ if (isset($_POST['aceptar']) && isset($_POST['asesor'])) {
             </div><!--col-->
             <div class="col-sm-3">
               <button type="button" class="btn btn-danger btn-lg btn-primary btn-block text-uppercase"
-                onclick="window.location.href='admin_facilitadores.php'">Cancelar</button>
+                onclick="window.history.go(-1)">Cancelar</button>
             </div><!--col-->
           </div><!--row-->
         </form>

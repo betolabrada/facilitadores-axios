@@ -46,13 +46,10 @@ class Asesoria {
             , Integrantes.descripcion AS dinamica
             , Asesoria.observaciones AS observaciones
         FROM Asesoria
-        JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno
-        JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor
+        LEFT JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno
+        LEFT JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor
         JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo
         JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
-        JOIN Turno on Turno.idAsesor = Asesor.idAsesor
-        JOIN Escuela on Escuela.idEscuela = Turno.idEscuela
-        JOIN Localidad on Localidad.idLocalidad = Escuela.idLocalidad
         WHERE 1";
     
     if (!empty($filters)) {

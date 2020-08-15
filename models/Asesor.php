@@ -227,7 +227,7 @@ class Asesor {
       Asesor.nombre as nombreAsesor, 
       Turno.idTurno, CONCAT(Escuela.nombre, ", ", Turno.tipo) as turno
       FROM Turno 
-      JOIN Asesor ON Turno.idAsesor = Asesor.idAsesor
+      LEFT JOIN Asesor ON Turno.idAsesor = Asesor.idAsesor
       JOIN Escuela ON Turno.idEscuela = Escuela.idEscuela';
 
     if (!empty($idAsesor)) {

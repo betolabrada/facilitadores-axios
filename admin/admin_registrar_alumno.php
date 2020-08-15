@@ -12,6 +12,7 @@
 
   if (isset($_POST['subir'])) {
     print_r($_POST);
+    echo '<br>';
     extract($_POST);
     // Validar que todo se haya llenado
     if (empty($noLista) || empty($idEscuela) || empty($turno) || empty($grupo)) {
@@ -35,37 +36,21 @@
 
     if ($idGrupo) {
       // Insertar nuevo alumno en grupo
-      $inserted = $alumno_model->insertarAlumno($noLista, $nombres, $apellidos, $idGrupo);
-
-      if ($inserted) {
-        $message = "Cambios guardados con éxito";
-        echo "<script type='text/javascript'>alert('$message');</script>";
-        echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
-      } else {
-        $message = "Error: " . $query . "<br>";
-        echo "<script type='text/javascript'>alert('$message');</script>";
+      try {
+        $inserted = $alumno_model->insertarAlumno($noLista, $nombres, $apellidos, $idGrupo);
+        if ($inserted) {
+          $message = "Cambios guardados con éxito";
+          echo "<script type='text/javascript'>alert('$message');</script>";
+          echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
+        } else {
+          $message = "Error: " . $query . "<br>";
+          echo "<script type='text/javascript'>alert('$message');</script>";
+        }
+      } catch (PDOException $e) {
+        $_SESSION['message'] = 'Error ' . $e->getCode() . ': Es posible que el número de lista que ingresaste ya lo ocupa otro alumno. Reintentar';
       }
+
     }
-
-
-    
-    // if(!$group_exists) {
-    //     $message = "Los datos ingresados no son válidos. Por favor ingresa una combinación permitida.";
-    //     echo "<script type='text/javascript'>alert('$message');</script>";
-    // } else {
-    //     // Insertar nuevo alumno
-    //     $idGrupo = $group_exists['idGrupo'];
-    //     $inserted = $alumno_model->insertarAlumno($noLista, $nombres, $apellidos, $idGrupo);
-
-    //     if ($inserted) {
-    //         $message = "Cambios guardados con éxito";
-    //         echo "<script type='text/javascript'>alert('$message');</script>";
-    //         echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
-    //     } else {
-    //         $message = "Error: " . $query . "<br>";
-    //         echo "<script type='text/javascript'>alert('$message');</script>";
-    //     }
-    // }
   }
 ?>
 

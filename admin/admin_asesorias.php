@@ -1,29 +1,24 @@
 <?php
 include 'navbar_admin.php';
-require_once '../models/Asesor.php';
-require_once '../models/Asesoria.php';
-require_once '../models/Sede.php';
-require_once '../models/Escuela.php';
 
 $asesor = new Asesor();
 $asesoria = new Asesoria();
 $sede = new Sede();
-$escuela = new Escuela();
 
 $asesores = $asesor->getAsesores();
 $asesoriasTabla = $asesoria->getAsesorias();
 $stats = $asesoria->stats();
 $sedes = $sede->getSedes();
-$escuelas = $escuela->getEscuelas();
+$turnos = $asesor->getTurnos();
 
 if (isset($_POST['filtrar'])) {
   extract($_POST);
   $where = '';
-  if (!empty($sede)) {
-    $where .= ' AND Localidad.idLocalidad = ' . $sede;
-  }
-  if (!empty($escuela)) {
-    $where .= ' AND Escuela.idEscuela = ' . $escuela;
+  // if (!empty($sede)) {
+  //   $where .= ' AND Asesor.idAsesor = (SELECT idAsesor FROM ' . $sede;
+  // }
+  if (!empty($turno)) {
+    $where .= ' AND Asesor.idAsesor = (SELECT idAsesor FROM Turno WHERE idTurno = ' . $turno . ')'; 
   }
   if (!empty($asesor)) {
     $where .= ' AND Asesor.idAsesor = ' . $asesor;
@@ -72,7 +67,7 @@ $_SESSION['toExport'] = $tabla;
       </div><!--col-->
       <div class="col-sm-3">
         <!-- FILTRO SEDE -->
-        <select id="filtroSede" class="form-control" name="sede">
+        <select id="filtroSede" class="form-control" name="sede" disabled>
           <option value="" selected>Sede</option>
           <?php foreach ($sedes as $fila): ?>
             <?php if (isset($sede) && $sede == $fila['idLocalidad']): ?>
@@ -83,15 +78,15 @@ $_SESSION['toExport'] = $tabla;
           <?php endforeach; ?>
         </select>
       </div><!--col-->
-      <div class="col-sm-3">
+      <div class="col-sm-6">
         <!-- FILTRO ESCUELA -->
-        <select id="filtroEscuela" class="form-control" name="escuela">
-          <option value="" selected>Escuela</option>
-          <?php foreach ($escuelas as $fila): ?>
-            <?php if (isset($escuela) && $escuela == $fila['idEscuela']): ?>
-              <option value="<?=$fila['idEscuela'] ?>" selected><?=$fila['nombre'] ?></option>
+        <select id="filtroEscuela" class="form-control" name="turno">
+          <option value="" selected>Escuela (Turno)</option>
+          <?php foreach ($turnos as $fila): ?>
+            <?php if (isset($turno) && $turno == $fila['idTurno']): ?>
+              <option value="<?=$fila['idTurno'] ?>" selected><?=$fila['turno'] ?></option>
             <?php else: ?>
-              <option value="<?=$fila['idEscuela'] ?>"><?=$fila['nombre'] ?></option>
+              <option value="<?=$fila['idTurno'] ?>"><?=$fila['turno'] ?></option>
             <?php endif; ?>
           <?php endforeach; ?>
         </select>
@@ -151,8 +146,18 @@ $_SESSION['toExport'] = $tabla;
         <tbody>
           <?php foreach ($tabla as $fila): ?>
             <tr>
+              <?php if (empty($fila['alumno'])): ?>
+              <td><i>ALUMNO BORRADO</i></td>
+              <?php else :?>
               <td data-alumno="" data-href="alumno_historial.php" data-id="<?php echo $fila['idAlumno']; ?>" class="align-middle text-truncate"><?php echo $fila['alumno']; ?></td>
-              <td data-asesor="" data-href="asesorias_facilitador.php" data-id="<?php echo $fila['idAsesor']; ?>" class="align-middle text-truncate"><?php echo $fila['asesor']; ?></td>
+              <?php endif; ?>
+              <?php if (empty($fila['asesor'])): ?>
+              <td><i>ASESOR BORRADO</i></td>
+              <?php else :?>
+              <td data-asesor="" data-href="asesorias_facilitador.php" data-id="<?php echo $fila['idAsesor']; ?>" class="align-middle text-truncate">
+                <?php echo $fila['asesor']; ?>
+              </td>
+              <?php endif; ?>
               <td class="align-middle text-truncate"><?php echo $fila['fecha']; ?></td>
               <td data-motivo="<?=$fila['motivo']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['motivo']; ?></td>
               <td class="align-middle text-truncate"><?php echo $fila['dinamica']; ?></td>
