@@ -6,7 +6,7 @@
   $asesor_model = new Asesor;
   $alumno_model = new Alumno;
 
-  $asesor = $asesor_model->getAsesorById($_GET['id']);
+  $asesor = $asesor_model->getAsesorById($_GET['idAsesor']);
   $alumnosDeAsesor = $alumno_model->getAlumnosDeAsesor($asesor['idAsesor']);
 
 
@@ -26,15 +26,14 @@
         <thead>
           <th scope="col">Alumno</th>
           <th scope="col">Escuela</th>
-          <th scope="col">Grado</th>
           <th scope="col">Grupo</th>
         </thead>
         <tbody id="filter"> 
+        
           <?php foreach ($alumnosDeAsesor as $fila): ?>
             <tr>
               <td data-href="datos_alumno.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
               <td class="align-middle"><?php echo $fila['Escuela']; ?></td>
-              <td class="align-middle"><?php echo $fila['Grado']; ?></td>
               <td class="align-middle"><?php echo $fila['Grupo']; ?></td>
             </tr>
           <?php endforeach; ?>
