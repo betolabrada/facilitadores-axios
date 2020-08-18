@@ -37,16 +37,29 @@ if (isset($_POST['importar'])) {
       $header = fgetcsv($file, 10000, ","); 
       while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
         // Define params to insert
-        $params = array (
-          'noLista' => (int) $column[0],
-          'idAlumno' => (int) $column[1],
-          'nombre' => utf8_encode($column[2]),
-          'apellido' => utf8_encode($column[3]),
-          'idGrupo' => (int) $idGrupo
-        );
+        if (count($column) === 3) {
+          $params = array (
+            'noLista' => (int) $column[0],
+            'nombre' => utf8_encode($column[1]),
+            'apellido' => utf8_encode($column[2]),
+            'idGrupo' => (int) $idGrupo
+          );
+        } else {
+          $params = array (
+            'noLista' => (int) $column[0],
+            'idAlumno' => (int) $column[1],
+            'nombre' => utf8_encode($column[2]),
+            'apellido' => utf8_encode($column[3]),
+            'idGrupo' => (int) $idGrupo
+          );
+        }
         extract($params);
         // Insert to DB
-        $inserted = $alumno_model->insertarAlumno($noLista, $nombre, $apellido, $idGrupo, $idAlumno);
+        if (!isset($idAlumno)) {
+          $inserted = $alumno_model->insertarAlumno($noLista, $nombre, $apellido, $idGrupo);
+        } else {
+          $inserted = $alumno_model->insertarAlumno($noLista, $nombre, $apellido, $idGrupo, $idAlumno);
+        }
         
         // Check if error
         if (!$inserted) {
@@ -150,7 +163,7 @@ if (isset($_POST['delete'])) {
   echo "<p>Grupo: <strong>" . $asesorDeGrupo['grupo'] . "</strong><br>";
   echo "Escuela: <strong> " . $asesorDeGrupo['nombreEscuela'] . "</strong><br>";
   echo "Turno: <strong> " . $asesorDeGrupo['tipo'] . "</strong><br>";
-  echo "Descripcion: <strong> " . $asesorDeGrupo['numero'] . " ". $asesorDeGrupo['sede'] . " " . $asesorDeGrupo['descripcion']  . "</strong></p>";
+  echo "Asesor: <strong> " . $asesorDeGrupo['nombreAsesor']  . "</strong></p>";
 ?>
 
 <?php if (count($alumnos) == 0):?>

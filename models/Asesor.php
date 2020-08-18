@@ -52,7 +52,7 @@ class Asesor {
   // @fields  grupo, nombre, nombreEscuela, tipoTurno, descTurno, numeroEscuela, sede 
   public function getAsesorDeGrupo($idGrupo) {
     $sql = 'SELECT 
-        grup.grupo, a.nombre, e.nombre as nombreEscuela, t.tipo, t.tipo, e.numero, l.nombre as sede
+        grup.grupo, a.nombre as nombreAsesor, e.nombre as nombreEscuela, t.tipo, e.numero, l.nombre as sede
         FROM Grupo grup 
         JOIN Turno t on t.idTurno = grup.idTurno 
         JOIN Asesor a on a.idAsesor = t.idAsesor 

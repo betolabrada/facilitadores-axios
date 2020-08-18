@@ -67,7 +67,7 @@
     // @desc    GET ALUMNOS de Grupo
     // @fields  noLista, nombre, apellido 
     public function getAlumnos($grupoId) {
-      $query = "SELECT noLista, idAlumno, nombre, apellido FROM Alumno WHERE idGrupo = :grupoId";
+      $query = "SELECT noLista, idAlumno, nombre, apellido FROM Alumno WHERE idGrupo = :grupoId ORDER BY noLista";
 
       $this->db->query($query);
 
