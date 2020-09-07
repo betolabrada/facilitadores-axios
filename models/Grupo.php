@@ -115,7 +115,7 @@
         $this->db->query($query);
         
         $this->db->bind('grupo', $grupo);
-        $this->db->bind(':idTurno', $turno);
+        $this->db->bind(':idTurno', $idTurno);
         
         if ($this->db->execute()) {
             return true;
